@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منصة تبادل مفاتيح تحدي نسك | فرص العمرة وماء زمزم</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6F6DN0G506"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6F6DN0G506');
+  </script>
+
+  <!-- Google Fonts: IBM Plex Sans Arabic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"IBM Plex Sans Arabic"', 'sans-serif'],
+          },
+          colors: {
+            nusuk: {
+              bg: '#F5F6F8',
+              sand: '#E6DEC8',
+              sandLight: '#F6EFE0',
+              gold: '#D99B26',
+              goldDark: '#B87D14',
+              navy: '#1B2A4A',
+              navyLight: '#2D4263',
+              dark: '#18191B',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      background-color: #F5F6F8;
+      color: #18191B;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .nusuk-header-gradient {
+      background: linear-gradient(175deg, #E2D8C0 0%, #EFE9DA 55%, #F5F6F8 100%);
+    }
+
+    .nusuk-promo-gradient {
+      background: linear-gradient(135deg, #F8EFE0 0%, #FFFFFF 52%, #ECE7F6 100%);
+    }
+
+    .soft-card {
+      background: #FFFFFF;
+      border-radius: 22px;
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.045);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.65; }
+    }
+    .live-indicator {
+      animation: pulseDot 1.8s infinite ease-in-out;
+    }
+
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: slideUpFade 0.35s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-amber-200 selection:text-amber-900">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none w-[92%] max-w-md"></div>
+
+  <!-- Main Container -->
+  <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-12 space-y-5">
+
+    <!-- Header -->
+    <header class="nusuk-header-gradient rounded-3xl p-5 sm:p-7 border border-amber-200/60 shadow-sm space-y-5">
+      <!-- Independent Developer Disclaimer Banner -->
+      <div class="bg-amber-900/10 border border-amber-800/20 rounded-2xl px-4 py-2.5 text-center text-xs sm:text-sm text-amber-950 font-medium leading-relaxed">
+        ⚠️ <strong>تنويه مهم:</strong> هذه المنصة <strong>برمجة خاصة ومبادرة فردية من مطور مستقل</strong>، ولا ترتبط بالمنصة الرسمية <span dir="ltr" class="font-bold underline">NUSUK.SA</span> بأي صفة من الصفات، ولا تحاول انتحال صفتها على الإطلاق.
+      </div>
+
+      <!-- Top Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <!-- Live Counter -->
+        <div class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-amber-200/70 shadow-xs text-xs sm:text-sm font-semibold text-gray-800">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator"></span>
+          <span>إجمالي المفاتيح المضافة: <strong id="total-pool-count" class="text-amber-700 font-bold">12</strong> مفتاح</span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="toggleDuaTikTokModal(true)" class="inline-flex items-center gap-1.5 bg-white hover:bg-amber-50 text-amber-900 border border-amber-300/80 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
+            <span>🤲 دعاء الحاجة</span>
+          </button>
+          <button type="button" onclick="toggleGuideModal(true)" class="inline-flex items-center gap-1.5 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
+            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>طريقة التفعيل</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Hero Center -->
+      <div class="text-center max-w-2xl mx-auto space-y-3 pt-1">
+        <div class="inline-flex items-center gap-1.5 bg-white/80 text-amber-900 px-3.5 py-1 rounded-full text-xs font-semibold border border-amber-200/70">
+          <span>🕋 تحدي مفاتيح نسك • فرص العمرة وماء زمزم</span>
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-bold text-gray-900 leading-tight">
+          منصة تبادل مفاتيح <span class="text-amber-700">تحدي نسك</span>
+        </h1>
+        <p class="text-sm sm:text-base text-gray-700 leading-relaxed">
+          من فضلك استعمل مفتاح المطور أولاً في تطبيق نسك، ثم أضف مفتاحك الخاص (مرة واحدة فقط) ليظهر للجميع واحصل فوراً على <strong>30 مفتاحاً عشوائياً</strong> لزيادة فرصك في السحب.
+        </p>
+
+        <!-- TikTok Developer Link -->
+        <div class="pt-1">
+          <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-nusuk-dark hover:bg-black text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition transform active:scale-95">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+            </svg>
+            <span>تابع مطور الموقع على تيك توك</span>
+            <span dir="ltr" class="text-amber-400 font-bold">@abbuzakaria</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main 2-Column Grid: Step 1 & Step 2 -->
+    <main class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+      <!-- STEP 1: Copy Developer Key -->
+      <section class="soft-card p-5 sm:p-6 flex flex-col justify-between space-y-4">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-full bg-nusuk-dark text-white font-bold text-sm flex items-center justify-center shrink-0">1</span>
+              <h2 class="text-lg sm:text-xl font-bold text-gray-900">استعمل مفتاح المطور أولاً</h2>
+            </div>
+            <span id="step1-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">مطلوب في كل زيارة</span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            أنا مطور فردي بسيط ولست مشرفاً على المسابقة؛ من فضلك انسخ <strong>مفتاح المطور</strong> بالأسفل وأدخله في خانة "مفاتيحك" داخل تطبيق نسك لفتح الخطوة الثانية:
+          </p>
+
+          <div class="nusuk-promo-gradient border border-amber-200/80 rounded-2xl p-4 text-center space-y-1">
+            <span class="text-xs font-semibold text-amber-800 block">رمز مفتاح المطور</span>
+            <div id="owner-key-display" dir="ltr" class="font-mono text-2xl sm:text-3xl font-bold tracking-wider text-gray-900 select-all">NG-O8dPL1lh</div>
+          </div>
+        </div>
+
+        <button type="button" onclick="copyOwnerKey()" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3.5 px-5 rounded-full text-sm sm:text-base shadow-sm transition transform active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer">
+          <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          <span>نسخ مفتاح المطور للمتابعة</span>
+        </button>
+      </section>
+
+      <!-- STEP 2: Add Visitor Key (One Key Per Visitor Only) -->
+      <section id="step2-card" class="soft-card p-5 sm:p-6 relative overflow-hidden flex flex-col justify-between space-y-4">
+        <!-- Lock Overlay (Until Step 1 is completed in current session) -->
+        <div id="step2-lock-overlay" class="absolute inset-0 z-20 bg-white/88 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6 space-y-2.5">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-gray-900">هذه الخطوة مقفلة مؤقتاً</h3>
+          <p class="text-xs sm:text-sm text-gray-600 max-w-xs leading-relaxed">
+            من فضلك استعمل مفتاح المطور في <strong>الخطوة (1)</strong> أولاً ليتم فتح خانة إضافة مفتاحك وعرض قائمة الـ 30 مفتاحاً.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-full bg-nusuk-gold text-white font-bold text-sm flex items-center justify-center shrink-0">2</span>
+              <h2 class="text-lg sm:text-xl font-bold text-gray-900">أضف مفتاحك الخاص</h2>
+            </div>
+            <span id="step2-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600">مقفل</span>
+          </div>
+
+          <p id="step2-helper-text" class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            أدخل رمز مفتاحك من تطبيق نسك (يُسمح بإضافة <strong>مفتاح واحد فقط</strong> لكل زائر لضمان العدالة للجميع):
+          </p>
+
+          <div>
+            <input
+              id="visitor-key-input"
+              type="text"
+              dir="ltr"
+              placeholder="NG-XXXXXXXX"
+              disabled
+              autocomplete="off"
+              class="w-full text-center font-mono text-lg sm:text-xl font-bold tracking-wider uppercase bg-gray-50 border border-gray-300 focus:border-nusuk-gold focus:ring-2 focus:ring-amber-200 rounded-2xl py-3 px-4 outline-none transition disabled:opacity-75 disabled:cursor-not-allowed"
+            />
+          </div>
+        </div>
+
+        <button
+          id="submit-visitor-btn"
+          type="button"
+          onclick="submitVisitorKey()"
+          disabled
+          class="w-full bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3.5 px-5 rounded-full text-sm sm:text-base shadow-sm transition transform active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+        >
+          إضافة مفتاحي وعرض 30 مفتاحاً
+        </button>
+      </section>
+    </main>
+
+    <!-- Visual Share Boost Card (Shown after Step 2) -->
+    <section id="share-boost-card" class="hidden nusuk-promo-gradient rounded-3xl p-5 sm:p-6 border border-amber-300/70 shadow-sm space-y-4 animate-fade-in">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="text-base sm:text-lg font-bold text-gray-900">🚀 ضاعف نسبة ظهور مفتاحك للزوار</h3>
+        <span id="boost-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">أولوية عادية 1x</span>
+      </div>
+
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-xs font-semibold text-gray-700">
+          <span>مؤشر أولوية الظهور</span>
+          <span id="boost-percent-label" class="text-amber-800 font-bold">35% (عادية)</span>
+        </div>
+        <div class="w-full h-3 bg-gray-200/80 rounded-full overflow-hidden">
+          <div id="boost-progress-bar" class="h-full bg-gradient-to-l from-amber-500 to-emerald-500 rounded-full transition-all duration-700" style="width: 35%;"></div>
+        </div>
+      </div>
+
+      <p class="text-xs sm:text-sm text-gray-600">
+        شارك رابط المنصة مع أصدقائك أو في مجموعات العمرة لتفعيل أولوية الظهور القصوى <strong>(3x)</strong> لمفتاحك:
+      </p>
+
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+        <button type="button" onclick="triggerShareBoost('whatsapp')" class="bg-[#25D366] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">واتساب</button>
+        <button type="button" onclick="triggerShareBoost('telegram')" class="bg-[#229ED9] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">تيليجرام</button>
+        <button type="button" onclick="triggerShareBoost('facebook')" class="bg-[#1877F2] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">فيسبوك</button>
+        <button type="button" onclick="triggerShareBoost('x')" class="bg-gray-900 hover:bg-black text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">منصة X</button>
+        <button type="button" onclick="triggerShareBoost('copy')" class="col-span-2 sm:col-span-1 bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">نسخ الرابط</button>
+      </div>
+    </section>
+
+    <!-- STEP 3: 30 Random Non-Repeating Community Keys -->
+    <section id="step3-section" class="hidden soft-card p-5 sm:p-6 space-y-4 animate-fade-in">
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-4">
+        <div class="flex items-start gap-3">
+          <span class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">3</span>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h2 class="text-lg sm:text-xl font-bold text-gray-900">مفاتيح المشاركين (30 مفتاحاً عشوائياً)</h2>
+              <span id="list-total-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">متاح: 0</span>
+            </div>
+            <p class="text-xs sm:text-sm text-gray-600 mt-0.5">
+              أي مفتاح تقوم بنسخه يُحفظ في سجلك ولن يتكرر لك عند تحديث الصفحة.
+            </p>
+          </div>
+        </div>
+
+        <button type="button" onclick="refreshRandomKeys(true)" class="bg-nusuk-dark hover:bg-black text-white font-bold py-2.5 px-4 rounded-full text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span>تحديث الصفحة لجلب 30 مفتاحاً جديدة</span>
+        </button>
+      </div>
+
+      <!-- Keys Grid -->
+      <div id="keys-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+
+      <!-- Empty / All Copied State -->
+      <div id="empty-keys-box" class="hidden text-center py-8 px-4 bg-gray-50 rounded-2xl border border-dashed border-gray-300 space-y-3">
+        <p class="text-sm sm:text-base font-bold text-gray-800">لقد قمت بنسخ جميع المفاتيح المتاحة حالياً 🎉</p>
+        <p class="text-xs sm:text-sm text-gray-600">يمكنك إعادة عرض المفاتيح السابقة أو العودة لاحقاً بعد انضمام مشاركين جدد.</p>
+        <button type="button" onclick="resetCopiedHistory()" class="bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-2.5 px-5 rounded-full text-xs sm:text-sm transition cursor-pointer">
+          إعادة عرض المفاتيح السابقة
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full max-w-5xl mx-auto px-4 sm:px-6 pb-8 pt-2">
+    <div class="soft-card p-5 sm:p-6 text-center space-y-4">
+      <div class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-900 border border-amber-200/80 px-3.5 py-1 rounded-full text-xs font-bold">
+        <span>🌍 إحصائيات زوار المنصة حول العالم</span>
+      </div>
+
+      <!-- Personal Flag Counter -->
+      <div class="max-w-xl mx-auto bg-[#E6DEC8]/60 border border-[#CCCCCC]/80 rounded-2xl p-2.5 sm:p-3 flex items-center justify-center">
+        <a href="https://info.flagcounter.com/ll3n" target="_blank" rel="noopener noreferrer" title="إحصائيات الزوار حسب الدولة">
+          <img
+            src="https://s05.flagcounter.com/count_US/ll3n/bg_E6DEC8/txt_000000/border_CCCCCC/columns_8/maxflags_20/viewers_0/labels_0/pageviews_0/flags_0/percent_0/"
+            alt="Flag Counter"
+            border="0"
+            class="mx-auto rounded-xl max-w-full h-auto"
+          />
+        </a>
+      </div>
+
+      <div class="text-xs text-gray-600 space-y-1 pt-1">
+        <p>
+          تنويه: هذا الموقع برمجة خاصة ومبادرة مستقلة من مطور فردي، ولا يتبع للمنصة الرسمية <span dir="ltr" class="font-bold">NUSUK.SA</span> بأي شكل.
+        </p>
+        <p>
+          تطوير وبرمجة:
+          <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" dir="ltr" class="font-bold text-amber-800 hover:underline">@abbuzakaria</a>
+          © 2026
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL 1: Dua for Fulfillment of Needs & TikTok Follow -->
+  <div id="dua-tiktok-modal" class="hidden fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-amber-200 space-y-4 animate-fade-in relative">
+      <button type="button" onclick="toggleDuaTikTokModal(false)" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
+
+      <div class="text-center space-y-1">
+        <span class="text-2xl">🤲</span>
+        <h3 class="text-lg sm:text-xl font-bold text-gray-900">دعاء قضاء الحاجة وتيسير العمرة</h3>
+      </div>
+
+      <div class="nusuk-promo-gradient border border-amber-200/90 rounded-2xl p-4 text-center space-y-3 text-sm sm:text-base text-gray-900 leading-loose font-medium">
+        <p>
+          «اللَّهُمَّ إِنِّي أَسْأَلُكَ وَأَتَوَجَّهُ إِلَيْكَ بِنَبِيِّكَ مُحَمَّدٍ نَبِيِّ الرَّحْمَةِ، يَا مُحَمَّدُ إِنِّي تَوَجَّهْتُ بِكَ إِلَى رَبِّي فِي حَاجَتِي هَذِهِ لِتُقْضَى لِي، اللَّهُمَّ فَشَفِّعْهُ فِيَّ»
+        </p>
+        <p class="text-amber-900 font-semibold">
+          «اللَّهُمَّ لا سَهْلَ إِلا مَا جَعَلْتَهُ سَهْلاً، وَأَنْتَ تَجْعَلُ الْحَزْنَ إِذَا شِئْتَ سَهْلاً، اللَّهُمَّ اقْضِ حَاجَتِي وَيَسِّرْ أَمْرِي وَارْزُقْنِي عُمْرَةً قَرِيبَةً لِبَيْتِكَ الْحَرَامِ»
+        </p>
+      </div>
+
+      <p class="text-xs sm:text-sm text-center text-gray-600 leading-relaxed">
+        فضلاً وليس أمراً، دعمك لنا بمتابعة حسابنا على تيك توك يساعدنا على استمرار الموقع وتطويره للجميع 🤍
+      </p>
+
+      <div class="space-y-2 pt-1">
+        <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" onclick="handleTikTokPopupFollow()" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3 px-4 rounded-full text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+          <span>اشتراك ومتابعة على تيك توك</span>
+          <span dir="ltr" class="text-amber-400">@abbuzakaria</span>
+        </a>
+        <button type="button" onclick="toggleDuaTikTokModal(false)" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">
+          تم الاشتراك / متابعة التصفح
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: How-to-Activate Guide -->
+  <div id="guide-modal" class="hidden fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-200 space-y-4 animate-fade-in">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-gray-900">طريقة تفعيل المفاتيح في نسك</h3>
+        <button type="button" onclick="toggleGuideModal(false)" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
+      </div>
+
+      <ol class="space-y-3 text-xs sm:text-sm text-gray-700 leading-relaxed">
+        <li class="flex items-start gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center shrink-0">1</span>
+          <span>افتح تطبيق <strong>نسك (Nusuk)</strong> الرسمي على هاتفك وانتقل إلى قسم <strong>تحدي المفاتيح</strong>.</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center shrink-0">2</span>
+          <span>اختر <strong>"أدخل الرمز لتفعيل مفتاح جديد"</strong> والصق مفتاح المطور أو أي مفتاح نسخته من القائمة هنا.</span>
+        </li>
+        <li class="flex items-start gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center shrink-0">3</span>
+          <span>اضغط على <strong>"تحقق من الرمز"</strong> لإضافة المفتاح إلى رصيدك وزيادة فرصك في السحب.</span>
+        </li>
+      </ol>
+
+      <button type="button" onclick="toggleGuideModal(false)" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">
+        فهمت، إغلاق
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase + App Logic (Single-Document + 30-Min Cache for $0 Cost Scaling) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Your Firebase Project Configuration
+    const MANUAL_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDFQD0Kb0sOh-CQ68tTB9mxVsbnjNYtTv4",
+      authDomain: "nusuk-a54e4.firebaseapp.com",
+      projectId: "nusuk-a54e4",
+      storageBucket: "nusuk-a54e4.firebasestorage.app",
+      messagingSenderId: "170275662694",
+      appId: "1:170275662694:web:64d3ff86fa5492a24e36a7",
+      measurementId: "G-6F6DN0G506"
+    };
+
+    const OWNER_KEY = "NG-O8dPL1lh";
+    const KEYS_PER_PAGE = 30;
+    const MAX_POOL_SIZE = 300;
+    const CACHE_TTL_MS = 30 * 60 * 1000; // 30 minutes cache to keep Firestore reads near zero
+
+    const STORAGE_KEYS = {
+      SESSION_OWNER_COPIED: "nusuk_session_dev_copied_v2",
+      USER_SUBMITTED_KEY: "nusuk_user_single_key_v2",
+      COPIED_HISTORY: "nusuk_copied_history_v2",
+      BOOST_ACTIVATED: "nusuk_boost_3x_v2",
+      POOL_CACHE: "nusuk_pool_cache_v2",
+      POOL_CACHE_TS: "nusuk_pool_cache_ts_v2",
+      DUA_POPUP_SHOWN: "nusuk_dua_popup_session_v2"
+    };
+
+    const SEED_KEYS = [
+      { code: "NG-K9mP4xLq", addedAt: Date.now() - 3600000 * 5 },
+      { code: "NG-R7vN2wTz", addedAt: Date.now() - 3600000 * 4 },
+      { code: "NG-B4jH8sYc", addedAt: Date.now() - 3600000 * 3 },
+      { code: "NG-M6qW3pDf", addedAt: Date.now() - 3600000 * 2 },
+      { code: "NG-T2zL9kVn", addedAt: Date.now() - 5400000 },
+      { code: "NG-X5cR8mGp", addedAt: Date.now() - 4200000 },
+      { code: "NG-H3nB7vQs", addedAt: Date.now() - 3100000 },
+      { code: "NG-W8dF4jKm", addedAt: Date.now() - 2500000 },
+      { code: "NG-P9yT6rLx", addedAt: Date.now() - 1800000 },
+      { code: "NG-L4sG2hZw", addedAt: Date.now() - 1200000 },
+      { code: "NG-D7k
