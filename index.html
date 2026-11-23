@@ -137,7 +137,7 @@
           منصة تبادل مفاتيح <span class="text-amber-700">تحدي نسك</span>
         </h1>
         <p class="text-xs sm:text-base text-gray-700 leading-relaxed">
-          استعمل مفتاح المطور <strong>مرة واحدة فقط</strong> في تطبيق نسك، ثم أضف مفتاحك الخاص <strong>مرة واحدة</strong> ليُعرض للجميع وتتمكن بعدها من نسخ <strong>جميع المفاتيح المتاحة</strong> بحرية!
+          استعمل مفتاح المطور <strong>مرة واحدة فقط</strong> في تطبيق نسك، ثم أضف مفتاحك الخاص <strong>مرة واحدة</strong> ليُعرض بإنصاف للجميع، واحصل في كل مرة على <strong>33 مفتاحاً عشوائياً جديداً</strong> دون تكرار!
         </p>
 
         <!-- TikTok Developer Link -->
@@ -196,7 +196,7 @@
           </div>
           <h3 class="text-base sm:text-lg font-bold text-gray-900">هذه الخطوة مقفلة مؤقتاً</h3>
           <p class="text-xs sm:text-sm text-gray-600 max-w-xs leading-relaxed">
-            من فضلك انسخ مفتاح المطور في <strong>الخطوة (1)</strong> مرة واحدة ليتم فتح خانة إضافة مفتاحك وعرض جميع مفاتيح المشاركين.
+            من فضلك انسخ مفتاح المطور في <strong>الخطوة (1)</strong> مرة واحدة ليتم فتح خانة إضافة مفتاحك وعرض قائمة الـ 33 مفتاحاً العشوائية.
           </p>
         </div>
 
@@ -210,7 +210,7 @@
           </div>
 
           <p id="step2-helper-text" class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-            أدخل رمز مفتاحك من تطبيق نسك (يُسمح بإضافة <strong>مفتاح واحد فقط</strong> لكل زائر لضمان العدالة للجميع):
+            أدخل رمز مفتاحك من تطبيق نسك (يُسمح بإضافة <strong>مفتاح واحد فقط</strong> لكل زائر لضمان العدالة وتوزيع الظهور بإنصاف):
           </p>
 
           <div>
@@ -234,7 +234,7 @@
           disabled
           class="w-full bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3.5 px-5 rounded-full text-xs sm:text-base shadow-sm transition transform active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
-          إضافة مفتاحي وعرض جميع المفاتيح
+          إضافة مفتاحي وعرض 33 مفتاحاً
         </button>
       </section>
     </main>
@@ -269,49 +269,50 @@
       </div>
     </section>
 
-    <!-- STEP 3: ALL Community Keys Displayed Together (No Cap, Live Synced) -->
+    <!-- STEP 3: 33 Fairly Distributed Random Keys per Batch + Refresh Button -->
     <section id="step3-section" class="hidden soft-card p-4 sm:p-6 space-y-4 animate-fade-in">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
         <div class="flex items-start gap-3">
           <span class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">3</span>
           <div>
             <div class="flex flex-wrap items-center gap-2">
-              <h2 class="text-base sm:text-xl font-bold text-gray-900">جميع مفاتيح المشاركين الحقيقية</h2>
-              <span id="list-total-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">المعروض: 0</span>
+              <h2 class="text-base sm:text-xl font-bold text-gray-900">مفاتيح المشاركين (33 مفتاحاً عشوائياً منصفاً)</h2>
+              <span id="list-total-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">المعروض: 0 / 33</span>
             </div>
             <p class="text-xs sm:text-sm text-gray-600 mt-0.5">
-              تُعرض هنا <strong>كافة المفاتيح الحقيقية المضافة</strong> دفعة واحدة لتنسخها بحرية. يتم تمييز المفاتيح التي نسختها سابقاً تلقائياً.
+              يتم اختيار <strong>33 مفتاحاً عشوائياً بإنصاف</strong> لكل زائر. أي مفتاح تنسخه يُحفظ في سجلك المشفر ولا يتكرر لك عند تحديث القائمة.
             </p>
           </div>
         </div>
 
-        <button type="button" data-action="sync-now" class="w-full sm:w-auto justify-center bg-nusuk-dark hover:bg-black text-white font-bold py-2.5 px-4 rounded-full text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5 cursor-pointer shrink-0">
-          <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <button type="button" data-action="refresh-batch" class="w-full sm:w-auto justify-center bg-nusuk-dark hover:bg-black text-white font-bold py-2.5 px-4 rounded-full text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5 cursor-pointer shrink-0 active:scale-95">
+          <svg id="refresh-icon" class="w-4 h-4 text-amber-400 shrink-0 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          <span>مزامنة المفاتيح الجديدة الآن</span>
+          <span>تحديث القائمة وجلب 33 كود جديد</span>
         </button>
       </div>
 
-      <!-- Search / Filter Box -->
-      <div class="flex flex-col sm:flex-row items-center gap-2.5">
-        <input
-          id="keys-search-input"
-          type="text"
-          dir="ltr"
-          placeholder="ابحث عن رمز مفتاح... NG-"
-          class="w-full sm:max-w-xs text-center sm:text-left font-mono text-xs sm:text-sm bg-gray-50 border border-gray-200 focus:border-amber-400 rounded-full py-2 px-4 outline-none"
-        />
-        <span id="copied-progress-label" class="text-xs font-semibold text-gray-600">نسخت حتى الآن: 0 مفتاح</span>
+      <!-- Status Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-gray-600 bg-gray-50/90 border border-gray-200/80 rounded-2xl px-3.5 py-2.5">
+        <span>⚖️ التوزيع العشوائي المنصف مفعّل لجميع المشاركين</span>
+        <div class="flex items-center gap-3">
+          <span id="remaining-pool-label" class="text-amber-800">المتبقي لك: 0</span>
+          <span>•</span>
+          <span id="copied-progress-label" class="text-emerald-700">نسخت: 0</span>
+        </div>
       </div>
 
-      <!-- All Keys Grid -->
+      <!-- 33 Keys Grid (Responsive: 1 col mobile -> 2 cols tablet -> 3 cols desktop) -->
       <div id="keys-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3"></div>
 
-      <!-- Empty State -->
-      <div id="empty-keys-box" class="hidden text-center py-8 px-4 bg-gray-50 rounded-2xl border border-dashed border-gray-300 space-y-2">
-        <p class="text-sm sm:text-base font-bold text-gray-800">أنت من أوائل المشاركين! 🎉</p>
-        <p class="text-xs sm:text-sm text-gray-600">تم تسجيل مفتاحك بنجاح وسيظهر هنا جميع مفاتيح الزوار الجدد فور إضافتها تلقائياً.</p>
+      <!-- Empty / All Copied State -->
+      <div id="empty-keys-box" class="hidden text-center py-8 px-4 bg-gray-50 rounded-2xl border border-dashed border-gray-300 space-y-3">
+        <p id="empty-title" class="text-sm sm:text-base font-bold text-gray-800">أنت من أوائل المشاركين! 🎉</p>
+        <p id="empty-desc" class="text-xs sm:text-sm text-gray-600">تم تسجيل مفتاحك بنجاح وسيظهر هنا 33 مفتاحاً عشوائياً فور انضمام مشاركين جدد.</p>
+        <button id="reset-history-btn" type="button" data-action="reset-history" class="hidden bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-2.5 px-5 rounded-full text-xs sm:text-sm transition cursor-pointer">
+          إعادة عرض المفاتيح السابقة
+        </button>
       </div>
     </section>
 
@@ -420,7 +421,7 @@
     </div>
   </div>
 
-  <!-- Hardened, Encrypted & Real-Time Synchronized Application Module -->
+  <!-- Hardened, Encrypted & Fair-Distribution Application Module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -543,27 +544,29 @@
       });
 
       const DEV_KEY = _0x3c9d(7);
-      const MAX_POOL_SIZE = 1000;
-      const RATE_LIMIT_MS = 2000;
+      const BATCH_SIZE = 33;          // Exactly 33 random keys per batch
+      const MAX_POOL_SIZE = 1500;
+      const RATE_LIMIT_MS = 1800;
 
-      // Persistent encrypted storage keys (One-time Dev Key + One-time Visitor Key)
       const S_KEYS = Object.freeze({
-        DEV_USED_ONCE: "_nk_l_dv_once_v3",
-        SINGLE_USER_KEY: "_nk_l_uk_once_v3",
-        COPIED_LIST: "_nk_l_cp_v3",
-        BOOST_FLAG: "_nk_l_bs_v3",
-        POOL_DATA: "_nk_l_pl_v3",
-        DUA_SEEN: "_nk_s_du_v3"
+        DEV_USED_ONCE: "_nk_l_dv_once_v4",
+        SINGLE_USER_KEY: "_nk_l_uk_once_v4",
+        COPIED_LIST: "_nk_l_cp_v4",
+        SEEN_LIST: "_nk_s_sn_v4",
+        BOOST_FLAG: "_nk_l_bs_v4",
+        POOL_DATA: "_nk_l_pl_v4",
+        DUA_SEEN: "_nk_s_du_v4"
       });
 
       let db = null;
       let poolDocRef = null;
       let keysPool = [];
-      let searchQuery = "";
+      let currentBatch = [];
       let state = {
         devKeyUsedOnce: false,
         submittedUserKey: "",
         copiedHistory: [],
+        seenThisSession: [],
         boostActivated: false,
         lastActionTs: 0
       };
@@ -571,7 +574,7 @@
       // 4. Anti-SQLi / Anti-NoSQLi / Anti-XSS Input Sanitization
       function hasInjectionPattern(raw) {
         const str = String(raw || "");
-        const forbidden = /(['";]|--|\b(SELECT|UNION|INSERT|UPDATE|DELETE|DROP|ALTER|EXEC|SCRIPT|EVAL|ALERT|ONERROR|ONLOAD)\b|\$ne|\$gt|\$lt|\$where|__proto__|constructor|prototype|<|>)/i;
+        const forbidden = /(['";]|--|(SELECT|UNION|INSERT|UPDATE|DELETE|DROP|ALTER|EXEC|SCRIPT|EVAL|ALERT|ONERROR|ONLOAD)|\$ne|\$gt|\$lt|\$where|__proto__|constructor|prototype|<|>)/i;
         return forbidden.test(str);
       }
 
@@ -634,18 +637,33 @@
         document.body.removeChild(ta);
       }
 
-      async function hydrateSecureState() {
-        try {
-          localStorage.removeItem("nusuk_pool_cache_v2");
-          localStorage.removeItem("nusuk_pool_cache_ts_v2");
-          localStorage.removeItem("_nk_l_pl_8d");
-        } catch {}
+      // Cryptographically Unbiased Fisher-Yates Shuffle (Fair Distribution)
+      function fairCryptoShuffle(arr) {
+        const copy = [...arr];
+        if (window.crypto && window.crypto.getRandomValues) {
+          const rand = new Uint32Array(copy.length);
+          window.crypto.getRandomValues(rand);
+          for (let i = copy.length - 1; i > 0; i--) {
+            const j = rand[i] % (i + 1);
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+          }
+        } else {
+          for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+          }
+        }
+        return copy;
+      }
 
+      async function hydrateSecureState() {
         state.devKeyUsedOnce = (await secureStoreGet(localStorage, S_KEYS.DEV_USED_ONCE, false)) === true;
         const savedKey = await secureStoreGet(localStorage, S_KEYS.SINGLE_USER_KEY, "");
         state.submittedUserKey = isValidKeyFormat(savedKey) ? savedKey : "";
         const hist = await secureStoreGet(localStorage, S_KEYS.COPIED_LIST, []);
         state.copiedHistory = Array.isArray(hist) ? hist.map(sanitizeKeyCode).filter(Boolean) : [];
+        const seen = await secureStoreGet(sessionStorage, S_KEYS.SEEN_LIST, []);
+        state.seenThisSession = Array.isArray(seen) ? seen.map(sanitizeKeyCode).filter(Boolean) : [];
         state.boostActivated = (await secureStoreGet(localStorage, S_KEYS.BOOST_FLAG, false)) === true;
 
         const cachedPool = await secureStoreGet(localStorage, S_KEYS.POOL_DATA, []);
@@ -696,8 +714,8 @@
 
           await savePoolCache(keysPool);
           updateTotalCounter();
-          if (state.devKeyUsedOnce && state.submittedUserKey) {
-            renderAllCommunityKeys();
+          if (state.devKeyUsedOnce && state.submittedUserKey && currentBatch.length === 0) {
+            generateAndRenderFairBatch(false);
           }
 
           onSnapshot(poolDocRef, async (snap) => {
@@ -705,34 +723,14 @@
               keysPool = cleanAndDedupePool(snap.data().keys);
               await savePoolCache(keysPool);
               updateTotalCounter();
-              if (state.devKeyUsedOnce && state.submittedUserKey) {
-                renderAllCommunityKeys();
+              // Only auto-populate if current batch is empty or below 33 keys
+              if (state.devKeyUsedOnce && state.submittedUserKey && currentBatch.length < BATCH_SIZE) {
+                generateAndRenderFairBatch(false);
               }
             }
           });
         } catch (err) {
           console.warn("Cloud sync notice:", err?.message || err);
-        }
-      }
-
-      async function forceManualSync() {
-        if (!db || !poolDocRef) {
-          updateTotalCounter();
-          renderAllCommunityKeys();
-          showToast("تم تحديث القائمة المحلية.", "success");
-          return;
-        }
-        try {
-          const snap = await getDoc(poolDocRef);
-          if (snap.exists() && Array.isArray(snap.data().keys)) {
-            keysPool = cleanAndDedupePool(snap.data().keys);
-            await savePoolCache(keysPool);
-            updateTotalCounter();
-            renderAllCommunityKeys();
-            showToast(`تمت المزامنة بنجاح! إجمالي المفاتيح الحقيقية: ${keysPool.length}`, "success");
-          }
-        } catch {
-          showToast("تعذر الاتصال بالسحابة حالياً.", "warning");
         }
       }
 
@@ -765,7 +763,7 @@
         return `منذ ${diffDay} ي`;
       }
 
-      // UI Synchronization: Enforces 1x Developer Key + 1x Visitor Key -> Full Free Access to All Keys
+      // UI Synchronization
       function syncUIState() {
         const devDisplay = document.getElementById("owner-key-display");
         if (devDisplay) devDisplay.textContent = DEV_KEY;
@@ -793,7 +791,7 @@
           if (state.submittedUserKey) {
             step2Badge.textContent = "تم الإدراج ✓ (1/1)";
             step2Badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
-            step2Helper.textContent = "تم تسجيل مفتاحك بنجاح وحمايته. يمكنك الآن نسخ جميع مفاتيح المشاركين بالأسفل بحرية!";
+            step2Helper.textContent = "تم تسجيل مفتاحك بنجاح! يمكنك الآن نسخ الـ 33 مفتاحاً العشوائية أو تحديث القائمة للحصول على 33 مفتاحاً جديدة.";
             inputEl.value = state.submittedUserKey;
             inputEl.disabled = true;
             inputEl.readOnly = true;
@@ -803,7 +801,11 @@
             boostCard.classList.remove("hidden");
             step3Section.classList.remove("hidden");
             applySavedBoostUI();
-            renderAllCommunityKeys();
+            if (currentBatch.length === 0) {
+              generateAndRenderFairBatch(false);
+            } else {
+              renderBatchCards(currentBatch);
+            }
           } else {
             step2Badge.textContent = "متاح الآن";
             step2Badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800";
@@ -887,7 +889,7 @@
           await pushKeyToCloud(newEntry);
         }
 
-        showToast("تم إضافة مفتاحك بنجاح! يمكنك الآن نسخ جميع مفاتيح المشاركين بحرية.", "success");
+        showToast("تم إضافة مفتاحك بنجاح! إليك 33 مفتاحاً عشوائياً منصفاً.", "success");
         syncUIState();
       }
 
@@ -907,7 +909,7 @@
 
       async function handleShareBoost(platform) {
         const pageUrl = window.location.href;
-        const shareText = encodeURIComponent("تبادل مفاتيح تحدي نسك مجاناً 🕋✨ أضف مفتاحك وانسخ جميع مفاتيح المشاركين من هنا: ");
+        const shareText = encodeURIComponent("تبادل مفاتيح تحدي نسك مجاناً 🕋✨ أضف مفتاحك واحصل على 33 مفتاحاً عشوائياً جديداً من هنا: ");
         const encodedUrl = encodeURIComponent(pageUrl);
 
         if (platform === "whatsapp") {
@@ -928,39 +930,111 @@
         applySavedBoostUI();
       }
 
-      // Render ALL Real Community Keys at Once (Free Copying After Step 1 & 2)
-      function renderAllCommunityKeys() {
+      // Fair Random Batch Generator (33 Keys per batch, non-repeating across refreshes)
+      async function generateAndRenderFairBatch(isUserRefresh = false) {
+        // If user clicked refresh, fetch latest keys from Firestore first so new keys are included
+        if (isUserRefresh && db && poolDocRef) {
+          try {
+            const snap = await getDoc(poolDocRef);
+            if (snap.exists() && Array.isArray(snap.data().keys)) {
+              keysPool = cleanAndDedupePool(snap.data().keys);
+              await savePoolCache(keysPool);
+              updateTotalCounter();
+            }
+          } catch {}
+        }
+
+        const userKey = state.submittedUserKey.toUpperCase();
+        const copiedSet = new Set(state.copiedHistory.map(c => c.toUpperCase()));
+        const seenSet = new Set(state.seenThisSession.map(c => c.toUpperCase()));
+
+        // Base eligible keys: real community keys excluding developer key, visitor's own key, and already-copied keys
+        const uncopiedEligible = keysPool.filter(item => {
+          const code = sanitizeKeyCode(item.code);
+          return code && code !== DEV_KEY.toUpperCase() && code !== userKey && !copiedSet.has(code);
+        });
+
+        // Prioritize unseen keys first so every refresh gives a fresh set of 33 keys
+        let unseenCandidates = uncopiedEligible.filter(item => !seenSet.has(sanitizeKeyCode(item.code)));
+
+        // If the user has cycled through all unseen keys, reset session seen-tracker so they can continue fairly
+        if (unseenCandidates.length === 0 && uncopiedEligible.length > 0) {
+          state.seenThisSession = [];
+          await secureStoreSet(sessionStorage, S_KEYS.SEEN_LIST, []);
+          unseenCandidates = [...uncopiedEligible];
+        }
+
+        // Fair cryptographic random selection of 33 keys
+        const selected = fairCryptoShuffle(unseenCandidates).slice(0, BATCH_SIZE);
+
+        // Record these 33 keys as seen in this session so next refresh picks different keys
+        selected.forEach(item => {
+          const c = sanitizeKeyCode(item.code);
+          if (!state.seenThisSession.includes(c)) {
+            state.seenThisSession.push(c);
+          }
+        });
+        await secureStoreSet(sessionStorage, S_KEYS.SEEN_LIST, state.seenThisSession);
+
+        currentBatch = selected;
+        renderBatchCards(currentBatch, uncopiedEligible.length);
+
+        if (isUserRefresh) {
+          const icon = document.getElementById("refresh-icon");
+          if (icon) {
+            icon.style.transform = "rotate(360deg)";
+            setTimeout(() => { icon.style.transform = "rotate(0deg)"; }, 520);
+          }
+          if (selected.length > 0) {
+            showToast(`تم تحديث القائمة وجلب ${selected.length} مفتاحاً عشوائياً جديداً!`, "success");
+          }
+        }
+      }
+
+      function renderBatchCards(batchList, totalRemainingCount = null) {
         const container = document.getElementById("keys-list-container");
         const emptyBox = document.getElementById("empty-keys-box");
+        const emptyTitle = document.getElementById("empty-title");
+        const emptyDesc = document.getElementById("empty-desc");
+        const resetBtn = document.getElementById("reset-history-btn");
         const totalBadge = document.getElementById("list-total-badge");
+        const remainingLabel = document.getElementById("remaining-pool-label");
         const progressLabel = document.getElementById("copied-progress-label");
         if (!container) return;
 
         const userKey = state.submittedUserKey.toUpperCase();
         const copiedSet = new Set(state.copiedHistory.map(c => c.toUpperCase()));
 
-        const allCommunityKeys = [...keysPool]
-          .reverse()
-          .filter(item => {
+        if (totalRemainingCount === null) {
+          totalRemainingCount = keysPool.filter(item => {
             const code = sanitizeKeyCode(item.code);
-            if (!code || code === DEV_KEY.toUpperCase() || code === userKey) return false;
-            if (searchQuery && !code.includes(searchQuery)) return false;
-            return true;
-          });
+            return code && code !== DEV_KEY.toUpperCase() && code !== userKey && !copiedSet.has(code);
+          }).length;
+        }
 
-        if (totalBadge) totalBadge.textContent = `المعروض: ${allCommunityKeys.length}`;
-        if (progressLabel) progressLabel.textContent = `نسخت حتى الآن: ${copiedSet.size} مفتاح`;
+        if (totalBadge) totalBadge.textContent = `المعروض: ${batchList.length} / ${BATCH_SIZE}`;
+        if (remainingLabel) remainingLabel.textContent = `المتبقي لك: ${totalRemainingCount}`;
+        if (progressLabel) progressLabel.textContent = `نسخت: ${copiedSet.size}`;
 
         container.replaceChildren();
 
-        if (allCommunityKeys.length === 0) {
+        if (batchList.length === 0) {
           emptyBox.classList.remove("hidden");
+          if (copiedSet.size > 0) {
+            if (emptyTitle) emptyTitle.textContent = "لقد قمت بنسخ جميع المفاتيح المتاحة حالياً 🎉";
+            if (emptyDesc) emptyDesc.textContent = "يمكنك إعادة عرض المفاتيح السابقة أو الانتظار ريثما يضيف زوار جدد مفاتيحهم.";
+            if (resetBtn) resetBtn.classList.remove("hidden");
+          } else {
+            if (emptyTitle) emptyTitle.textContent = "أنت من أوائل المشاركين! 🎉";
+            if (emptyDesc) emptyDesc.textContent = "تم تسجيل مفتاحك بنجاح وسيظهر هنا 33 مفتاحاً عشوائياً فور انضمام مشاركين جدد.";
+            if (resetBtn) resetBtn.classList.add("hidden");
+          }
           return;
         }
 
         emptyBox.classList.add("hidden");
 
-        allCommunityKeys.forEach((item, idx) => {
+        batchList.forEach((item, idx) => {
           const safeCode = sanitizeKeyCode(item.code);
           const alreadyCopied = copiedSet.has(safeCode);
 
@@ -999,13 +1073,15 @@
           copyBtn.type = "button";
           if (alreadyCopied) {
             copyBtn.textContent = "تم النسخ ✓";
-            copyBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 transition cursor-pointer";
+            copyBtn.disabled = true;
+            copyBtn.className = "bg-emerald-600 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 cursor-default";
           } else {
             copyBtn.textContent = "نسخ";
             copyBtn.className = "bg-nusuk-dark hover:bg-black text-white font-bold text-xs px-4 py-2 rounded-full shrink-0 transition cursor-pointer";
           }
 
           copyBtn.addEventListener("click", async () => {
+            if (copyBtn.disabled) return;
             copyTextSafe(safeCode);
             if (!state.copiedHistory.includes(safeCode)) {
               state.copiedHistory.push(safeCode);
@@ -1015,9 +1091,13 @@
             card.className = "flex items-center justify-between gap-2.5 bg-emerald-50/85 border border-emerald-300 rounded-2xl p-3 sm:p-3.5 transition";
             indexBadge.className = "w-7 h-7 rounded-full bg-emerald-200 text-emerald-900 font-bold text-xs flex items-center justify-center shrink-0";
             copyBtn.textContent = "تم النسخ ✓";
-            copyBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 transition cursor-pointer";
-            if (progressLabel) progressLabel.textContent = `نسخت حتى الآن: ${state.copiedHistory.length} مفتاح`;
-            showToast(`تم نسخ المفتاح ${safeCode}!`, "success");
+            copyBtn.disabled = true;
+            copyBtn.className = "bg-emerald-600 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 cursor-default";
+
+            const newRemaining = Math.max(0, totalRemainingCount - 1);
+            if (remainingLabel) remainingLabel.textContent = `المتبقي لك: ${newRemaining}`;
+            if (progressLabel) progressLabel.textContent = `نسخت: ${state.copiedHistory.length}`;
+            showToast(`تم نسخ المفتاح ${safeCode} ولن يتكرر لك عند التحديث!`, "success");
           });
 
           card.appendChild(leftWrap);
@@ -1060,8 +1140,15 @@
             const act = actionBtn.getAttribute("data-action");
             if (act === "copy-owner") await handleCopyOwnerKey();
             else if (act === "submit-visitor") await handleSubmitVisitorKey();
-            else if (act === "sync-now") await forceManualSync();
-            else if (act === "open-dua") toggleModal("dua-tiktok-modal", true);
+            else if (act === "refresh-batch") await generateAndRenderFairBatch(true);
+            else if (act === "reset-history") {
+              state.copiedHistory = [];
+              state.seenThisSession = [];
+              await secureStoreSet(localStorage, S_KEYS.COPIED_LIST, []);
+              await secureStoreSet(sessionStorage, S_KEYS.SEEN_LIST, []);
+              showToast("تمت إعادة ضبط السجل وجلب 33 مفتاحاً عشوائياً.", "success");
+              await generateAndRenderFairBatch(false);
+            } else if (act === "open-dua") toggleModal("dua-tiktok-modal", true);
             else if (act === "close-dua") toggleModal("dua-tiktok-modal", false);
             else if (act === "open-guide") toggleModal("guide-modal", true);
             else if (act === "close-guide") toggleModal("guide-modal", false);
@@ -1085,14 +1172,6 @@
               e.preventDefault();
               await handleSubmitVisitorKey();
             }
-          });
-        }
-
-        const searchEl = document.getElementById("keys-search-input");
-        if (searchEl) {
-          searchEl.addEventListener("input", (e) => {
-            searchQuery = sanitizeKeyCode(e.target.value);
-            renderAllCommunityKeys();
           });
         }
       }
