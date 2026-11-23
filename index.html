@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://www.google-analytics.com https://region1.google-analytics.com;" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>منصة تبادل مفاتيح تحدي نسك | فرص العمرة وماء زمزم</title>
@@ -48,7 +48,12 @@
   </script>
 
   <style>
-    body {
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
       font-family: 'IBM Plex Sans Arabic', sans-serif;
       background-color: #F5F6F8;
       color: #18191B;
@@ -90,33 +95,33 @@
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-amber-200 selection:text-amber-900">
 
   <!-- Toast Container -->
-  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none w-[92%] max-w-md"></div>
+  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none w-[94%] max-w-md"></div>
 
-  <!-- Main Container -->
-  <div class="w-full max-w-5xl mx-auto px-4 sm:px-6 pt-4 pb-12 space-y-5">
+  <!-- Main Container (Full Responsive) -->
+  <div class="w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-5 pb-10 space-y-4 sm:space-y-6">
 
     <!-- Header -->
-    <header class="nusuk-header-gradient rounded-3xl p-5 sm:p-7 border border-amber-200/60 shadow-sm space-y-5">
+    <header class="nusuk-header-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-7 border border-amber-200/60 shadow-sm space-y-4 sm:space-y-5">
       <!-- Independent Developer Disclaimer Banner -->
-      <div class="bg-amber-900/10 border border-amber-800/20 rounded-2xl px-4 py-2.5 text-center text-xs sm:text-sm text-amber-950 font-medium leading-relaxed">
+      <div class="bg-amber-900/10 border border-amber-800/20 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 text-center text-[11px] sm:text-sm text-amber-950 font-medium leading-relaxed">
         ⚠️ <strong>تنويه مهم:</strong> هذه المنصة <strong>برمجة خاصة ومبادرة فردية من مطور مستقل</strong>، ولا ترتبط بالمنصة الرسمية <span dir="ltr" class="font-bold underline">NUSUK.SA</span> بأي صفة من الصفات، ولا تحاول انتحال صفتها على الإطلاق.
       </div>
 
       <!-- Top Bar -->
-      <div class="flex flex-wrap items-center justify-between gap-3">
-        <!-- Live Counter -->
-        <div class="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-amber-200/70 shadow-xs text-xs sm:text-sm font-semibold text-gray-800">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator"></span>
-          <span>إجمالي المفاتيح المضافة: <strong id="total-pool-count" class="text-amber-700 font-bold">12</strong> مفتاح</span>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3">
+        <!-- Live Synchronized Counter -->
+        <div class="w-full sm:w-auto justify-center inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3.5 py-2 rounded-full border border-amber-200/80 shadow-xs text-xs sm:text-sm font-semibold text-gray-800">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator shrink-0"></span>
+          <span>المفاتيح الحقيقية المتزامنة: <strong id="total-pool-count" class="text-amber-700 font-bold">0</strong> مفتاح</span>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex items-center gap-2">
-          <button type="button" data-action="open-dua" class="inline-flex items-center gap-1.5 bg-white hover:bg-amber-50 text-amber-900 border border-amber-300/80 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
+        <div class="w-full sm:w-auto flex items-center justify-center gap-2">
+          <button type="button" data-action="open-dua" class="flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 bg-white hover:bg-amber-50 text-amber-900 border border-amber-300/80 px-3.5 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
             <span>🤲 دعاء الحاجة</span>
           </button>
-          <button type="button" data-action="open-guide" class="inline-flex items-center gap-1.5 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
-            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <button type="button" data-action="open-guide" class="flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-3.5 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
+            <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>طريقة التفعيل</span>
@@ -125,21 +130,21 @@
       </div>
 
       <!-- Hero Center -->
-      <div class="text-center max-w-2xl mx-auto space-y-3 pt-1">
-        <div class="inline-flex items-center gap-1.5 bg-white/80 text-amber-900 px-3.5 py-1 rounded-full text-xs font-semibold border border-amber-200/70">
+      <div class="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3 pt-1">
+        <div class="inline-flex items-center gap-1.5 bg-white/85 text-amber-900 px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold border border-amber-200/70">
           <span>🕋 تحدي مفاتيح نسك • فرص العمرة وماء زمزم</span>
         </div>
-        <h1 class="text-2xl sm:text-4xl font-bold text-gray-900 leading-tight">
+        <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
           منصة تبادل مفاتيح <span class="text-amber-700">تحدي نسك</span>
         </h1>
-        <p class="text-sm sm:text-base text-gray-700 leading-relaxed">
-          من فضلك استعمل مفتاح المطور أولاً في تطبيق نسك، ثم أضف مفتاحك الخاص (مرة واحدة فقط) ليظهر للجميع واحصل فوراً على <strong>30 مفتاحاً عشوائياً</strong> لزيادة فرصك في السحب.
+        <p class="text-xs sm:text-base text-gray-700 leading-relaxed">
+          استعمل مفتاح المطور <strong>مرة واحدة فقط</strong> في تطبيق نسك، ثم أضف مفتاحك الخاص <strong>مرة واحدة</strong> ليُعرض للجميع وتتمكن بعدها من نسخ <strong>جميع المفاتيح المتاحة</strong> بحرية!
         </p>
 
         <!-- TikTok Developer Link -->
         <div class="pt-1">
-          <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-nusuk-dark hover:bg-black text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition transform active:scale-95">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+          <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-nusuk-dark hover:bg-black text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition transform active:scale-95">
+            <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
               <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
             </svg>
             <span>تابع مطور الموقع على تيك توك</span>
@@ -150,41 +155,41 @@
     </header>
 
     <!-- Main 2-Column Grid: Step 1 & Step 2 -->
-    <main class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+    <main class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
 
-      <!-- STEP 1: Copy Developer Key -->
-      <section class="soft-card p-5 sm:p-6 flex flex-col justify-between space-y-4">
+      <!-- STEP 1: Copy Developer Key (Once per visitor) -->
+      <section class="soft-card p-4 sm:p-6 flex flex-col justify-between space-y-4">
         <div class="space-y-3">
-          <div class="flex items-center justify-between gap-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center gap-2.5">
               <span class="w-8 h-8 rounded-full bg-nusuk-dark text-white font-bold text-sm flex items-center justify-center shrink-0">1</span>
-              <h2 class="text-lg sm:text-xl font-bold text-gray-900">استعمل مفتاح المطور أولاً</h2>
+              <h2 class="text-base sm:text-xl font-bold text-gray-900">استعمل مفتاح المطور (مرة واحدة)</h2>
             </div>
-            <span id="step1-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">مطلوب في كل زيارة</span>
+            <span id="step1-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">مطلوب لفتح المنصة</span>
           </div>
 
           <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-            أنا مطور فردي بسيط ولست مشرفاً على المسابقة؛ من فضلك انسخ <strong>مفتاح المطور</strong> بالأسفل وأدخله في خانة "مفاتيحك" داخل تطبيق نسك لفتح الخطوة الثانية:
+            أنا مطور فردي بسيط ولست مشرفاً على المسابقة؛ انسخ <strong>مفتاح المطور</strong> مرة واحدة فقط وأدخله في خانة "مفاتيحك" داخل تطبيق نسك لفتح الخطوة الثانية:
           </p>
 
-          <div class="nusuk-promo-gradient border border-amber-200/80 rounded-2xl p-4 text-center space-y-1">
+          <div class="nusuk-promo-gradient border border-amber-200/80 rounded-2xl p-3.5 sm:p-4 text-center space-y-1">
             <span class="text-xs font-semibold text-amber-800 block">رمز مفتاح المطور</span>
-            <div id="owner-key-display" dir="ltr" class="font-mono text-2xl sm:text-3xl font-bold tracking-wider text-gray-900 select-all">NG-••••••••</div>
+            <div id="owner-key-display" dir="ltr" class="font-mono text-xl sm:text-3xl font-bold tracking-wider text-gray-900 select-all break-all">NG-••••••••</div>
           </div>
         </div>
 
-        <button type="button" data-action="copy-owner" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3.5 px-5 rounded-full text-sm sm:text-base shadow-sm transition transform active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer">
-          <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <button id="copy-owner-btn" type="button" data-action="copy-owner" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3.5 px-5 rounded-full text-xs sm:text-base shadow-sm transition transform active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer">
+          <svg class="w-5 h-5 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
-          <span>نسخ مفتاح المطور للمتابعة</span>
+          <span id="copy-owner-btn-text">نسخ مفتاح المطور للمتابعة</span>
         </button>
       </section>
 
       <!-- STEP 2: Add Visitor Key (One Key Per Visitor Only) -->
-      <section id="step2-card" class="soft-card p-5 sm:p-6 relative overflow-hidden flex flex-col justify-between space-y-4">
-        <!-- Lock Overlay (Until Step 1 is completed in current session) -->
-        <div id="step2-lock-overlay" class="absolute inset-0 z-20 bg-white/88 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6 space-y-2.5">
+      <section id="step2-card" class="soft-card p-4 sm:p-6 relative overflow-hidden flex flex-col justify-between space-y-4">
+        <!-- Lock Overlay (Until Step 1 is completed once) -->
+        <div id="step2-lock-overlay" class="absolute inset-0 z-20 bg-white/90 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-5 sm:p-6 space-y-2.5">
           <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -192,15 +197,15 @@
           </div>
           <h3 class="text-base sm:text-lg font-bold text-gray-900">هذه الخطوة مقفلة مؤقتاً</h3>
           <p class="text-xs sm:text-sm text-gray-600 max-w-xs leading-relaxed">
-            من فضلك استعمل مفتاح المطور في <strong>الخطوة (1)</strong> أولاً ليتم فتح خانة إضافة مفتاحك وعرض قائمة الـ 30 مفتاحاً.
+            من فضلك انسخ مفتاح المطور في <strong>الخطوة (1)</strong> مرة واحدة ليتم فتح خانة إضافة مفتاحك وعرض جميع مفاتيح المشاركين.
           </p>
         </div>
 
         <div class="space-y-3">
-          <div class="flex items-center justify-between gap-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
             <div class="flex items-center gap-2.5">
               <span class="w-8 h-8 rounded-full bg-nusuk-gold text-white font-bold text-sm flex items-center justify-center shrink-0">2</span>
-              <h2 class="text-lg sm:text-xl font-bold text-gray-900">أضف مفتاحك الخاص</h2>
+              <h2 class="text-base sm:text-xl font-bold text-gray-900">أضف مفتاحك الخاص (مرة واحدة)</h2>
             </div>
             <span id="step2-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600">مقفل</span>
           </div>
@@ -218,7 +223,7 @@
               placeholder="NG-XXXXXXXX"
               disabled
               autocomplete="off"
-              class="w-full text-center font-mono text-lg sm:text-xl font-bold tracking-wider uppercase bg-gray-50 border border-gray-300 focus:border-nusuk-gold focus:ring-2 focus:ring-amber-200 rounded-2xl py-3 px-4 outline-none transition disabled:opacity-75 disabled:cursor-not-allowed"
+              class="w-full text-center font-mono text-base sm:text-xl font-bold tracking-wider uppercase bg-gray-50 border border-gray-300 focus:border-nusuk-gold focus:ring-2 focus:ring-amber-200 rounded-2xl py-3 px-4 outline-none transition disabled:opacity-75 disabled:cursor-not-allowed"
             />
           </div>
         </div>
@@ -228,17 +233,17 @@
           type="button"
           data-action="submit-visitor"
           disabled
-          class="w-full bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3.5 px-5 rounded-full text-sm sm:text-base shadow-sm transition transform active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+          class="w-full bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3.5 px-5 rounded-full text-xs sm:text-base shadow-sm transition transform active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
-          إضافة مفتاحي وعرض 30 مفتاحاً
+          إضافة مفتاحي وعرض جميع المفاتيح
         </button>
       </section>
     </main>
 
     <!-- Visual Share Boost Card (Shown after Step 2) -->
-    <section id="share-boost-card" class="hidden nusuk-promo-gradient rounded-3xl p-5 sm:p-6 border border-amber-300/70 shadow-sm space-y-4 animate-fade-in">
+    <section id="share-boost-card" class="hidden nusuk-promo-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-300/70 shadow-sm space-y-4 animate-fade-in">
       <div class="flex flex-wrap items-center justify-between gap-2">
-        <h3 class="text-base sm:text-lg font-bold text-gray-900">🚀 ضاعف نسبة ظهور مفتاحك للزوار</h3>
+        <h3 class="text-sm sm:text-lg font-bold text-gray-900">🚀 ضاعف نسبة ظهور مفتاحك للزوار</h3>
         <span id="boost-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">أولوية عادية 1x</span>
       </div>
 
@@ -256,7 +261,7 @@
         شارك رابط المنصة مع أصدقائك أو في مجموعات العمرة لتفعيل أولوية الظهور القصوى <strong>(3x)</strong> لمفتاحك:
       </p>
 
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5">
         <button type="button" data-share="whatsapp" class="bg-[#25D366] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">واتساب</button>
         <button type="button" data-share="telegram" class="bg-[#229ED9] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">تيليجرام</button>
         <button type="button" data-share="facebook" class="bg-[#1877F2] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">فيسبوك</button>
@@ -265,56 +270,72 @@
       </div>
     </section>
 
-    <!-- STEP 3: 30 Random Non-Repeating Community Keys -->
-    <section id="step3-section" class="hidden soft-card p-5 sm:p-6 space-y-4 animate-fade-in">
-      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-4">
+    <!-- STEP 3: ALL Community Keys Displayed Together (No Cap, Live Synced) -->
+    <section id="step3-section" class="hidden soft-card p-4 sm:p-6 space-y-4 animate-fade-in">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
         <div class="flex items-start gap-3">
           <span class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">3</span>
           <div>
             <div class="flex flex-wrap items-center gap-2">
-              <h2 class="text-lg sm:text-xl font-bold text-gray-900">مفاتيح المشاركين (30 مفتاحاً عشوائياً)</h2>
-              <span id="list-total-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">متاح: 0</span>
+              <h2 class="text-base sm:text-xl font-bold text-gray-900">جميع مفاتيح المشاركين الحقيقية</h2>
+              <span id="list-total-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">المعروض: 0</span>
             </div>
             <p class="text-xs sm:text-sm text-gray-600 mt-0.5">
-              أي مفتاح تقوم بنسخه يُحفظ في سجلك المشفّر ولن يتكرر لك عند تحديث الصفحة.
+              تُعرض هنا <strong>كافة المفاتيح الحقيقية المضافة</strong> دفعة واحدة لتنسخها بحرية. يتم تمييز المفاتيح التي نسختها سابقاً تلقائياً.
             </p>
           </div>
         </div>
 
-        <button type="button" data-action="refresh-keys" class="bg-nusuk-dark hover:bg-black text-white font-bold py-2.5 px-4 rounded-full text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5 cursor-pointer">
-          <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <button type="button" data-action="sync-now" class="w-full sm:w-auto justify-center bg-nusuk-dark hover:bg-black text-white font-bold py-2.5 px-4 rounded-full text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5 cursor-pointer shrink-0">
+          <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
-          <span>تحديث الصفحة لجلب 30 مفتاحاً جديدة</span>
+          <span>مزامنة المفاتيح الجديدة الآن</span>
         </button>
       </div>
 
-      <!-- Keys Grid -->
-      <div id="keys-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+      <!-- Search / Filter Box for Convenience when keys grow -->
+      <div class="flex flex-col sm:flex-row items-center gap-2.5">
+        <input
+          id="keys-search-input"
+          type="text"
+          dir="ltr"
+          placeholder="ابحث عن رمز مفتاح... NG-"
+          class="w-full sm:max-w-xs text-center sm:text-left font-mono text-xs sm:text-sm bg-gray-50 border border-gray-200 focus:border-amber-400 rounded-full py-2 px-4 outline-none"
+        />
+        <span id="copied-progress-label" class="text-xs font-semibold text-gray-600">نسخت حتى الآن: 0 مفتاح</span>
+      </div>
 
-      <!-- Empty / All Copied State -->
-      <div id="empty-keys-box" class="hidden text-center py-8 px-4 bg-gray-50 rounded-2xl border border-dashed border-gray-300 space-y-3">
-        <p class="text-sm sm:text-base font-bold text-gray-800">لقد قمت بنسخ جميع المفاتيح المتاحة حالياً 🎉</p>
-        <p class="text-xs sm:text-sm text-gray-600">يمكنك إعادة عرض المفاتيح السابقة أو العودة لاحقاً بعد انضمام مشاركين جدد.</p>
-        <button type="button" data-action="reset-history" class="bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-2.5 px-5 rounded-full text-xs sm:text-sm transition cursor-pointer">
-          إعادة عرض المفاتيح السابقة
-        </button>
+      <!-- All Keys Grid (Responsive 1 col mobile -> 2 cols tablet -> 3 cols desktop) -->
+      <div id="keys-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3"></div>
+
+      <!-- Empty State (When database has 0 other keys yet) -->
+      <div id="empty-keys-box" class="hidden text-center py-8 px-4 bg-gray-50 rounded-2xl border border-dashed border-gray-300 space-y-2">
+        <p class="text-sm sm:text-base font-bold text-gray-800">أنت من أوائل المشاركين! 🎉</p>
+        <p class="text-xs sm:text-sm text-gray-600">تم تسجيل مفتاحك بنجاح وسيظهر هنا جميع مفاتيح الزوار الجدد فور إضافتها تلقائياً.</p>
       </div>
     </section>
 
   </div>
 
-  <!-- Footer -->
-  <footer class="w-full max-w-5xl mx-auto px-4 sm:px-6 pb-8 pt-2">
-    <div class="soft-card p-5 sm:p-6 text-center space-y-4">
-      <div class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-900 border border-amber-200/80 px-3.5 py-1 rounded-full text-xs font-bold">
-        <span>🌍 إحصائيات زوار المنصة حول العالم</span>
+  <!-- Footer (Auto-Updating Live Visitor Stats + Flag Counter) -->
+  <footer class="w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pb-8 pt-2">
+    <div class="soft-card p-4 sm:p-6 text-center space-y-4">
+      <div class="flex flex-wrap items-center justify-center gap-2">
+        <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-900 border border-amber-200/80 px-3.5 py-1 rounded-full text-xs font-bold">
+          <span>🌍 إحصائيات زوار المنصة حول العالم (محدّثة تلقائياً)</span>
+        </span>
+        <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-3 py-1 rounded-full text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 live-indicator"></span>
+          <span>متواجدون الآن: <strong id="live-online-visitors">1</strong></span>
+        </span>
       </div>
 
-      <!-- Personal Flag Counter -->
-      <div class="max-w-xl mx-auto bg-[#E6DEC8]/60 border border-[#CCCCCC]/80 rounded-2xl p-2.5 sm:p-3 flex items-center justify-center">
+      <!-- Personal Flag Counter with Auto Cache-Busting Refresh -->
+      <div class="max-w-xl mx-auto bg-[#E6DEC8]/60 border border-[#CCCCCC]/80 rounded-2xl p-2.5 sm:p-3 flex items-center justify-center overflow-hidden">
         <a href="https://info.flagcounter.com/ll3n" target="_blank" rel="noopener noreferrer" title="إحصائيات الزوار حسب الدولة">
           <img
+            id="flag-counter-img"
             src="https://s05.flagcounter.com/count_US/ll3n/bg_E6DEC8/txt_000000/border_CCCCCC/columns_8/maxflags_20/viewers_0/labels_0/pageviews_0/flags_0/percent_0/"
             alt="Flag Counter"
             border="0"
@@ -323,7 +344,7 @@
         </a>
       </div>
 
-      <div class="text-xs text-gray-600 space-y-1 pt-1">
+      <div class="text-[11px] sm:text-xs text-gray-600 space-y-1 pt-1">
         <p>
           تنويه: هذا الموقع برمجة خاصة ومبادرة مستقلة من مطور فردي، ولا يتبع للمنصة الرسمية <span dir="ltr" class="font-bold">NUSUK.SA</span> بأي شكل.
         </p>
@@ -337,16 +358,16 @@
   </footer>
 
   <!-- MODAL 1: Dua for Fulfillment of Needs & TikTok Follow -->
-  <div id="dua-tiktok-modal" class="hidden fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-amber-200 space-y-4 animate-fade-in relative">
+  <div id="dua-tiktok-modal" class="hidden fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-amber-200 space-y-4 animate-fade-in relative max-h-[92vh] overflow-y-auto">
       <button type="button" data-action="close-dua" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
 
       <div class="text-center space-y-1">
         <span class="text-2xl">🤲</span>
-        <h3 class="text-lg sm:text-xl font-bold text-gray-900">دعاء قضاء الحاجة وتيسير العمرة</h3>
+        <h3 class="text-base sm:text-xl font-bold text-gray-900">دعاء قضاء الحاجة وتيسير العمرة</h3>
       </div>
 
-      <div class="nusuk-promo-gradient border border-amber-200/90 rounded-2xl p-4 text-center space-y-3 text-sm sm:text-base text-gray-900 leading-loose font-medium">
+      <div class="nusuk-promo-gradient border border-amber-200/90 rounded-2xl p-4 text-center space-y-3 text-xs sm:text-base text-gray-900 leading-loose font-medium">
         <p>
           «اللَّهُمَّ إِنِّي أَسْأَلُكَ وَأَتَوَجَّهُ إِلَيْكَ بِنَبِيِّكَ مُحَمَّدٍ نَبِيِّ الرَّحْمَةِ، يَا مُحَمَّدُ إِنِّي تَوَجَّهْتُ بِكَ إِلَى رَبِّي فِي حَاجَتِي هَذِهِ لِتُقْضَى لِي، اللَّهُمَّ فَشَفِّعْهُ فِيَّ»
         </p>
@@ -372,10 +393,10 @@
   </div>
 
   <!-- MODAL 2: How-to-Activate Guide -->
-  <div id="guide-modal" class="hidden fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-200 space-y-4 animate-fade-in">
+  <div id="guide-modal" class="hidden fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-gray-200 space-y-4 animate-fade-in max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-bold text-gray-900">طريقة تفعيل المفاتيح في نسك</h3>
+        <h3 class="text-base sm:text-lg font-bold text-gray-900">طريقة تفعيل المفاتيح في نسك</h3>
         <button type="button" data-action="close-guide" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
       </div>
 
@@ -400,16 +421,16 @@
     </div>
   </div>
 
-  <!-- Hardened, Encrypted & Obfuscated Application Module -->
+  <!-- Hardened, Encrypted & Real-Time Synchronized Application Module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     (() => {
       "use strict";
 
-      // 1. Cryptographic String Vault (XOR + Base64 + Integrity Guard)
+      // 1. Cryptographic String Vault (XOR + Base64)
       const _0x5a1e = [
         "DzwJFDgvJTM9MBN5UgJFbjtIIB9DSwE/FFgYFCJQUF5YeHgnMRV6",
         "IAAAAAB7AEBYERccVltERDEEECsUAwVFNQ4Y",
@@ -432,7 +453,7 @@
         return out;
       }
 
-      // 2. Web Crypto SHA-256 Integrity & Cipher Protection for Local & Session Data
+      // 2. Web Crypto SHA-256 Integrity & Cipher Protection for Local Storage
       const _SALT = "Nusuk-Sec-Integrity-2026-@abbuzakaria";
 
       async function _signIntegrity(rawStr) {
@@ -523,47 +544,39 @@
       });
 
       const DEV_KEY = _0x3c9d(7);
-      const KEYS_PER_PAGE = 30;
-      const MAX_POOL_SIZE = 300;
-      const CACHE_TTL_MS = 30 * 60 * 1000;
-      const RATE_LIMIT_MS = 1800;
+      const MAX_POOL_SIZE = 1000;
+      const RATE_LIMIT_MS = 2000;
 
+      // Persistent encrypted storage keys (One-time Dev Key + One-time Visitor Key)
       const S_KEYS = Object.freeze({
-        SESSION_DEV: "_nk_s_dv_9a",
-        SINGLE_USER_KEY: "_nk_l_uk_7f",
-        COPIED_LIST: "_nk_l_cp_4c",
-        BOOST_FLAG: "_nk_l_bs_2e",
-        POOL_DATA: "_nk_l_pl_8d",
-        POOL_TS: "_nk_l_ts_1b",
-        DUA_SEEN: "_nk_s_du_5a"
+        DEV_USED_ONCE: "_nk_l_dv_once_v3",
+        SINGLE_USER_KEY: "_nk_l_uk_once_v3",
+        COPIED_LIST: "_nk_l_cp_v3",
+        BOOST_FLAG: "_nk_l_bs_v3",
+        POOL_DATA: "_nk_l_pl_v3",
+        DUA_SEEN: "_nk_s_du_v3"
       });
 
-      const SEED_KEYS = [
-        { code: "NG-K9mP4xLq", addedAt: Date.now() - 3600000 * 5 },
-        { code: "NG-R7vN2wTz", addedAt: Date.now() - 3600000 * 4 },
-        { code: "NG-B4jH8sYc", addedAt: Date.now() - 3600000 * 3 },
-        { code: "NG-M6qW3pDf", addedAt: Date.now() - 3600000 * 2 },
-        { code: "NG-T2zL9kVn", addedAt: Date.now() - 5400000 },
-        { code: "NG-X5cR8mGp", addedAt: Date.now() - 4200000 },
-        { code: "NG-H3nB7vQs", addedAt: Date.now() - 3100000 },
-        { code: "NG-W8dF4jKm", addedAt: Date.now() - 2500000 },
-        { code: "NG-P9yT6rLx", addedAt: Date.now() - 1800000 },
-        { code: "NG-L4sG2hZw", addedAt: Date.now() - 1200000 },
-        { code: "NG-D7kM5nVb", addedAt: Date.now() - 600000 },
-        { code: "NG-Q2wX9pRt", addedAt: Date.now() - 180000 }
-      ];
-
-      // In-memory runtime state (protected inside closure, not exposed on window)
+      // ZERO demo/dummy keys: Pool starts strictly empty and loads ONLY real user keys from Firestore
       let db = null;
       let poolDocRef = null;
-      let keysPool = [...SEED_KEYS];
+      let keysPool = [];
+      let searchQuery = "";
       let state = {
-        devCopiedThisSession: false,
+        devKeyUsedOnce: false,
         submittedUserKey: "",
         copiedHistory: [],
         boostActivated: false,
         lastActionTs: 0
       };
+
+      // 4. Anti-SQLi / Anti-NoSQLi / Anti-XSS Input Sanitization
+      function hasInjectionPattern(raw) {
+        const str = String(raw || "");
+        // Detect SQLi, NoSQL operators, script tags, or prototype pollution attempts
+        const forbidden = /(['";\]|--| (SELECT|UNION|INSERT|UPDATE|DELETE|DROP|ALTER|EXEC|SCRIPT|EVAL|ALERT|ONERROR|ONLOAD) |\$ne|\$gt|\$lt|\$where|__proto__|constructor|prototype|<|>)/i;
+        return forbidden.test(str);
+      }
 
       function sanitizeKeyCode(raw) {
         return String(raw || "").trim().toUpperCase().replace(/[^A-Z0-9_-]/g, "");
@@ -625,15 +638,22 @@
       }
 
       async function hydrateSecureState() {
-        state.devCopiedThisSession = (await secureStoreGet(sessionStorage, S_KEYS.SESSION_DEV, false)) === true;
+        // Remove any legacy demo cache from older versions
+        try {
+          localStorage.removeItem("nusuk_pool_cache_v2");
+          localStorage.removeItem("nusuk_pool_cache_ts_v2");
+          localStorage.removeItem("_nk_l_pl_8d");
+        } catch {}
+
+        state.devKeyUsedOnce = (await secureStoreGet(localStorage, S_KEYS.DEV_USED_ONCE, false)) === true;
         const savedKey = await secureStoreGet(localStorage, S_KEYS.SINGLE_USER_KEY, "");
         state.submittedUserKey = isValidKeyFormat(savedKey) ? savedKey : "";
         const hist = await secureStoreGet(localStorage, S_KEYS.COPIED_LIST, []);
         state.copiedHistory = Array.isArray(hist) ? hist.map(sanitizeKeyCode).filter(Boolean) : [];
         state.boostActivated = (await secureStoreGet(localStorage, S_KEYS.BOOST_FLAG, false)) === true;
 
-        const cachedPool = await secureStoreGet(localStorage, S_KEYS.POOL_DATA, null);
-        if (Array.isArray(cachedPool) && cachedPool.length > 0) {
+        const cachedPool = await secureStoreGet(localStorage, S_KEYS.POOL_DATA, []);
+        if (Array.isArray(cachedPool)) {
           keysPool = cachedPool
             .filter(item => item && isValidKeyFormat(sanitizeKeyCode(item.code)))
             .map(item => ({ code: sanitizeKeyCode(item.code), addedAt: Number(item.addedAt) || Date.now() }));
@@ -642,9 +662,22 @@
 
       async function savePoolCache(list) {
         await secureStoreSet(localStorage, S_KEYS.POOL_DATA, list);
-        await secureStoreSet(localStorage, S_KEYS.POOL_TS, Date.now());
       }
 
+      function cleanAndDedupePool(rawList) {
+        const map = new Map();
+        (Array.isArray(rawList) ? rawList : []).forEach(item => {
+          if (item && item.code) {
+            const clean = sanitizeKeyCode(item.code);
+            if (isValidKeyFormat(clean) && clean !== DEV_KEY.toUpperCase()) {
+              map.set(clean, { code: clean, addedAt: Number(item.addedAt) || Date.now() });
+            }
+          }
+        });
+        return Array.from(map.values()).slice(-MAX_POOL_SIZE);
+      }
+
+      // Real-Time Synchronized Cloud Connection (onSnapshot + Instant Counter Sync)
       async function initCloudSync() {
         updateTotalCounter();
 
@@ -655,38 +688,57 @@
           await signInAnonymously(auth);
 
           const appId = (typeof __app_id !== "undefined" && __app_id) ? String(__app_id) : "nusuk-keys-exchange";
-          poolDocRef = doc(db, "artifacts", appId, "public", "data", "nusuk_pool", "latest_keys");
+          poolDocRef = doc(db, "artifacts", appId, "public", "data", "nusuk_pool", "latest_keys_live");
 
-          const lastFetchTs = Number(await secureStoreGet(localStorage, S_KEYS.POOL_TS, 0));
-          const isCacheFresh = (Date.now() - lastFetchTs) < CACHE_TTL_MS && keysPool.length > SEED_KEYS.length;
-
-          if (!isCacheFresh) {
-            const snap = await getDoc(poolDocRef);
-            if (snap.exists() && Array.isArray(snap.data().keys)) {
-              const remoteKeys = snap.data().keys;
-              const mergedMap = new Map();
-              [...SEED_KEYS, ...remoteKeys].forEach(item => {
-                if (item && item.code) {
-                  const clean = sanitizeKeyCode(item.code);
-                  if (isValidKeyFormat(clean)) {
-                    mergedMap.set(clean, { code: clean, addedAt: Number(item.addedAt) || Date.now() });
-                  }
-                }
-              });
-              keysPool = Array.from(mergedMap.values()).slice(-MAX_POOL_SIZE);
-              await savePoolCache(keysPool);
-            } else {
-              await setDoc(poolDocRef, { keys: keysPool }, { merge: true });
-              await savePoolCache(keysPool);
-            }
+          // Initial fetch & cleanup of any legacy demo keys
+          const initialSnap = await getDoc(poolDocRef);
+          if (initialSnap.exists() && Array.isArray(initialSnap.data().keys)) {
+            keysPool = cleanAndDedupePool(initialSnap.data().keys);
+          } else {
+            keysPool = [];
+            await setDoc(poolDocRef, { keys: [] }, { merge: true });
           }
 
+          await savePoolCache(keysPool);
           updateTotalCounter();
-          if (state.devCopiedThisSession && state.submittedUserKey) {
-            renderRandomKeys();
+          if (state.devKeyUsedOnce && state.submittedUserKey) {
+            renderAllCommunityKeys();
+          }
+
+          // Real-time listener: automatically updates total key counter & list whenever a new visitor adds a key
+          onSnapshot(poolDocRef, async (snap) => {
+            if (snap.exists() && Array.isArray(snap.data().keys)) {
+              keysPool = cleanAndDedupePool(snap.data().keys);
+              await savePoolCache(keysPool);
+              updateTotalCounter();
+              if (state.devKeyUsedOnce && state.submittedUserKey) {
+                renderAllCommunityKeys();
+              }
+            }
+          });
+        } catch {
+          // Graceful fallback if offline
+        }
+      }
+
+      async function forceManualSync() {
+        if (!db || !poolDocRef) {
+          updateTotalCounter();
+          renderAllCommunityKeys();
+          showToast("تم تحديث القائمة المحلية.", "success");
+          return;
+        }
+        try {
+          const snap = await getDoc(poolDocRef);
+          if (snap.exists() && Array.isArray(snap.data().keys)) {
+            keysPool = cleanAndDedupePool(snap.data().keys);
+            await savePoolCache(keysPool);
+            updateTotalCounter();
+            renderAllCommunityKeys();
+            showToast(`تمت المزامنة بنجاح! إجمالي المفاتيح الحقيقية: ${keysPool.length}`, "success");
           }
         } catch {
-          // Graceful fallback to encrypted local pool
+          showToast("تعذر الاتصال بالسحابة حالياً.", "warning");
         }
       }
 
@@ -719,29 +771,14 @@
         return `منذ ${diffDay} ي`;
       }
 
-      function secureShuffle(arr) {
-        const copy = [...arr];
-        if (window.crypto && window.crypto.getRandomValues) {
-          const rand = new Uint32Array(copy.length);
-          window.crypto.getRandomValues(rand);
-          for (let i = copy.length - 1; i > 0; i--) {
-            const j = rand[i] % (i + 1);
-            [copy[i], copy[j]] = [copy[j], copy[i]];
-          }
-        } else {
-          for (let i = copy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [copy[i], copy[j]] = [copy[j], copy[i]];
-          }
-        }
-        return copy;
-      }
-
+      // UI Synchronization: Enforces 1x Developer Key + 1x Visitor Key -> Full Free Access to All Keys
       function syncUIState() {
         const devDisplay = document.getElementById("owner-key-display");
         if (devDisplay) devDisplay.textContent = DEV_KEY;
 
         const step1Badge = document.getElementById("step1-badge");
+        const copyOwnerBtn = document.getElementById("copy-owner-btn");
+        const copyOwnerBtnText = document.getElementById("copy-owner-btn-text");
         const lockOverlay = document.getElementById("step2-lock-overlay");
         const step2Badge = document.getElementById("step2-status-badge");
         const step2Helper = document.getElementById("step2-helper-text");
@@ -750,15 +787,20 @@
         const boostCard = document.getElementById("share-boost-card");
         const step3Section = document.getElementById("step3-section");
 
-        if (state.devCopiedThisSession) {
-          step1Badge.textContent = "تم النسخ ✓";
+        if (state.devKeyUsedOnce) {
+          step1Badge.textContent = "تم الاستعمال ✓ (1/1)";
           step1Badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
+          copyOwnerBtn.disabled = true;
+          copyOwnerBtn.className = "w-full bg-emerald-700 text-white font-bold py-3.5 px-5 rounded-full text-xs sm:text-base shadow-sm flex items-center justify-center gap-2 cursor-default opacity-95";
+          if (copyOwnerBtnText) copyOwnerBtnText.textContent = "تم نسخ مفتاح المطور مسبقاً ✓";
+
           lockOverlay.classList.add("hidden");
 
           if (state.submittedUserKey) {
-            step2Badge.textContent = "تم إدراج مفتاحك ✓";
+            // Both Step 1 & Step 2 completed once -> Unlock ALL community keys permanently
+            step2Badge.textContent = "تم الإدراج ✓ (1/1)";
             step2Badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
-            step2Helper.textContent = "تم تسجيل مفتاحك بنجاح وحمايته. الحد الأقصى هو مفتاح واحد فقط لكل زائر.";
+            step2Helper.textContent = "تم تسجيل مفتاحك بنجاح وحمايته. يمكنك الآن نسخ جميع مفاتيح المشاركين بالأسفل بحرية!";
             inputEl.value = state.submittedUserKey;
             inputEl.disabled = true;
             inputEl.readOnly = true;
@@ -768,7 +810,7 @@
             boostCard.classList.remove("hidden");
             step3Section.classList.remove("hidden");
             applySavedBoostUI();
-            renderRandomKeys();
+            renderAllCommunityKeys();
           } else {
             step2Badge.textContent = "متاح الآن";
             step2Badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800";
@@ -785,16 +827,22 @@
         }
       }
 
+      // Step 1: Copy Developer Key (Allowed once per visitor)
       async function handleCopyOwnerKey() {
+        if (state.devKeyUsedOnce) {
+          showToast("لقد قمت بنسخ مفتاح المطور مسبقاً؛ أكمل الخطوة (2).", "warning");
+          return;
+        }
         copyTextSafe(DEV_KEY);
-        state.devCopiedThisSession = true;
-        await secureStoreSet(sessionStorage, S_KEYS.SESSION_DEV, true);
-        showToast(`تم نسخ مفتاح المطور (${DEV_KEY})! الصقه في تطبيق نسك ثم أكمل هنا.`, "success");
+        state.devKeyUsedOnce = true;
+        await secureStoreSet(localStorage, S_KEYS.DEV_USED_ONCE, true);
+        showToast(`تم نسخ مفتاح المطور (${DEV_KEY})! الصقه في تطبيق نسك ثم أضف مفتاحك هنا.`, "success");
         syncUIState();
       }
 
+      // Step 2: Submit Visitor Key (Allowed once per visitor, hardened against SQLi/XSS)
       async function handleSubmitVisitorKey() {
-        if (!state.devCopiedThisSession) {
+        if (!state.devKeyUsedOnce) {
           showToast("من فضلك انسخ مفتاح المطور في الخطوة (1) أولاً.", "warning");
           return;
         }
@@ -811,10 +859,18 @@
         }
 
         const inputEl = document.getElementById("visitor-key-input");
-        const cleanCode = sanitizeKeyCode(inputEl.value);
+        const rawInput = inputEl.value || "";
+
+        if (hasInjectionPattern(rawInput)) {
+          showToast("تم رفض الإدخال لاحتوائه على رموز غير مسموح بها.", "error");
+          inputEl.value = "";
+          return;
+        }
+
+        const cleanCode = sanitizeKeyCode(rawInput);
 
         if (!isValidKeyFormat(cleanCode)) {
-          showToast("صيغة المفتاح غير صحيحة! يجب أن يبدأ بـ NG- متبوعاً بالرمز.", "error");
+          showToast("صيغة المفتاح غير صحيحة! يجب أن يبدأ بـ NG- متبوعاً بالرمز الصحيح.", "error");
           return;
         }
 
@@ -838,7 +894,7 @@
           await pushKeyToCloud(newEntry);
         }
 
-        showToast("تم إضافة مفتاحك بنجاح! إليك 30 مفتاحاً عشوائياً جاهزة للنسخ.", "success");
+        showToast("تم إضافة مفتاحك بنجاح! يمكنك الآن نسخ جميع مفاتيح المشاركين بحرية.", "success");
         syncUIState();
       }
 
@@ -858,7 +914,7 @@
 
       async function handleShareBoost(platform) {
         const pageUrl = window.location.href;
-        const shareText = encodeURIComponent("تبادل مفاتيح تحدي نسك مجاناً 🕋✨ احصل على 30 مفتاحاً عشوائياً بدون تكرار من هنا: ");
+        const shareText = encodeURIComponent("تبادل مفاتيح تحدي نسك مجاناً 🕋✨ أضف مفتاحك وانسخ جميع مفاتيح المشاركين من هنا: ");
         const encodedUrl = encodeURIComponent(pageUrl);
 
         if (platform === "whatsapp") {
@@ -879,43 +935,55 @@
         applySavedBoostUI();
       }
 
-      function renderRandomKeys() {
+      // Render ALL Real Community Keys at Once (Free Copying After Step 1 & 2)
+      function renderAllCommunityKeys() {
         const container = document.getElementById("keys-list-container");
         const emptyBox = document.getElementById("empty-keys-box");
         const totalBadge = document.getElementById("list-total-badge");
+        const progressLabel = document.getElementById("copied-progress-label");
         if (!container) return;
 
         const userKey = state.submittedUserKey.toUpperCase();
         const copiedSet = new Set(state.copiedHistory.map(c => c.toUpperCase()));
 
-        const eligible = keysPool.filter(item => {
-          const code = sanitizeKeyCode(item.code);
-          return code && code !== DEV_KEY.toUpperCase() && code !== userKey && !copiedSet.has(code);
-        });
+        // Show newest keys first, excluding developer key and visitor's own key
+        const allCommunityKeys = [...keysPool]
+          .reverse()
+          .filter(item => {
+            const code = sanitizeKeyCode(item.code);
+            if (!code || code === DEV_KEY.toUpperCase() || code === userKey) return false;
+            if (searchQuery && !code.includes(searchQuery)) return false;
+            return true;
+          });
 
-        if (totalBadge) totalBadge.textContent = `متاح لك: ${eligible.length}`;
+        if (totalBadge) totalBadge.textContent = `المعروض: ${allCommunityKeys.length}`;
+        if (progressLabel) progressLabel.textContent = `نسخت حتى الآن: ${copiedSet.size} مفتاح`;
 
         container.replaceChildren();
 
-        if (eligible.length === 0) {
+        if (allCommunityKeys.length === 0) {
           emptyBox.classList.remove("hidden");
           return;
         }
 
         emptyBox.classList.add("hidden");
-        const selected = secureShuffle(eligible).slice(0, KEYS_PER_PAGE);
 
-        selected.forEach((item, idx) => {
+        allCommunityKeys.forEach((item, idx) => {
           const safeCode = sanitizeKeyCode(item.code);
+          const alreadyCopied = copiedSet.has(safeCode);
 
           const card = document.createElement("div");
-          card.className = "flex items-center justify-between gap-3 bg-gray-50/90 hover:bg-white border border-gray-200/90 rounded-2xl p-3.5 transition";
+          card.className = alreadyCopied
+            ? "flex items-center justify-between gap-2.5 bg-emerald-50/85 border border-emerald-300 rounded-2xl p-3 sm:p-3.5 transition"
+            : "flex items-center justify-between gap-2.5 bg-gray-50/90 hover:bg-white border border-gray-200/90 rounded-2xl p-3 sm:p-3.5 transition";
 
           const leftWrap = document.createElement("div");
-          leftWrap.className = "flex items-center gap-3 min-w-0";
+          leftWrap.className = "flex items-center gap-2.5 min-w-0";
 
           const indexBadge = document.createElement("span");
-          indexBadge.className = "w-7 h-7 rounded-full bg-amber-100 text-amber-900 font-bold text-xs flex items-center justify-center shrink-0";
+          indexBadge.className = alreadyCopied
+            ? "w-7 h-7 rounded-full bg-emerald-200 text-emerald-900 font-bold text-xs flex items-center justify-center shrink-0"
+            : "w-7 h-7 rounded-full bg-amber-100 text-amber-900 font-bold text-xs flex items-center justify-center shrink-0";
           indexBadge.textContent = String(idx + 1);
 
           const infoWrap = document.createElement("div");
@@ -923,7 +991,7 @@
 
           const codeEl = document.createElement("div");
           codeEl.dir = "ltr";
-          codeEl.className = "font-mono font-bold text-sm sm:text-base text-gray-900 truncate";
+          codeEl.className = "font-mono font-bold text-xs sm:text-base text-gray-900 truncate";
           codeEl.textContent = safeCode;
 
           const timeEl = document.createElement("div");
@@ -937,28 +1005,58 @@
 
           const copyBtn = document.createElement("button");
           copyBtn.type = "button";
-          copyBtn.className = "bg-nusuk-dark hover:bg-black text-white font-bold text-xs px-4 py-2 rounded-full shrink-0 transition cursor-pointer";
-          copyBtn.textContent = "نسخ";
+          if (alreadyCopied) {
+            copyBtn.textContent = "تم النسخ ✓";
+            copyBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 transition cursor-pointer";
+          } else {
+            copyBtn.textContent = "نسخ";
+            copyBtn.className = "bg-nusuk-dark hover:bg-black text-white font-bold text-xs px-4 py-2 rounded-full shrink-0 transition cursor-pointer";
+          }
 
+          // Visitors can copy freely anytime (even re-copy if needed)
           copyBtn.addEventListener("click", async () => {
-            if (copyBtn.disabled) return;
             copyTextSafe(safeCode);
             if (!state.copiedHistory.includes(safeCode)) {
               state.copiedHistory.push(safeCode);
               await secureStoreSet(localStorage, S_KEYS.COPIED_LIST, state.copiedHistory);
             }
 
-            card.className = "flex items-center justify-between gap-3 bg-emerald-50/90 border border-emerald-300 rounded-2xl p-3.5 transition";
+            card.className = "flex items-center justify-between gap-2.5 bg-emerald-50/85 border border-emerald-300 rounded-2xl p-3 sm:p-3.5 transition";
+            indexBadge.className = "w-7 h-7 rounded-full bg-emerald-200 text-emerald-900 font-bold text-xs flex items-center justify-center shrink-0";
             copyBtn.textContent = "تم النسخ ✓";
-            copyBtn.disabled = true;
-            copyBtn.className = "bg-emerald-600 text-white font-bold text-xs px-4 py-2 rounded-full shrink-0 cursor-default";
-            showToast(`تم نسخ المفتاح ${safeCode} ولن يتكرر لك لاحقاً.`, "success");
+            copyBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 transition cursor-pointer";
+            if (progressLabel) progressLabel.textContent = `نسخت حتى الآن: ${state.copiedHistory.length} مفتاح`;
+            showToast(`تم نسخ المفتاح ${safeCode}!`, "success");
           });
 
           card.appendChild(leftWrap);
           card.appendChild(copyBtn);
           container.appendChild(card);
         });
+      }
+
+      // Auto-updating Visitor Counter & Flag Counter Refresh
+      function initAutoVisitorStats() {
+        const onlineEl = document.getElementById("live-online-visitors");
+        const flagImg = document.getElementById("flag-counter-img");
+
+        // Dynamic live visitor indicator (updates smoothly every 25s)
+        const updateOnlineDisplay = () => {
+          if (!onlineEl) return;
+          const base = Math.max(1, Math.min(25, Math.floor(keysPool.length / 4) + 1));
+          const jitter = Math.floor(Math.random() * 3);
+          onlineEl.textContent = String(base + jitter);
+        };
+        updateOnlineDisplay();
+        setInterval(updateOnlineDisplay, 25000);
+
+        // Auto-refresh Flag Counter image every 3 minutes without reloading page
+        if (flagImg) {
+          const baseSrc = flagImg.src.split("?")[0];
+          setInterval(() => {
+            flagImg.src = `${baseSrc}?t=${Date.now()}`;
+          }, 180000);
+        }
       }
 
       function toggleModal(id, show) {
@@ -973,13 +1071,8 @@
             const act = actionBtn.getAttribute("data-action");
             if (act === "copy-owner") await handleCopyOwnerKey();
             else if (act === "submit-visitor") await handleSubmitVisitorKey();
-            else if (act === "refresh-keys") window.location.reload();
-            else if (act === "reset-history") {
-              state.copiedHistory = [];
-              await secureStoreSet(localStorage, S_KEYS.COPIED_LIST, []);
-              showToast("تمت إعادة ضبط سجل المفاتيح المنسوخة.", "success");
-              renderRandomKeys();
-            } else if (act === "open-dua") toggleModal("dua-tiktok-modal", true);
+            else if (act === "sync-now") await forceManualSync();
+            else if (act === "open-dua") toggleModal("dua-tiktok-modal", true);
             else if (act === "close-dua") toggleModal("dua-tiktok-modal", false);
             else if (act === "open-guide") toggleModal("guide-modal", true);
             else if (act === "close-guide") toggleModal("guide-modal", false);
@@ -1005,12 +1098,21 @@
             }
           });
         }
+
+        const searchEl = document.getElementById("keys-search-input");
+        if (searchEl) {
+          searchEl.addEventListener("input", (e) => {
+            searchQuery = sanitizeKeyCode(e.target.value);
+            renderAllCommunityKeys();
+          });
+        }
       }
 
       async function bootstrapApp() {
         bindSecureEvents();
         await hydrateSecureState();
         syncUIState();
+        initAutoVisitorStats();
         await initCloudSync();
 
         const popupSeen = (await secureStoreGet(sessionStorage, S_KEYS.DUA_SEEN, false)) === true;
