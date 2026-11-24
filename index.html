@@ -91,14 +91,14 @@
       <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3">
         <!-- Brand Badge & Live Counter -->
         <div class="w-full sm:w-auto flex flex-wrap items-center justify-center gap-2">
-          <div class="inline-flex items-center gap-2 bg-nusuk-dark text-white px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold shadow-xs">
+          <div id="secret-brand-trigger" class="inline-flex items-center gap-2 bg-nusuk-dark text-white px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold shadow-xs select-none cursor-default">
             <span class="text-amber-400">✦</span>
             <span>منصة ذكاء</span>
             <span dir="ltr" class="text-amber-300 font-mono text-xs">ZKAE.com</span>
           </div>
 
           <div class="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3.5 py-2 rounded-full border border-amber-200/80 shadow-xs text-xs sm:text-sm font-semibold text-gray-800">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator shrink-0"></span>
+            <span id="cloud-status-dot" class="w-2.5 h-2.5 rounded-full bg-amber-400 live-indicator shrink-0"></span>
             <span>المفاتيح المتزامنة: <strong id="total-pool-count" class="text-amber-700 font-bold">0</strong> مفتاح</span>
           </div>
         </div>
@@ -113,15 +113,20 @@
         </div>
       </div>
 
+      <!-- Cloud Sync Warning Banner (Shown only if Firebase Rules are blocked) -->
+      <div id="cloud-warning-banner" class="hidden bg-red-50 border border-red-300 text-red-900 rounded-2xl px-4 py-3 text-xs sm:text-sm text-center font-medium leading-relaxed">
+        ⚠️ <strong>تنبيه المزامنة السحابية:</strong> قاعدة البيانات السحابية مقفلة حالياً من لوحة تحكم Firebase (Firestore Rules). يرجى تفعيل القراءة والكتابة لكي تظهر مفاتيح الزوار للجميع!
+      </div>
+
       <div class="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3 pt-1">
         <div class="inline-flex items-center gap-1.5 bg-white/85 text-amber-900 px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold border border-amber-200/70">
-          <span>🕋 مبادرة ذكية لتبادل مفاتيح نسك • فرص العمرة وماء زمزم</span>
+          <span>🕋 مبادرة ذكية لتبادل مفاتيح نسك • حفظ تلقائي لتقدمك بالكوكيز</span>
         </div>
         <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
           منصة <span class="text-amber-700">ذكاء</span> لتبادل مفاتيح تحدي نسك
         </h1>
         <p class="text-xs sm:text-base text-gray-700 leading-relaxed">
-          أضف مفتاحك الخاص <strong>مرة واحدة</strong> ليظهر في التوزيع العشوائي المنصف على <strong dir="ltr">ZKAE.com</strong>، واحصل فوراً على <strong>33 مفتاحاً عشوائياً جديداً</strong> دون تكرار!
+          أضف مفتاحك الخاص <strong>مرة واحدة فقط</strong> ليُحفظ في السحابة ويظهر للزوار الآخرين على <strong dir="ltr">ZKAE.com</strong>، واحصل فوراً على <strong>33 مفتاحاً عشوائياً منصفاً</strong> دون تكرار!
         </p>
 
         <div class="pt-1">
@@ -133,10 +138,10 @@
       </div>
     </header>
 
-    <!-- Main 2-Column Grid: Step 1 (Optional Dev Key) & Step 2 (Submit Visitor Key) -->
+    <!-- Main 2-Column Grid -->
     <main class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
 
-      <!-- STEP 1: Optional Developer Support Key (Also included in the 33 random pool!) -->
+      <!-- STEP 1: Optional Developer Support Key -->
       <section class="soft-card p-4 sm:p-6 flex flex-col justify-between space-y-4">
         <div class="space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2">
@@ -144,7 +149,7 @@
               <span class="w-8 h-8 rounded-full bg-nusuk-dark text-white font-bold text-sm flex items-center justify-center shrink-0">1</span>
               <h2 class="text-base sm:text-xl font-bold text-gray-900">دعم مطور المنصة (اختياري)</h2>
             </div>
-            <span id="step1-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">مُدرج في القائمة العشوائية</span>
+            <span id="step1-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">مُدرج في السحب العشوائي</span>
           </div>
 
           <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
@@ -162,7 +167,7 @@
         </button>
       </section>
 
-      <!-- STEP 2: Add Visitor Key (Unlocked Immediately, 1 Key Per Visitor) -->
+      <!-- STEP 2: Add Visitor Key (Supports auto-claiming pre-imported batch keys as if added by owner!) -->
       <section id="step2-card" class="soft-card p-4 sm:p-6 flex flex-col justify-between space-y-4">
         <div class="space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2">
@@ -174,7 +179,7 @@
           </div>
 
           <p id="step2-helper-text" class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-            أدخل رمز مفتاحك من تطبيق نسك (يُسمح بإضافة <strong>مفتاح واحد فقط</strong> لكل زائر لضمان التوزيع العادل للجميع):
+            أدخل رمز مفتاحك من تطبيق نسك (يُمنع تكرار أي مفتاح في المنصة، ويُحفظ تقدمك تلقائياً عبر الكوكيز):
           </p>
 
           <div>
@@ -196,7 +201,7 @@
           data-action="submit-visitor"
           class="w-full bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3.5 px-5 rounded-full text-xs sm:text-base shadow-sm transition transform active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
-          إضافة مفتاحي وعرض 33 مفتاحاً عشوائياً
+          إضافة مفتاحي وعرض مفاتيح المشاركين
         </button>
       </section>
     </main>
@@ -231,18 +236,18 @@
       </div>
     </section>
 
-    <!-- STEP 3: 33 Fairly Distributed Random Keys (Includes Developer Key Naturally) -->
+    <!-- STEP 3: 33 Fairly Distributed Random Keys -->
     <section id="step3-section" class="hidden soft-card p-4 sm:p-6 space-y-4 animate-fade-in">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
         <div class="flex items-start gap-3">
           <span class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">3</span>
           <div>
             <div class="flex flex-wrap items-center gap-2">
-              <h2 class="text-base sm:text-xl font-bold text-gray-900">مفاتيح المشاركين (33 مفتاحاً عشوائياً منصفاً)</h2>
+              <h2 class="text-base sm:text-xl font-bold text-gray-900">مفاتيح المشاركين الآخرين (حتى 33 مفتاحاً عشوائياً)</h2>
               <span id="list-total-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">المعروض: 0 / 33</span>
             </div>
             <p class="text-xs sm:text-sm text-gray-600 mt-0.5">
-              يتم اختيار <strong>33 مفتاحاً عشوائياً بإنصاف</strong> لكل زائر. أي مفتاح تنسخه يُحفظ في سجلك ولا يتكرر لك عند تحديث القائمة.
+              يظهر لك هنا مفاتيح الزوار الآخرين (ومفتاح المطور) بإنصاف، <strong>مع استبعاد مفتاحك الخاص</strong> وأي مفتاح نسخته سابقاً لمنع التكرار تماماً.
             </p>
           </div>
         </div>
@@ -256,7 +261,7 @@
       </div>
 
       <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-gray-600 bg-gray-50/90 border border-gray-200/80 rounded-2xl px-3.5 py-2.5">
-        <span>⚖️ التوزيع العشوائي المنصف مفعّل لجميع المشاركين</span>
+        <span>🍪 تقدمك محفوظ تلقائياً • مفتاحك (<strong id="my-key-badge" dir="ltr" class="font-mono text-amber-800">-</strong>) يُعرض للآخرين</span>
         <div class="flex items-center gap-3">
           <span id="remaining-pool-label" class="text-amber-800">المتبقي لك: 0</span>
           <span>•</span>
@@ -267,11 +272,8 @@
       <div id="keys-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3"></div>
 
       <div id="empty-keys-box" class="hidden text-center py-8 px-4 bg-gray-50 rounded-2xl border border-dashed border-gray-300 space-y-3">
-        <p id="empty-title" class="text-sm sm:text-base font-bold text-gray-800">لقد قمت بنسخ جميع المفاتيح المتاحة حالياً 🎉</p>
-        <p id="empty-desc" class="text-xs sm:text-sm text-gray-600">يمكنك إعادة عرض المفاتيح السابقة أو الانتظار ريثما يضيف زوار جدد مفاتيحهم.</p>
-        <button id="reset-history-btn" type="button" data-action="reset-history" class="bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-2.5 px-5 rounded-full text-xs sm:text-sm transition cursor-pointer">
-          إعادة عرض المفاتيح السابقة
-        </button>
+        <p id="empty-title" class="text-sm sm:text-base font-bold text-gray-800">لا توجد مفاتيح إضافية جديدة حالياً 🎉</p>
+        <p id="empty-desc" class="text-xs sm:text-sm text-gray-600">مفتاحك مُدرج الآن في السحابة وسيظهر للزوار القادمين! اضغط "تحديث القائمة" بعد قليل لجلب مفاتيح المشاركين الجدد.</p>
       </div>
     </section>
 
@@ -348,11 +350,77 @@
     </div>
   </div>
 
-  <!-- Lightweight, Hardened & Fair-Distribution Application Module -->
+  <!-- HIDDEN ENCRYPTED ADMIN VAULT MODAL (Accessible ONLY by Admin PIN) -->
+  <div id="admin-vault-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-amber-300 space-y-4 animate-fade-in max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-8 h-8 rounded-full bg-nusuk-dark text-amber-400 font-bold text-sm flex items-center justify-center">🔐</span>
+          <h3 class="text-base sm:text-lg font-bold text-gray-900">خزنة الإدارة المشفرة (ZKAE Vault)</h3>
+        </div>
+        <button type="button" data-action="close-admin" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
+      </div>
+
+      <!-- Step A: PIN Verification View -->
+      <div id="admin-auth-view" class="space-y-3">
+        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+          هذه المنطقة مشفرة ومخصصة لمالك <strong>منصة ذكاء</strong> فقط. أدخل الرمز السري للمتابعة:
+        </p>
+        <input
+          id="admin-pin-input"
+          type="password"
+          dir="ltr"
+          placeholder="••••••••••••••"
+          autocomplete="off"
+          class="w-full text-center font-mono text-base sm:text-lg font-bold tracking-widest bg-gray-50 border border-gray-300 focus:border-nusuk-dark focus:ring-2 focus:ring-amber-200 rounded-2xl py-3 px-4 outline-none"
+        />
+        <button type="button" data-action="verify-admin-pin" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3 px-5 rounded-full text-xs sm:text-sm transition cursor-pointer">
+          فك التشفير والدخول
+        </button>
+      </div>
+
+      <!-- Step B: Bulk Import View (Unlocked ONLY after valid SHA-256 PIN check) -->
+      <div id="admin-bulk-view" class="hidden space-y-4">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-xs text-emerald-900 leading-relaxed">
+          ✓ <strong>تم التحقق بنجاح:</strong> أي كود تضيفه هنا يُدرج في السحابة بحالة <code class="font-mono font-bold">unclaimed</code> بحيث إذا دخل صاحبه الحقيقي للمنصة وأدخل كوده، يقبله النظام تلقائياً وكأنه أضافه لأول مرة!
+        </div>
+
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="bulk-keys-textarea" class="text-xs sm:text-sm font-bold text-gray-800">الصق قائمة الأكواد هنا (كل كود في سطر أو مفصول بمسافة/فاصلة):</label>
+            <label class="text-xs font-bold text-amber-800 hover:underline cursor-pointer bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+              <span>📄 رفع ملف TXT</span>
+              <input id="bulk-txt-file" type="file" accept=".txt,.csv,text/plain" class="hidden" />
+            </label>
+          </div>
+          <textarea
+            id="bulk-keys-textarea"
+            dir="ltr"
+            rows="6"
+            placeholder="NG-XXXXXXXX&#10;NG-YYYYYYYY&#10;NG-ZZZZZZZZ"
+            class="w-full font-mono text-xs sm:text-sm bg-gray-50 border border-gray-300 focus:border-nusuk-gold focus:ring-2 focus:ring-amber-200 rounded-2xl p-3.5 outline-none"
+          ></textarea>
+        </div>
+
+        <div id="bulk-import-progress" class="hidden text-xs font-bold text-center text-amber-800 bg-amber-50 py-2 px-3 rounded-xl"></div>
+
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button id="bulk-import-submit-btn" type="button" data-action="run-bulk-import" class="flex-1 bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">
+            🚀 استيراد ونشر جميع الأكواد تلقائياً
+          </button>
+          <button type="button" data-action="lock-admin" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">
+            قفل الخزنة
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie-Backed Progress, Strict Deduplication, Auto-Claim & Encrypted Admin Vault Module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, onSnapshot, query, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     (() => {
       "use strict";
@@ -380,13 +448,21 @@
       }
 
       const _SALT = "Nusuk-Sec-Integrity-2026-@abbuzakaria";
+      const _ADMIN_SALT = "ZkaeAdminVaultSalt#99";
+      const _ADMIN_PIN_SHA256 = "2d11518cf72771e7796d2b5ea1725ff474104aa54de7fb046112d815de6db9be";
+
+      async function _sha256Hex(str) {
+        if (window.crypto?.subtle) {
+          const buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+          return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+        }
+        return "";
+      }
 
       async function _signIntegrity(rawStr) {
         try {
-          if (window.crypto?.subtle) {
-            const buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(rawStr + "|" + _SALT));
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("").slice(0, 24);
-          }
+          const hex = await _sha256Hex(rawStr + "|" + _SALT);
+          if (hex) return hex.slice(0, 24);
         } catch {}
         let h = 2166136261;
         for (let i = 0; i < rawStr.length; i++) {
@@ -403,23 +479,58 @@
         return out;
       }
 
-      async function secureStoreSet(store, key, value) {
+      // Persistent HTTP Cookie Helpers (180 Days) + LocalStorage Dual-Sync
+      function setCookie(name, value, days = 180) {
+        try {
+          const expires = new Date(Date.now() + days * 864e5).toUTCString();
+          const secureFlag = window.location.protocol === "https:" ? "; Secure" : "";
+          document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax${secureFlag}`;
+        } catch {}
+      }
+
+      function getCookie(name) {
+        try {
+          const target = encodeURIComponent(name) + "=";
+          const parts = document.cookie.split(";");
+          for (let part of parts) {
+            part = part.trim();
+            if (part.indexOf(target) === 0) {
+              return decodeURIComponent(part.substring(target.length));
+            }
+          }
+        } catch {}
+        return "";
+      }
+
+      async function secureStoreSet(key, value, useCookie = true) {
         try {
           const xored = _xorCodec(new TextEncoder().encode(JSON.stringify(value)));
           let bin = "";
           for (let i = 0; i < xored.length; i++) bin += String.fromCharCode(xored[i]);
           const cipher = btoa(bin);
-          store.setItem(key, JSON.stringify({ c: cipher, s: await _signIntegrity(cipher) }));
+          const payload = JSON.stringify({ c: cipher, s: await _signIntegrity(cipher) });
+          try { localStorage.setItem(key, payload); } catch {}
+          if (useCookie && payload.length < 3600) {
+            setCookie(key, payload, 180);
+          }
         } catch {}
       }
 
-      async function secureStoreGet(store, key, fallback = null) {
+      async function secureStoreGet(key, fallback = null) {
         try {
-          const parsed = JSON.parse(store.getItem(key) || "null");
+          let raw = "";
+          try { raw = localStorage.getItem(key) || ""; } catch {}
+          if (!raw) raw = getCookie(key);
+          if (!raw) return fallback;
+
+          const parsed = JSON.parse(raw);
           if (!parsed?.c || !parsed?.s || parsed.s !== await _signIntegrity(parsed.c)) {
-            store.removeItem(key);
+            try { localStorage.removeItem(key); } catch {}
             return fallback;
           }
+          try { localStorage.setItem(key, raw); } catch {}
+          if (raw.length < 3600) setCookie(key, raw, 180);
+
           const bin = atob(parsed.c);
           const xored = new Uint8Array(bin.length);
           for (let i = 0; i < bin.length; i++) xored[i] = bin.charCodeAt(i);
@@ -439,28 +550,33 @@
         measurementId: _0x3c9d(6)
       });
 
-      const DEV_KEY = _0x3c9d(7); // NG-O8dPL1lh
+      const DEV_KEY = _0x3c9d(7).toUpperCase(); // NG-O8DPL1LH
       const BATCH_SIZE = 33;
-      const MAX_POOL_SIZE = 1500;
-      const RATE_LIMIT_MS = 1800;
+      const MAX_POOL_SIZE = 2500;
+      const RATE_LIMIT_MS = 1500;
 
       const S_KEYS = Object.freeze({
-        SINGLE_USER_KEY: "_nk_l_uk_v5",
-        COPIED_LIST: "_nk_l_cp_v5",
-        SEEN_LIST: "_nk_s_sn_v5",
-        BOOST_FLAG: "_nk_l_bs_v5",
-        POOL_DATA: "_nk_l_pl_v5",
-        DUA_SEEN: "_nk_s_du_v5"
+        SINGLE_USER_KEY: "zkae_uk_v8",
+        COPIED_LIST: "zkae_cp_v8",
+        SEEN_LIST: "zkae_sn_v8",
+        BOOST_FLAG: "zkae_bs_v8",
+        POOL_DATA: "zkae_pl_v8",
+        DUA_SEEN: "zkae_du_v8"
       });
 
       let db = null;
-      let poolDocRef = null;
+      let keysColRef = null;
+      let legacyPoolDocRef = null;
       let keysPool = [];
       let currentBatch = [];
+      let isAdminUnlocked = false;
+      let adminClickTaps = 0;
+      let adminTapTimer = null;
+
       let state = {
         submittedUserKey: "",
         copiedHistory: [],
-        seenThisSession: [],
+        seenForever: [],
         boostActivated: false,
         lastActionTs: 0
       };
@@ -528,69 +644,157 @@
         return copy;
       }
 
-      // Always keep Developer Key inside the pool so visitors receive it naturally in the 33 random keys
-      function ensureDevKeyInPool(rawList) {
+      function buildUniquePool(rawList) {
         const map = new Map();
-        const devClean = DEV_KEY.toUpperCase();
-        map.set(devClean, { code: devClean, addedAt: Date.now() });
+        map.set(DEV_KEY, { code: DEV_KEY, addedAt: Date.now(), claimed: true });
 
         (Array.isArray(rawList) ? rawList : []).forEach(item => {
-          const clean = sanitizeKeyCode(item?.code);
-          if (isValidKeyFormat(clean)) {
-            map.set(clean, { code: clean, addedAt: Number(item.addedAt) || Date.now() });
+          const clean = sanitizeKeyCode(item?.code || item);
+          if (isValidKeyFormat(clean) && !map.has(clean)) {
+            map.set(clean, {
+              code: clean,
+              addedAt: Number(item?.addedAt) || Date.now(),
+              claimed: item?.claimed !== false
+            });
           }
         });
         return Array.from(map.values()).slice(-MAX_POOL_SIZE);
       }
 
-      async function hydrateSecureState() {
-        const savedKey = await secureStoreGet(localStorage, S_KEYS.SINGLE_USER_KEY, "");
-        state.submittedUserKey = isValidKeyFormat(savedKey) ? savedKey : "";
-        const hist = await secureStoreGet(localStorage, S_KEYS.COPIED_LIST, []);
-        state.copiedHistory = Array.isArray(hist) ? hist.map(sanitizeKeyCode).filter(Boolean) : [];
-        const seen = await secureStoreGet(sessionStorage, S_KEYS.SEEN_LIST, []);
-        state.seenThisSession = Array.isArray(seen) ? seen.map(sanitizeKeyCode).filter(Boolean) : [];
-        state.boostActivated = (await secureStoreGet(localStorage, S_KEYS.BOOST_FLAG, false)) === true;
+      function setCloudStatus(ok) {
+        const dot = document.getElementById("cloud-status-dot");
+        const banner = document.getElementById("cloud-warning-banner");
+        if (dot) {
+          dot.className = ok
+            ? "w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator shrink-0"
+            : "w-2.5 h-2.5 rounded-full bg-red-500 live-indicator shrink-0";
+        }
+        if (banner) {
+          banner.classList.toggle("hidden", ok);
+        }
+      }
 
-        const cachedPool = await secureStoreGet(localStorage, S_KEYS.POOL_DATA, []);
-        keysPool = ensureDevKeyInPool(cachedPool);
+      async function hydrateSecureState() {
+        const savedKey = await secureStoreGet(S_KEYS.SINGLE_USER_KEY, "");
+        state.submittedUserKey = isValidKeyFormat(savedKey) ? savedKey : "";
+        const hist = await secureStoreGet(S_KEYS.COPIED_LIST, []);
+        state.copiedHistory = Array.isArray(hist) ? Array.from(new Set(hist.map(sanitizeKeyCode).filter(Boolean))) : [];
+        const seen = await secureStoreGet(S_KEYS.SEEN_LIST, []);
+        state.seenForever = Array.isArray(seen) ? Array.from(new Set(seen.map(sanitizeKeyCode).filter(Boolean))) : [];
+        state.boostActivated = (await secureStoreGet(S_KEYS.BOOST_FLAG, false)) === true;
+
+        const cachedPool = await secureStoreGet(S_KEYS.POOL_DATA, []);
+        keysPool = buildUniquePool(cachedPool);
       }
 
       async function initCloudSync() {
         updateTotalCounter();
         try {
           const app = initializeApp(FIREBASE_CFG);
-          await signInAnonymously(getAuth(app));
           db = getFirestore(app);
 
+          try {
+            await signInAnonymously(getAuth(app));
+          } catch {}
+
           const appId = (typeof __app_id !== "undefined" && __app_id) ? String(__app_id) : "nusuk-keys-exchange";
-          poolDocRef = doc(db, "artifacts", appId, "public", "data", "nusuk_pool", "latest_keys_live");
+          keysColRef = collection(db, "artifacts", appId, "public", "data", "nusuk_keys");
+          legacyPoolDocRef = doc(db, "artifacts", appId, "public", "data", "nusuk_pool", "latest_keys_live");
 
-          const snap = await getDoc(poolDocRef);
-          if (snap.exists() && Array.isArray(snap.data().keys)) {
-            keysPool = ensureDevKeyInPool(snap.data().keys);
-          } else {
-            keysPool = ensureDevKeyInPool([]);
-            await setDoc(poolDocRef, { keys: keysPool }, { merge: true });
+          const devDocRef = doc(keysColRef, DEV_KEY);
+          const devSnap = await getDoc(devDocRef);
+          if (!devSnap.exists()) {
+            await setDoc(devDocRef, { code: DEV_KEY, addedAt: Date.now(), claimed: true });
           }
 
-          await secureStoreSet(localStorage, S_KEYS.POOL_DATA, keysPool);
-          updateTotalCounter();
-          if (state.submittedUserKey && currentBatch.length === 0) {
-            await generateAndRenderFairBatch(false);
+          if (state.submittedUserKey && state.submittedUserKey !== DEV_KEY) {
+            const myDocRef = doc(keysColRef, state.submittedUserKey);
+            const mySnap = await getDoc(myDocRef);
+            if (!mySnap.exists()) {
+              await setDoc(myDocRef, { code: state.submittedUserKey, addedAt: Date.now(), claimed: true });
+            }
           }
 
-          onSnapshot(poolDocRef, async (liveSnap) => {
-            if (liveSnap.exists() && Array.isArray(liveSnap.data().keys)) {
-              keysPool = ensureDevKeyInPool(liveSnap.data().keys);
-              await secureStoreSet(localStorage, S_KEYS.POOL_DATA, keysPool);
-              updateTotalCounter();
-              if (state.submittedUserKey && currentBatch.length < BATCH_SIZE) {
-                await generateAndRenderFairBatch(false);
+          try {
+            const legSnap = await getDoc(legacyPoolDocRef);
+            if (legSnap.exists() && Array.isArray(legSnap.data().keys)) {
+              for (const item of legSnap.data().keys) {
+                const c = sanitizeKeyCode(item?.code);
+                if (isValidKeyFormat(c) && c !== DEV_KEY) {
+                  const kRef = doc(keysColRef, c);
+                  const kSnap = await getDoc(kRef);
+                  if (!kSnap.exists()) {
+                    await setDoc(kRef, { code: c, addedAt: Number(item.addedAt) || Date.now(), claimed: true });
+                  }
+                }
               }
             }
+          } catch {}
+
+          setCloudStatus(true);
+
+          onSnapshot(query(keysColRef, limit(MAX_POOL_SIZE)), async (querySnap) => {
+            const cloudList = [];
+            querySnap.forEach((docSnap) => {
+              const d = docSnap.data();
+              const c = sanitizeKeyCode(d?.code || docSnap.id);
+              if (isValidKeyFormat(c)) {
+                cloudList.push({
+                  code: c,
+                  addedAt: Number(d?.addedAt) || Date.now(),
+                  claimed: d?.claimed !== false
+                });
+              }
+            });
+            keysPool = buildUniquePool(cloudList);
+            await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
+            updateTotalCounter();
+            setCloudStatus(true);
+
+            if (state.submittedUserKey && currentBatch.length < BATCH_SIZE) {
+              await generateAndRenderFairBatch(false);
+            }
+          }, (err) => {
+            console.warn("Firestore snapshot error:", err);
+            setCloudStatus(false);
           });
-        } catch {}
+        } catch (err) {
+          console.warn("Firebase init error:", err);
+          setCloudStatus(false);
+        }
+      }
+
+      // Smart Key Registration:
+      // - If key does NOT exist -> creates it with claimed: true
+      // - If key WAS pre-imported by Admin (claimed: false) -> claims it seamlessly as if first time!
+      // - If key WAS already claimed (claimed: true) -> rejects duplicate!
+      async function registerOrClaimKeyInCloud(cleanCode) {
+        if (!db || !keysColRef) return "ERROR";
+        try {
+          const keyDocRef = doc(keysColRef, cleanCode);
+          const existing = await getDoc(keyDocRef);
+          if (existing.exists()) {
+            const data = existing.data();
+            if (data && data.claimed === false) {
+              // Pre-imported key! Let the real owner claim it naturally as if adding for the first time
+              await setDoc(keyDocRef, {
+                code: cleanCode,
+                addedAt: Number(data.addedAt) || Date.now(),
+                claimed: true
+              }, { merge: true });
+              setCloudStatus(true);
+              return "CLAIMED";
+            }
+            return "EXISTS";
+          }
+          await setDoc(keyDocRef, { code: cleanCode, addedAt: Date.now(), claimed: true });
+          setCloudStatus(true);
+          return "CREATED";
+        } catch (err) {
+          console.warn("Cloud write failed:", err);
+          setCloudStatus(false);
+          return "ERROR";
+        }
       }
 
       function updateTotalCounter() {
@@ -618,15 +822,17 @@
         const submitBtn = document.getElementById("submit-visitor-btn");
         const boostCard = document.getElementById("share-boost-card");
         const step3Section = document.getElementById("step3-section");
+        const myKeyBadge = document.getElementById("my-key-badge");
 
         if (state.submittedUserKey) {
           step2Badge.textContent = "تم الإدراج ✓ (1/1)";
-          step2Helper.textContent = "تم تسجيل مفتاحك بنجاح! يمكنك الآن نسخ الـ 33 مفتاحاً العشوائية أو تحديث القائمة للحصول على 33 مفتاحاً جديدة.";
+          step2Helper.textContent = "تم حفظ مفتاحك في الكوكيز والسحابة للزوار الآخرين! يظهر لك أدناه مفاتيح المشاركين الآخرين دون تكرار.";
           inputEl.value = state.submittedUserKey;
           inputEl.disabled = true;
           inputEl.readOnly = true;
           submitBtn.disabled = true;
-          submitBtn.textContent = "مفتاحك مُدرج في القائمة ✓ (الحد الأقصى 1)";
+          submitBtn.textContent = "مفتاحك مُدرج للزوار الآخرين ✓";
+          if (myKeyBadge) myKeyBadge.textContent = state.submittedUserKey;
 
           boostCard.classList.remove("hidden");
           step3Section.classList.remove("hidden");
@@ -663,30 +869,46 @@
           showToast("صيغة المفتاح غير صحيحة! يجب أن يبدأ بـ NG- متبوعاً بالرمز الصحيح.", "error");
           return;
         }
-        if (cleanCode === DEV_KEY.toUpperCase()) {
+        if (cleanCode === DEV_KEY) {
           showToast("هذا مفتاح المطور! يرجى إدخال مفتاحك الخاص من تطبيق نسك.", "warning");
           return;
         }
 
-        state.submittedUserKey = cleanCode;
-        await secureStoreSet(localStorage, S_KEYS.SINGLE_USER_KEY, cleanCode);
-
-        const exists = keysPool.some(k => sanitizeKeyCode(k.code) === cleanCode);
-        if (!exists) {
-          const newEntry = { code: cleanCode, addedAt: Date.now() };
-          keysPool = ensureDevKeyInPool([...keysPool, newEntry]);
-          await secureStoreSet(localStorage, S_KEYS.POOL_DATA, keysPool);
-          updateTotalCounter();
-          if (db && poolDocRef) {
-            try {
-              await updateDoc(poolDocRef, { keys: arrayUnion(newEntry) }).catch(async () => {
-                await setDoc(poolDocRef, { keys: keysPool }, { merge: true });
-              });
-            } catch {}
-          }
+        // Check local pool only if it is already marked as claimed
+        const localMatch = keysPool.find(k => sanitizeKeyCode(k.code) === cleanCode);
+        if (localMatch && localMatch.claimed === true) {
+          showToast("هذا المفتاح مُدخل مسبقاً في المنصة! لا يمكن إدخال نفس الكود مرتين.", "warning");
+          return;
         }
 
-        showToast("تم إضافة مفتاحك بنجاح! إليك 33 مفتاحاً عشوائياً منصفاً.", "success");
+        const submitBtn = document.getElementById("submit-visitor-btn");
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "جاري التحقق والحفظ في السحابة...";
+        }
+
+        const cloudRes = await registerOrClaimKeyInCloud(cleanCode);
+        if (cloudRes === "EXISTS") {
+          showToast("هذا المفتاح مُسجل مسبقاً في المنصة! يُمنع إدخال أي كود أكثر من مرة.", "warning");
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "إضافة مفتاحي وعرض مفاتيح المشاركين";
+          }
+          return;
+        }
+
+        state.submittedUserKey = cleanCode;
+        await secureStoreSet(S_KEYS.SINGLE_USER_KEY, cleanCode, true);
+
+        keysPool = buildUniquePool([...keysPool.filter(k => k.code !== cleanCode), { code: cleanCode, addedAt: Date.now(), claimed: true }]);
+        await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
+        updateTotalCounter();
+
+        if (cloudRes === "ERROR") {
+          showToast("تم حفظ مفتاحك محلياً، لكن يرجى فتح قواعد Firestore ليظهر للزوار الآخرين.", "warning");
+        } else {
+          showToast("تم إضافة مفتاحك بنجاح وحفظ تقدمك بالكوكيز! إليك مفاتيح المشاركين.", "success");
+        }
         syncUIState();
       }
 
@@ -724,49 +946,70 @@
         }
 
         state.boostActivated = true;
-        await secureStoreSet(localStorage, S_KEYS.BOOST_FLAG, true);
+        await secureStoreSet(S_KEYS.BOOST_FLAG, true, true);
         applySavedBoostUI();
       }
 
       async function generateAndRenderFairBatch(isUserRefresh = false) {
-        if (isUserRefresh && db && poolDocRef) {
+        if (isUserRefresh && db && keysColRef) {
           try {
-            const snap = await getDoc(poolDocRef);
-            if (snap.exists() && Array.isArray(snap.data().keys)) {
-              keysPool = ensureDevKeyInPool(snap.data().keys);
-              await secureStoreSet(localStorage, S_KEYS.POOL_DATA, keysPool);
-              updateTotalCounter();
-            }
-          } catch {}
+            const snap = await getDocs(query(keysColRef, limit(MAX_POOL_SIZE)));
+            const freshList = [];
+            snap.forEach((docSnap) => {
+              const d = docSnap.data();
+              const c = sanitizeKeyCode(d?.code || docSnap.id);
+              if (isValidKeyFormat(c)) {
+                freshList.push({
+                  code: c,
+                  addedAt: Number(d?.addedAt) || Date.now(),
+                  claimed: d?.claimed !== false
+                });
+              }
+            });
+            keysPool = buildUniquePool(freshList);
+            await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
+            updateTotalCounter();
+            setCloudStatus(true);
+          } catch {
+            setCloudStatus(false);
+          }
         }
 
-        const userKey = state.submittedUserKey.toUpperCase();
+        const myKey = state.submittedUserKey.toUpperCase();
         const copiedSet = new Set(state.copiedHistory.map(c => c.toUpperCase()));
-        const seenSet = new Set(state.seenThisSession.map(c => c.toUpperCase()));
+        const seenSet = new Set(state.seenForever.map(c => c.toUpperCase()));
 
-        const uncopiedEligible = keysPool.filter(item => {
+        const uncopiedOthers = keysPool.filter(item => {
           const code = sanitizeKeyCode(item.code);
-          return code && code !== userKey && !copiedSet.has(code);
+          return code && code !== myKey && !copiedSet.has(code);
         });
 
-        let unseenCandidates = uncopiedEligible.filter(item => !seenSet.has(sanitizeKeyCode(item.code)));
+        let unseenCandidates = uncopiedOthers.filter(item => !seenSet.has(sanitizeKeyCode(item.code)));
 
-        if (unseenCandidates.length === 0 && uncopiedEligible.length > 0) {
-          state.seenThisSession = [];
-          await secureStoreSet(sessionStorage, S_KEYS.SEEN_LIST, []);
-          unseenCandidates = [...uncopiedEligible];
+        if (unseenCandidates.length === 0 && uncopiedOthers.length > 0) {
+          state.seenForever = [...state.copiedHistory];
+          await secureStoreSet(S_KEYS.SEEN_LIST, state.seenForever, true);
+          unseenCandidates = [...uncopiedOthers];
         }
 
-        const selected = fairCryptoShuffle(unseenCandidates).slice(0, BATCH_SIZE);
+        const uniqueMap = new Map();
+        fairCryptoShuffle(unseenCandidates).forEach(item => {
+          const c = sanitizeKeyCode(item.code);
+          if (!uniqueMap.has(c) && uniqueMap.size < BATCH_SIZE) {
+            uniqueMap.set(c, item);
+          }
+        });
+
+        const selected = Array.from(uniqueMap.values());
 
         selected.forEach(item => {
           const c = sanitizeKeyCode(item.code);
-          if (!state.seenThisSession.includes(c)) state.seenThisSession.push(c);
+          if (!state.seenForever.includes(c)) state.seenForever.push(c);
         });
-        await secureStoreSet(sessionStorage, S_KEYS.SEEN_LIST, state.seenThisSession);
+        await secureStoreSet(S_KEYS.SEEN_LIST, state.seenForever.slice(-180), true);
 
         currentBatch = selected;
-        renderBatchCards(currentBatch, uncopiedEligible.length);
+        renderBatchCards(currentBatch, uncopiedOthers.length);
 
         if (isUserRefresh) {
           const icon = document.getElementById("refresh-icon");
@@ -775,7 +1018,9 @@
             setTimeout(() => { icon.style.transform = "rotate(0deg)"; }, 520);
           }
           if (selected.length > 0) {
-            showToast(`تم تحديث القائمة وجلب ${selected.length} مفتاحاً عشوائياً جديداً!`, "success");
+            showToast(`تم تحديث القائمة وجلب ${selected.length} مفتاحاً دون تكرار!`, "success");
+          } else {
+            showToast("لا توجد مفاتيح جديدة إضافية حالياً؛ حاول بعد قليل.", "warning");
           }
         }
       }
@@ -788,13 +1033,13 @@
         const progressLabel = document.getElementById("copied-progress-label");
         if (!container) return;
 
-        const userKey = state.submittedUserKey.toUpperCase();
+        const myKey = state.submittedUserKey.toUpperCase();
         const copiedSet = new Set(state.copiedHistory.map(c => c.toUpperCase()));
 
         if (totalRemainingCount === null) {
           totalRemainingCount = keysPool.filter(item => {
             const code = sanitizeKeyCode(item.code);
-            return code && code !== userKey && !copiedSet.has(code);
+            return code && code !== myKey && !copiedSet.has(code);
           }).length;
         }
 
@@ -862,7 +1107,7 @@
             copyTextSafe(safeCode);
             if (!state.copiedHistory.includes(safeCode)) {
               state.copiedHistory.push(safeCode);
-              await secureStoreSet(localStorage, S_KEYS.COPIED_LIST, state.copiedHistory);
+              await secureStoreSet(S_KEYS.COPIED_LIST, state.copiedHistory.slice(-180), true);
             }
 
             card.className = "flex items-center justify-between gap-2.5 bg-emerald-50/85 border border-emerald-300 rounded-2xl p-3 sm:p-3.5 transition";
@@ -874,13 +1119,119 @@
             const newRemaining = Math.max(0, totalRemainingCount - 1);
             if (remainingLabel) remainingLabel.textContent = `المتبقي لك: ${newRemaining}`;
             if (progressLabel) progressLabel.textContent = `نسخت: ${state.copiedHistory.length}`;
-            showToast(`تم نسخ المفتاح ${safeCode} ولن يتكرر لك عند التحديث!`, "success");
+            showToast(`تم نسخ المفتاح ${safeCode} وحفظ تقدمك بالكوكيز!`, "success");
           });
 
           card.appendChild(leftWrap);
           card.appendChild(copyBtn);
           container.appendChild(card);
         });
+      }
+
+      // =========================================================================
+      // HIDDEN ENCRYPTED ADMIN VAULT LOGIC (Bulk Import + TXT Upload)
+      // Triggered ONLY via 5 rapid clicks on "✦ منصة ذكاء ZKAE.com" OR Ctrl+Shift+K
+      // =========================================================================
+      function openAdminVaultModal() {
+        const modal = document.getElementById("admin-vault-modal");
+        const authView = document.getElementById("admin-auth-view");
+        const bulkView = document.getElementById("admin-bulk-view");
+        const pinInput = document.getElementById("admin-pin-input");
+        if (!modal) return;
+
+        modal.classList.remove("hidden");
+        if (isAdminUnlocked) {
+          authView?.classList.add("hidden");
+          bulkView?.classList.remove("hidden");
+        } else {
+          authView?.classList.remove("hidden");
+          bulkView?.classList.add("hidden");
+          if (pinInput) {
+            pinInput.value = "";
+            setTimeout(() => pinInput.focus(), 100);
+          }
+        }
+      }
+
+      async function verifyAdminPin() {
+        const pinInput = document.getElementById("admin-pin-input");
+        const rawPin = String(pinInput?.value || "").trim();
+        if (!rawPin) return;
+
+        const computedHash = await _sha256Hex(rawPin + "|" + _ADMIN_SALT);
+        if (computedHash && computedHash === _ADMIN_PIN_SHA256) {
+          isAdminUnlocked = true;
+          if (pinInput) pinInput.value = "";
+          document.getElementById("admin-auth-view")?.classList.add("hidden");
+          document.getElementById("admin-bulk-view")?.classList.remove("hidden");
+          showToast("تم فك تشفير خزنة الإدارة بنجاح.", "success");
+        } else {
+          if (pinInput) pinInput.value = "";
+          showToast("رمز التحقق غير صحيح!", "error");
+        }
+      }
+
+      async function runAdminBulkImport() {
+        if (!isAdminUnlocked) {
+          showToast("غير مصرح! يرجى إدخال الرمز السري أولاً.", "error");
+          return;
+        }
+        if (!db || !keysColRef) {
+          showToast("قاعدة البيانات السحابية غير متصلة حالياً.", "error");
+          return;
+        }
+
+        const textarea = document.getElementById("bulk-keys-textarea");
+        const progressEl = document.getElementById("bulk-import-progress");
+        const submitBtn = document.getElementById("bulk-import-submit-btn");
+        const rawText = String(textarea?.value || "");
+
+        // Extract all NG-XXXXX codes from pasted list or TXT file
+        const matches = rawText.toUpperCase().match(/NG-[A-Z0-9_-]{4,20}/g) || [];
+        const uniqueCodes = Array.from(new Set(matches.map(sanitizeKeyCode).filter(c => isValidKeyFormat(c) && c !== DEV_KEY)));
+
+        if (uniqueCodes.length === 0) {
+          showToast("لم يتم العثور على أي أكواد صالحة بصيغة NG-XXXX!", "warning");
+          return;
+        }
+
+        if (submitBtn) submitBtn.disabled = true;
+        if (progressEl) {
+          progressEl.classList.remove("hidden");
+          progressEl.textContent = `جاري استيراد ${uniqueCodes.length} كود...`;
+        }
+
+        let addedCount = 0;
+        let skippedCount = 0;
+
+        for (let i = 0; i < uniqueCodes.length; i++) {
+          const code = uniqueCodes[i];
+          try {
+            const kRef = doc(keysColRef, code);
+            const snap = await getDoc(kRef);
+            if (!snap.exists()) {
+              // Store with claimed: false so if the real owner enters this key later, it accepts them smoothly!
+              await setDoc(kRef, {
+                code: code,
+                addedAt: Date.now() - (uniqueCodes.length - i) * 1000,
+                claimed: false
+              });
+              addedCount++;
+            } else {
+              skippedCount++;
+            }
+          } catch {
+            skippedCount++;
+          }
+
+          if (progressEl && (i % 5 === 0 || i === uniqueCodes.length - 1)) {
+            progressEl.textContent = `جاري المعالجة: ${i + 1} / ${uniqueCodes.length} (جديد: ${addedCount} | مكرر: ${skippedCount})`;
+          }
+        }
+
+        if (submitBtn) submitBtn.disabled = false;
+        if (textarea) textarea.value = "";
+        showToast(`اكتمل الاستيراد! تمت إضافة ${addedCount} كود جديد (وتجاهل ${skippedCount} مكرر).`, "success");
       }
 
       function initAutoVisitorStats() {
@@ -903,6 +1254,47 @@
       }
 
       function bindSecureEvents() {
+        // Secret 5-tap trigger on Brand Badge (invisible to regular visitors)
+        const brandTrigger = document.getElementById("secret-brand-trigger");
+        if (brandTrigger) {
+          brandTrigger.addEventListener("click", () => {
+            adminClickTaps++;
+            clearTimeout(adminTapTimer);
+            adminTapTimer = setTimeout(() => { adminClickTaps = 0; }, 1500);
+            if (adminClickTaps >= 5) {
+              adminClickTaps = 0;
+              openAdminVaultModal();
+            }
+          });
+        }
+
+        // Secret keyboard shortcut (Ctrl + Shift + K)
+        document.addEventListener("keydown", (e) => {
+          if (e.ctrlKey && e.shiftKey && (e.key === "K" || e.key === "k")) {
+            e.preventDefault();
+            openAdminVaultModal();
+          }
+        });
+
+        // TXT file loader inside Admin Vault
+        const txtInput = document.getElementById("bulk-txt-file");
+        if (txtInput) {
+          txtInput.addEventListener("change", (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              const ta = document.getElementById("bulk-keys-textarea");
+              if (ta) {
+                ta.value = (ta.value ? ta.value + "\n" : "") + String(ev.target?.result || "");
+              }
+              showToast(`تم تحميل الملف (${file.name}) بنجاح.`, "success");
+            };
+            reader.readAsText(file);
+            txtInput.value = "";
+          });
+        }
+
         document.addEventListener("click", async (e) => {
           const actionBtn = e.target.closest("[data-action]");
           if (actionBtn) {
@@ -912,18 +1304,19 @@
               showToast(`تم نسخ مفتاح المطور (${DEV_KEY}) — شكراً لدعمك!`, "success");
             } else if (act === "submit-visitor") await handleSubmitVisitorKey();
             else if (act === "refresh-batch") await generateAndRenderFairBatch(true);
-            else if (act === "reset-history") {
-              state.copiedHistory = [];
-              state.seenThisSession = [];
-              await secureStoreSet(localStorage, S_KEYS.COPIED_LIST, []);
-              await secureStoreSet(sessionStorage, S_KEYS.SEEN_LIST, []);
-              showToast("تمت إعادة ضبط السجل وجلب 33 مفتاحاً عشوائياً.", "success");
-              await generateAndRenderFairBatch(false);
-            } else if (act === "open-dua") toggleModal("dua-tiktok-modal", true);
+            else if (act === "open-dua") toggleModal("dua-tiktok-modal", true);
             else if (act === "close-dua") toggleModal("dua-tiktok-modal", false);
             else if (act === "open-guide") toggleModal("guide-modal", true);
             else if (act === "close-guide") toggleModal("guide-modal", false);
-            else if (act === "follow-tiktok") await secureStoreSet(sessionStorage, S_KEYS.DUA_SEEN, true);
+            else if (act === "follow-tiktok") await secureStoreSet(S_KEYS.DUA_SEEN, true, true);
+            else if (act === "close-admin") toggleModal("admin-vault-modal", false);
+            else if (act === "verify-admin-pin") await verifyAdminPin();
+            else if (act === "run-bulk-import") await runAdminBulkImport();
+            else if (act === "lock-admin") {
+              isAdminUnlocked = false;
+              toggleModal("admin-vault-modal", false);
+              showToast("تم قفل الخزنة وتشفير الجلسة.", "success");
+            }
             return;
           }
           const shareBtn = e.target.closest("[data-share]");
@@ -932,6 +1325,10 @@
 
         document.getElementById("visitor-key-input")?.addEventListener("keydown", async (e) => {
           if (e.key === "Enter") { e.preventDefault(); await handleSubmitVisitorKey(); }
+        });
+
+        document.getElementById("admin-pin-input")?.addEventListener("keydown", async (e) => {
+          if (e.key === "Enter") { e.preventDefault(); await verifyAdminPin(); }
         });
       }
 
@@ -942,9 +1339,9 @@
         initAutoVisitorStats();
         await initCloudSync();
 
-        if ((await secureStoreGet(sessionStorage, S_KEYS.DUA_SEEN, false)) !== true) {
+        if ((await secureStoreGet(S_KEYS.DUA_SEEN, false)) !== true) {
           setTimeout(async () => {
-            await secureStoreSet(sessionStorage, S_KEYS.DUA_SEEN, true);
+            await secureStoreSet(S_KEYS.DUA_SEEN, true, true);
             toggleModal("dua-tiktok-modal", true);
           }, 3000);
         }
