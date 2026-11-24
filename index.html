@@ -113,9 +113,10 @@
         </div>
       </div>
 
-      <!-- Cloud Sync Warning Banner (Shown only if Firebase Rules are blocked) -->
-      <div id="cloud-warning-banner" class="hidden bg-red-50 border border-red-300 text-red-900 rounded-2xl px-4 py-3 text-xs sm:text-sm text-center font-medium leading-relaxed">
-        ⚠️ <strong>تنبيه المزامنة السحابية:</strong> قاعدة البيانات السحابية مقفلة حالياً من لوحة تحكم Firebase (Firestore Rules). يرجى تفعيل القراءة والكتابة لكي تظهر مفاتيح الزوار للجميع!
+      <!-- Cloud Sync Diagnostic Banner -->
+      <div id="cloud-warning-banner" class="hidden bg-red-50 border border-red-300 text-red-900 rounded-2xl px-4 py-3 text-xs sm:text-sm text-center font-medium leading-relaxed space-y-1">
+        <div>⚠️ <strong>تنبيه المزامنة السحابية:</strong> تعذر الاتصال بقاعدة بيانات Firebase.</div>
+        <div id="cloud-error-detail" dir="ltr" class="font-mono text-[11px] text-red-700 bg-red-100/80 rounded-lg px-2 py-1 inline-block"></div>
       </div>
 
       <div class="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3 pt-1">
@@ -167,7 +168,7 @@
         </button>
       </section>
 
-      <!-- STEP 2: Add Visitor Key (Supports auto-claiming pre-imported batch keys as if added by owner!) -->
+      <!-- STEP 2: Add Visitor Key -->
       <section id="step2-card" class="soft-card p-4 sm:p-6 flex flex-col justify-between space-y-4">
         <div class="space-y-3">
           <div class="flex flex-wrap items-center justify-between gap-2">
@@ -206,7 +207,7 @@
       </section>
     </main>
 
-    <!-- Visual Share Boost Card (Shown after Step 2) -->
+    <!-- Visual Share Boost Card -->
     <section id="share-boost-card" class="hidden nusuk-promo-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-300/70 shadow-sm space-y-4 animate-fade-in">
       <div class="flex flex-wrap items-center justify-between gap-2">
         <h3 class="text-sm sm:text-lg font-bold text-gray-900">🚀 ضاعف نسبة ظهور مفتاحك للزوار</h3>
@@ -350,7 +351,7 @@
     </div>
   </div>
 
-  <!-- HIDDEN ENCRYPTED ADMIN VAULT MODAL (Accessible ONLY by Admin PIN) -->
+  <!-- HIDDEN ENCRYPTED ADMIN VAULT MODAL -->
   <div id="admin-vault-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-amber-300 space-y-4 animate-fade-in max-h-[92vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-gray-100 pb-3">
@@ -361,7 +362,6 @@
         <button type="button" data-action="close-admin" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
       </div>
 
-      <!-- Step A: PIN Verification View -->
       <div id="admin-auth-view" class="space-y-3">
         <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
           هذه المنطقة مشفرة ومخصصة لمالك <strong>منصة ذكاء</strong> فقط. أدخل الرمز السري للمتابعة:
@@ -379,7 +379,6 @@
         </button>
       </div>
 
-      <!-- Step B: Bulk Import View (Unlocked ONLY after valid SHA-256 PIN check) -->
       <div id="admin-bulk-view" class="hidden space-y-4">
         <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-xs text-emerald-900 leading-relaxed">
           ✓ <strong>تم التحقق بنجاح:</strong> أي كود تضيفه هنا يُدرج في السحابة بحالة <code class="font-mono font-bold">unclaimed</code> بحيث إذا دخل صاحبه الحقيقي للمنصة وأدخل كوده، يقبله النظام تلقائياً وكأنه أضافه لأول مرة!
@@ -416,11 +415,11 @@
     </div>
   </div>
 
-  <!-- Cookie-Backed Progress, Strict Deduplication, Auto-Claim & Encrypted Admin Vault Module -->
+  <!-- Dual-Transport Cloud Sync (REST API + Firebase SDK Fallback) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, onSnapshot, query, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot, query, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     (() => {
       "use strict";
@@ -479,7 +478,6 @@
         return out;
       }
 
-      // Persistent HTTP Cookie Helpers (180 Days) + LocalStorage Dual-Sync
       function setCookie(name, value, days = 180) {
         try {
           const expires = new Date(Date.now() + days * 864e5).toUTCString();
@@ -551,27 +549,28 @@
       });
 
       const DEV_KEY = _0x3c9d(7).toUpperCase(); // NG-O8DPL1LH
+      const APP_ID = (typeof __app_id !== "undefined" && __app_id) ? String(__app_id) : "nusuk-keys-exchange";
+      const REST_BASE = `https://firestore.googleapis.com/v1/projects/${FIREBASE_CFG.projectId}/databases/(default)/documents`;
+      const REST_KEYS_PATH = `${REST_BASE}/artifacts/${APP_ID}/public/data/nusuk_keys`;
       const BATCH_SIZE = 33;
       const MAX_POOL_SIZE = 2500;
-      const RATE_LIMIT_MS = 1500;
+      const RATE_LIMIT_MS = 1200;
 
       const S_KEYS = Object.freeze({
-        SINGLE_USER_KEY: "zkae_uk_v8",
-        COPIED_LIST: "zkae_cp_v8",
-        SEEN_LIST: "zkae_sn_v8",
-        BOOST_FLAG: "zkae_bs_v8",
-        POOL_DATA: "zkae_pl_v8",
-        DUA_SEEN: "zkae_du_v8"
+        SINGLE_USER_KEY: "zkae_uk_v9",
+        COPIED_LIST: "zkae_cp_v9",
+        SEEN_LIST: "zkae_sn_v9",
+        BOOST_FLAG: "zkae_bs_v9",
+        POOL_DATA: "zkae_pl_v9",
+        DUA_SEEN: "zkae_du_v9"
       });
 
-      let db = null;
-      let keysColRef = null;
-      let legacyPoolDocRef = null;
       let keysPool = [];
       let currentBatch = [];
       let isAdminUnlocked = false;
       let adminClickTaps = 0;
       let adminTapTimer = null;
+      let restPollTimer = null;
 
       let state = {
         submittedUserKey: "",
@@ -661,9 +660,10 @@
         return Array.from(map.values()).slice(-MAX_POOL_SIZE);
       }
 
-      function setCloudStatus(ok) {
+      function setCloudStatus(ok, errorDetail = "") {
         const dot = document.getElementById("cloud-status-dot");
         const banner = document.getElementById("cloud-warning-banner");
+        const detailEl = document.getElementById("cloud-error-detail");
         if (dot) {
           dot.className = ok
             ? "w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator shrink-0"
@@ -672,6 +672,71 @@
         if (banner) {
           banner.classList.toggle("hidden", ok);
         }
+        if (detailEl && errorDetail) {
+          detailEl.textContent = errorDetail;
+        }
+      }
+
+      // DIRECT FIRESTORE REST API ENGINE
+      async function restFetchAllKeys() {
+        const url = `${REST_KEYS_PATH}?pageSize=1000&key=${encodeURIComponent(FIREBASE_CFG.apiKey)}`;
+        const res = await fetch(url, { method: "GET" });
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(`HTTP ${res.status}: ${errText.slice(0, 140)}`);
+        }
+        const json = await res.json();
+        const docs = Array.isArray(json.documents) ? json.documents : [];
+        const parsed = [];
+        for (const d of docs) {
+          const docId = String(d.name || "").split("/").pop() || "";
+          const fields = d.fields || {};
+          const c = sanitizeKeyCode(fields.code?.stringValue || docId);
+          if (isValidKeyFormat(c)) {
+            const addedAtVal = Number(fields.addedAt?.integerValue || fields.addedAt?.doubleValue || Date.now());
+            const claimedVal = fields.claimed?.booleanValue !== false;
+            parsed.push({ code: c, addedAt: addedAtVal, claimed: claimedVal });
+          }
+        }
+        return parsed;
+      }
+
+      async function restGetKeyDoc(cleanCode) {
+        const url = `${REST_KEYS_PATH}/${encodeURIComponent(cleanCode)}?key=${encodeURIComponent(FIREBASE_CFG.apiKey)}`;
+        const res = await fetch(url, { method: "GET" });
+        if (res.status === 404) return null;
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(`HTTP ${res.status}: ${errText.slice(0, 140)}`);
+        }
+        const d = await res.json();
+        const fields = d.fields || {};
+        return {
+          code: sanitizeKeyCode(fields.code?.stringValue || cleanCode),
+          addedAt: Number(fields.addedAt?.integerValue || fields.addedAt?.doubleValue || Date.now()),
+          claimed: fields.claimed?.booleanValue !== false
+        };
+      }
+
+      async function restUpsertKeyDoc(cleanCode, addedAt, claimed) {
+        const url = `${REST_KEYS_PATH}/${encodeURIComponent(cleanCode)}?key=${encodeURIComponent(FIREBASE_CFG.apiKey)}`;
+        const body = {
+          fields: {
+            code: { stringValue: cleanCode },
+            addedAt: { integerValue: String(Math.floor(addedAt)) },
+            claimed: { booleanValue: Boolean(claimed) }
+          }
+        };
+        const res = await fetch(url, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(`HTTP ${res.status}: ${errText.slice(0, 140)}`);
+        }
+        return true;
       }
 
       async function hydrateSecureState() {
@@ -687,51 +752,42 @@
         keysPool = buildUniquePool(cachedPool);
       }
 
+      async function syncFromRestNow() {
+        const list = await restFetchAllKeys();
+        keysPool = buildUniquePool(list);
+        await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
+        updateTotalCounter();
+        setCloudStatus(true);
+        if (state.submittedUserKey && currentBatch.length < BATCH_SIZE) {
+          await generateAndRenderFairBatch(false);
+        }
+      }
+
       async function initCloudSync() {
         updateTotalCounter();
+
+        try {
+          const devExisting = await restGetKeyDoc(DEV_KEY);
+          if (!devExisting) {
+            await restUpsertKeyDoc(DEV_KEY, Date.now(), true);
+          }
+          if (state.submittedUserKey && state.submittedUserKey !== DEV_KEY) {
+            const myExisting = await restGetKeyDoc(state.submittedUserKey);
+            if (!myExisting) {
+              await restUpsertKeyDoc(state.submittedUserKey, Date.now(), true);
+            }
+          }
+          await syncFromRestNow();
+        } catch (restErr) {
+          console.warn("REST sync check:", restErr);
+          setCloudStatus(false, String(restErr?.message || restErr));
+        }
+
         try {
           const app = initializeApp(FIREBASE_CFG);
-          db = getFirestore(app);
-
-          try {
-            await signInAnonymously(getAuth(app));
-          } catch {}
-
-          const appId = (typeof __app_id !== "undefined" && __app_id) ? String(__app_id) : "nusuk-keys-exchange";
-          keysColRef = collection(db, "artifacts", appId, "public", "data", "nusuk_keys");
-          legacyPoolDocRef = doc(db, "artifacts", appId, "public", "data", "nusuk_pool", "latest_keys_live");
-
-          const devDocRef = doc(keysColRef, DEV_KEY);
-          const devSnap = await getDoc(devDocRef);
-          if (!devSnap.exists()) {
-            await setDoc(devDocRef, { code: DEV_KEY, addedAt: Date.now(), claimed: true });
-          }
-
-          if (state.submittedUserKey && state.submittedUserKey !== DEV_KEY) {
-            const myDocRef = doc(keysColRef, state.submittedUserKey);
-            const mySnap = await getDoc(myDocRef);
-            if (!mySnap.exists()) {
-              await setDoc(myDocRef, { code: state.submittedUserKey, addedAt: Date.now(), claimed: true });
-            }
-          }
-
-          try {
-            const legSnap = await getDoc(legacyPoolDocRef);
-            if (legSnap.exists() && Array.isArray(legSnap.data().keys)) {
-              for (const item of legSnap.data().keys) {
-                const c = sanitizeKeyCode(item?.code);
-                if (isValidKeyFormat(c) && c !== DEV_KEY) {
-                  const kRef = doc(keysColRef, c);
-                  const kSnap = await getDoc(kRef);
-                  if (!kSnap.exists()) {
-                    await setDoc(kRef, { code: c, addedAt: Number(item.addedAt) || Date.now(), claimed: true });
-                  }
-                }
-              }
-            }
-          } catch {}
-
-          setCloudStatus(true);
+          const db = getFirestore(app);
+          try { await signInAnonymously(getAuth(app)); } catch {}
+          const keysColRef = collection(db, "artifacts", APP_ID, "public", "data", "nusuk_keys");
 
           onSnapshot(query(keysColRef, limit(MAX_POOL_SIZE)), async (querySnap) => {
             const cloudList = [];
@@ -755,44 +811,36 @@
               await generateAndRenderFairBatch(false);
             }
           }, (err) => {
-            console.warn("Firestore snapshot error:", err);
-            setCloudStatus(false);
+            console.warn("SDK snapshot fallback to REST:", err);
           });
-        } catch (err) {
-          console.warn("Firebase init error:", err);
-          setCloudStatus(false);
+        } catch (sdkErr) {
+          console.warn("SDK init fallback to REST:", sdkErr);
+        }
+
+        if (!restPollTimer) {
+          restPollTimer = setInterval(async () => {
+            try { await syncFromRestNow(); } catch {}
+          }, 12000);
         }
       }
 
-      // Smart Key Registration:
-      // - If key does NOT exist -> creates it with claimed: true
-      // - If key WAS pre-imported by Admin (claimed: false) -> claims it seamlessly as if first time!
-      // - If key WAS already claimed (claimed: true) -> rejects duplicate!
       async function registerOrClaimKeyInCloud(cleanCode) {
-        if (!db || !keysColRef) return "ERROR";
         try {
-          const keyDocRef = doc(keysColRef, cleanCode);
-          const existing = await getDoc(keyDocRef);
-          if (existing.exists()) {
-            const data = existing.data();
-            if (data && data.claimed === false) {
-              // Pre-imported key! Let the real owner claim it naturally as if adding for the first time
-              await setDoc(keyDocRef, {
-                code: cleanCode,
-                addedAt: Number(data.addedAt) || Date.now(),
-                claimed: true
-              }, { merge: true });
+          const existing = await restGetKeyDoc(cleanCode);
+          if (existing) {
+            if (existing.claimed === false) {
+              await restUpsertKeyDoc(cleanCode, existing.addedAt || Date.now(), true);
               setCloudStatus(true);
               return "CLAIMED";
             }
             return "EXISTS";
           }
-          await setDoc(keyDocRef, { code: cleanCode, addedAt: Date.now(), claimed: true });
+          await restUpsertKeyDoc(cleanCode, Date.now(), true);
           setCloudStatus(true);
           return "CREATED";
         } catch (err) {
           console.warn("Cloud write failed:", err);
-          setCloudStatus(false);
+          setCloudStatus(false, String(err?.message || err));
           return "ERROR";
         }
       }
@@ -874,7 +922,6 @@
           return;
         }
 
-        // Check local pool only if it is already marked as claimed
         const localMatch = keysPool.find(k => sanitizeKeyCode(k.code) === cleanCode);
         if (localMatch && localMatch.claimed === true) {
           showToast("هذا المفتاح مُدخل مسبقاً في المنصة! لا يمكن إدخال نفس الكود مرتين.", "warning");
@@ -905,7 +952,7 @@
         updateTotalCounter();
 
         if (cloudRes === "ERROR") {
-          showToast("تم حفظ مفتاحك محلياً، لكن يرجى فتح قواعد Firestore ليظهر للزوار الآخرين.", "warning");
+          showToast("تعذر الحفظ في السحابة! تأكد من نشر قواعد Firestore Rules.", "error");
         } else {
           showToast("تم إضافة مفتاحك بنجاح وحفظ تقدمك بالكوكيز! إليك مفاتيح المشاركين.", "success");
         }
@@ -951,28 +998,10 @@
       }
 
       async function generateAndRenderFairBatch(isUserRefresh = false) {
-        if (isUserRefresh && db && keysColRef) {
+        if (isUserRefresh) {
           try {
-            const snap = await getDocs(query(keysColRef, limit(MAX_POOL_SIZE)));
-            const freshList = [];
-            snap.forEach((docSnap) => {
-              const d = docSnap.data();
-              const c = sanitizeKeyCode(d?.code || docSnap.id);
-              if (isValidKeyFormat(c)) {
-                freshList.push({
-                  code: c,
-                  addedAt: Number(d?.addedAt) || Date.now(),
-                  claimed: d?.claimed !== false
-                });
-              }
-            });
-            keysPool = buildUniquePool(freshList);
-            await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
-            updateTotalCounter();
-            setCloudStatus(true);
-          } catch {
-            setCloudStatus(false);
-          }
+            await syncFromRestNow();
+          } catch {}
         }
 
         const myKey = state.submittedUserKey.toUpperCase();
@@ -1128,10 +1157,7 @@
         });
       }
 
-      // =========================================================================
-      // HIDDEN ENCRYPTED ADMIN VAULT LOGIC (Bulk Import + TXT Upload)
-      // Triggered ONLY via 5 rapid clicks on "✦ منصة ذكاء ZKAE.com" OR Ctrl+Shift+K
-      // =========================================================================
+      // HIDDEN ENCRYPTED ADMIN VAULT LOGIC
       function openAdminVaultModal() {
         const modal = document.getElementById("admin-vault-modal");
         const authView = document.getElementById("admin-auth-view");
@@ -1176,17 +1202,12 @@
           showToast("غير مصرح! يرجى إدخال الرمز السري أولاً.", "error");
           return;
         }
-        if (!db || !keysColRef) {
-          showToast("قاعدة البيانات السحابية غير متصلة حالياً.", "error");
-          return;
-        }
 
         const textarea = document.getElementById("bulk-keys-textarea");
         const progressEl = document.getElementById("bulk-import-progress");
         const submitBtn = document.getElementById("bulk-import-submit-btn");
         const rawText = String(textarea?.value || "");
 
-        // Extract all NG-XXXXX codes from pasted list or TXT file
         const matches = rawText.toUpperCase().match(/NG-[A-Z0-9_-]{4,20}/g) || [];
         const uniqueCodes = Array.from(new Set(matches.map(sanitizeKeyCode).filter(c => isValidKeyFormat(c) && c !== DEV_KEY)));
 
@@ -1207,15 +1228,9 @@
         for (let i = 0; i < uniqueCodes.length; i++) {
           const code = uniqueCodes[i];
           try {
-            const kRef = doc(keysColRef, code);
-            const snap = await getDoc(kRef);
-            if (!snap.exists()) {
-              // Store with claimed: false so if the real owner enters this key later, it accepts them smoothly!
-              await setDoc(kRef, {
-                code: code,
-                addedAt: Date.now() - (uniqueCodes.length - i) * 1000,
-                claimed: false
-              });
+            const existing = await restGetKeyDoc(code);
+            if (!existing) {
+              await restUpsertKeyDoc(code, Date.now() - (uniqueCodes.length - i) * 1000, false);
               addedCount++;
             } else {
               skippedCount++;
@@ -1229,6 +1244,7 @@
           }
         }
 
+        try { await syncFromRestNow(); } catch {}
         if (submitBtn) submitBtn.disabled = false;
         if (textarea) textarea.value = "";
         showToast(`اكتمل الاستيراد! تمت إضافة ${addedCount} كود جديد (وتجاهل ${skippedCount} مكرر).`, "success");
@@ -1254,7 +1270,6 @@
       }
 
       function bindSecureEvents() {
-        // Secret 5-tap trigger on Brand Badge (invisible to regular visitors)
         const brandTrigger = document.getElementById("secret-brand-trigger");
         if (brandTrigger) {
           brandTrigger.addEventListener("click", () => {
@@ -1268,7 +1283,6 @@
           });
         }
 
-        // Secret keyboard shortcut (Ctrl + Shift + K)
         document.addEventListener("keydown", (e) => {
           if (e.ctrlKey && e.shiftKey && (e.key === "K" || e.key === "k")) {
             e.preventDefault();
@@ -1276,7 +1290,6 @@
           }
         });
 
-        // TXT file loader inside Admin Vault
         const txtInput = document.getElementById("bulk-txt-file");
         if (txtInput) {
           txtInput.addEventListener("change", (e) => {
@@ -1286,7 +1299,8 @@
             reader.onload = (ev) => {
               const ta = document.getElementById("bulk-keys-textarea");
               if (ta) {
-                ta.value = (ta.value ? ta.value + "\n" : "") + String(ev.target?.result || "");
+                ta.value = (ta.value ? ta.value + "
+" : "") + String(ev.target?.result || "");
               }
               showToast(`تم تحميل الملف (${file.name}) بنجاح.`, "success");
             };
