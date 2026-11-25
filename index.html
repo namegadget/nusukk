@@ -7,13 +7,14 @@
   <meta name="description" content="منصة ذكاء (ZKAE.com) — مبادرة فردية مستقلة لتبادل مفاتيح تحدي نسك مجاناً بضغطة زر. انسخ مفتاحاً واحصل على مفتاح." />
   <meta name="theme-color" content="#18191B" />
 
-  <!-- Google Analytics (G-6F6DN0G506) -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6F6DN0G506"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-6F6DN0G506');
+    gtag('config', 'G-PEWRLT4WYK');
   </script>
 
   <!-- Fonts: IBM Plex Sans Arabic & JetBrains Mono -->
@@ -638,17 +639,6 @@
           </button>
         </div>
 
-        <!-- Migrate from Old Firestore Collection -->
-        <div class="border-t border-black/10 pt-4 space-y-2.5">
-          <label class="block text-xs sm:text-sm font-bold text-nusukDark">2) نقل الأكواد من المجموعة القديمة في Firestore (اختياري):</label>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <input id="oldCollectionInput" type="text" placeholder="اسم المجموعة القديمة مثل: nusuk_codes أو keys" class="flex-1 px-3.5 py-2.5 rounded-xl bg-nusukBg border border-black/10 outline-none focus:border-nusukGold code-font text-xs sm:text-sm" />
-            <button id="adminMigrateBtn" type="button" class="px-4 py-2.5 rounded-xl bg-nusukDark hover:bg-black text-white text-xs sm:text-sm font-bold transition-all">
-              📥 سحب ونقل إلى shard_0
-            </button>
-          </div>
-        </div>
-
         <!-- Reset Local Test State -->
         <div class="border-t border-black/10 pt-4 flex items-center justify-between gap-3">
           <span class="text-xs text-gray-500">للمطور: تصفير كوكيز متصفحك الحالي لإعادة اختبار الإدخال:</span>
@@ -668,16 +658,18 @@
 
       /* =========================================================
        * 1. OBFUSCATED CONFIG (XOR 0x0F + Base64) & CONSTANTS
+       *    Project: zkae-nusuk-5df74
        * ========================================================= */
       const XOR_KEY = 0x0F;
       const ENC_CFG = {
-        k: 'TkZ1blx2S0leSz9EbT98QGciTF45N3tbTTZid1l8bWFlQVZ7W3k7',
-        p: 'YXp8emQibjo7ajs=',
+        k: 'TkZ1blx2TUFLf1hlVXxcbHg3UmN6TjxYYlZCTWEyQlZmRWczZW1CMWUyNWE=',
+        p: 'dWRuaiJhenx6ZCI6a2k4Ow==',
         a: 'VUROSk89Pz05LE5rYmZh'
       };
 
-      function decodeXorB64(b64) {
-        const bin = atob(b64);
+      function decodeXorB64(val) {
+        if (!val) return '';
+        const bin = atob(val);
         let out = '';
         for (let i = 0; i < bin.length; i++) {
           out += String.fromCharCode(bin.charCodeAt(i) ^ XOR_KEY);
@@ -697,7 +689,7 @@
       const DEV_KEY = 'NG-O8dPL1lh';
       const BATCH_SIZE = 33;
       const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes cache TTL
-      const CACHE_STORAGE_KEY = 'zkae_shard0_cache_v2';
+      const CACHE_STORAGE_KEY = 'zkae_shard0_cache_5df74';
       const USER_STORAGE_KEY = 'zkae_u_state_v2';
       const USER_COOKIE_NAME = 'zkae_u_ck_v2';
       const COOKIE_DAYS = 180;
@@ -873,6 +865,7 @@
        * 4. FIRESTORE REST API (XMLHttpRequest ONLY — Zero SDK)
        * ========================================================= */
       let shardDocExists = false;
+      let initialSyncSucceeded = false;
 
       function xhrJson(method, url, bodyObj) {
         return new Promise(function (resolve, reject) {
@@ -961,18 +954,23 @@
       async function fetchShardItems(forceRefresh) {
         if (!forceRefresh) {
           const cached = readShardCache();
-          if (cached) return { items: cached, fromCache: true };
+          if (cached) {
+            initialSyncSucceeded = true;
+            return { items: cached, fromCache: true };
+          }
         }
         const url = FIRESTORE_DOC_URL + '?key=' + encodeURIComponent(FB_API_KEY);
         try {
           const res = await xhrJson('GET', url);
           shardDocExists = true;
+          initialSyncSucceeded = true;
           const items = parseShardDocument(res.data);
           writeShardCache(items);
           return { items: items, fromCache: false };
         } catch (err) {
           if (err && err.status === 404) {
             shardDocExists = false;
+            initialSyncSucceeded = true;
             const empty = {};
             writeShardCache(empty);
             return { items: empty, fromCache: false };
@@ -1007,7 +1005,6 @@
       }
 
       async function patchSingleKeyToShard(code, t, claimed) {
-        // If shard_0 doesn't exist yet on Firestore, initialize full `items` map first
         if (!shardDocExists || Object.keys(shardItems).length === 0) {
           const initialMap = Object.assign({}, shardItems);
           initialMap[code] = { t: t, c: claimed };
@@ -1038,7 +1035,10 @@
       function formatFirebaseError(err) {
         if (!err) return 'تعذر الاتصال بقاعدة البيانات حالياً.';
         if (err.status === 403) {
-          return '⚠️ رفضت قواعد أمان Firebase العملية (HTTP 403). تأكد من نشر قواعد Firestore Rules الجديدة في لوحة Firebase.';
+          return '⚠️ رفضت قواعد أمان Firebase العملية (HTTP 403). افتح تبويب Rules في مشروع zkae-nusuk-5df74 وانشر قواعد Firestore Rules.';
+        }
+        if (err.status === 429) {
+          return '⚠️ تم تجاوز الحد المؤقت للطلبات (HTTP 429)، يرجى المحاولة بعد قليل.';
         }
         if (err.status === 400) {
           const detail = err.data && err.data.error && err.data.error.message ? ' (' + err.data.error.message + ')' : '';
@@ -1142,8 +1142,6 @@
         adminBulkText: document.getElementById('adminBulkText'),
         adminFileInput: document.getElementById('adminFileInput'),
         adminImportBtn: document.getElementById('adminImportBtn'),
-        oldCollectionInput: document.getElementById('oldCollectionInput'),
-        adminMigrateBtn: document.getElementById('adminMigrateBtn'),
         adminResetLocalBtn: document.getElementById('adminResetLocalBtn'),
         adminImportStatus: document.getElementById('adminImportStatus')
       };
@@ -1567,8 +1565,10 @@
         el.submitKeyBtn.textContent = 'جاري التحقق...';
 
         try {
-          const latest = await fetchShardItems(true);
-          shardItems = latest.items;
+          if (!initialSyncSucceeded) {
+            const latest = await fetchShardItems(true);
+            shardItems = latest.items;
+          }
 
           const existing = shardItems[code];
           if (existing && existing.c === true) {
@@ -1662,7 +1662,7 @@
       });
 
       /* =========================================================
-       * 10. HIDDEN ENCRYPTED ADMIN VAULT + OLD DB MIGRATOR
+       * 10. HIDDEN ENCRYPTED ADMIN VAULT
        * ========================================================= */
       let brandClickCount = 0;
       let brandClickTimer = null;
@@ -1739,34 +1739,6 @@
         reader.readAsText(file);
       });
 
-      async function importExtractedKeysList(extracted) {
-        const latest = await fetchShardItems(true);
-        const merged = Object.assign({}, latest.items);
-        const nowTs = Date.now();
-        let addedCount = 0;
-        let skippedCount = 0;
-
-        for (let i = 0; i < extracted.length; i++) {
-          const code = extracted[i];
-          if (code === DEV_KEY || merged[code]) {
-            skippedCount++;
-          } else {
-            merged[code] = { t: nowTs, c: false };
-            addedCount++;
-          }
-        }
-
-        if (addedCount > 0) {
-          await patchBulkItemsMap(merged);
-          shardItems = merged;
-          writeShardCache(shardItems);
-          animateCounter(el.totalKeysCounter, Object.keys(shardItems).length);
-          el.adminCurrentTotal.textContent = Object.keys(shardItems).length + ' مفتاح';
-          buildFreshBatch();
-        }
-        return { addedCount: addedCount, skippedCount: skippedCount };
-      }
-
       el.adminImportBtn.addEventListener('click', async function () {
         if (!adminUnlocked) return;
         const extracted = extractAllKeys(el.adminBulkText.value);
@@ -1781,14 +1753,44 @@
         el.adminImportStatus.classList.add('hidden');
 
         try {
-          const stats = await importExtractedKeysList(extracted);
+          let baseItems = Object.assign({}, shardItems);
+          if (!initialSyncSucceeded) {
+            const latest = await fetchShardItems(true);
+            baseItems = Object.assign({}, latest.items);
+          }
+          const nowTs = Date.now();
+          let addedCount = 0;
+          let skippedCount = 0;
+
+          for (let i = 0; i < extracted.length; i++) {
+            const code = extracted[i];
+            if (code === DEV_KEY || baseItems[code]) {
+              skippedCount++;
+            } else {
+              baseItems[code] = { t: nowTs, c: false };
+              addedCount++;
+            }
+          }
+
+          if (addedCount > 0) {
+            await patchBulkItemsMap(baseItems);
+            shardItems = baseItems;
+            writeShardCache(shardItems);
+            el.syncDot.classList.remove('bg-amber-500', 'bg-red-500');
+            el.syncDot.classList.add('bg-nusukEmerald');
+            el.syncStatusText.textContent = 'متصل ومُزامن لحظياً';
+            animateCounter(el.totalKeysCounter, Object.keys(shardItems).length);
+            el.adminCurrentTotal.textContent = Object.keys(shardItems).length + ' مفتاح';
+            buildFreshBatch();
+          }
+
           el.adminImportStatus.innerHTML =
             '✅ <strong>تمت العملية في طلب PATCH واحد!</strong><br>' +
-            '• المفاتيح الجديدة المضافة (c: false): <strong class="code-font">' + stats.addedCount + '</strong><br>' +
-            '• المفاتيح المكررة المستبعدة: <strong class="code-font">' + stats.skippedCount + '</strong><br>' +
+            '• المفاتيح الجديدة المضافة (c: false): <strong class="code-font">' + addedCount + '</strong><br>' +
+            '• المفاتيح المكررة المستبعدة: <strong class="code-font">' + skippedCount + '</strong><br>' +
             '• الإجمالي الحالي في shard_0: <strong class="code-font">' + Object.keys(shardItems).length + '</strong>';
           el.adminImportStatus.classList.remove('hidden');
-          if (stats.addedCount > 0) el.adminBulkText.value = '';
+          if (addedCount > 0) el.adminBulkText.value = '';
         } catch (err) {
           el.adminImportStatus.textContent = formatFirebaseError(err);
           el.adminImportStatus.classList.remove('hidden');
@@ -1798,53 +1800,6 @@
         }
       });
 
-      // Migrate Keys from Old Collection Path
-      el.adminMigrateBtn.addEventListener('click', async function () {
-        if (!adminUnlocked) return;
-        const colPath = el.oldCollectionInput.value.trim().replace(/^\/+|\/+$/g, '');
-        if (!colPath) {
-          el.adminImportStatus.textContent = '⚠️ اكتب اسم المجموعة القديمة أولاً (مثلاً: nusuk_codes أو keys).';
-          el.adminImportStatus.classList.remove('hidden');
-          return;
-        }
-
-        el.adminMigrateBtn.disabled = true;
-        el.adminMigrateBtn.textContent = 'جاري السحب...';
-        el.adminImportStatus.classList.add('hidden');
-
-        try {
-          const listUrl =
-            FIRESTORE_BASE_DOCS +
-            colPath +
-            '?pageSize=300&key=' +
-            encodeURIComponent(FB_API_KEY);
-          const res = await xhrJson('GET', listUrl);
-          const rawJsonStr = JSON.stringify(res.data || {});
-          const foundKeys = extractAllKeys(rawJsonStr);
-
-          if (foundKeys.length === 0) {
-            el.adminImportStatus.textContent = '⚠️ لم يتم العثور على أي أكواد NG-XXXX داخل المجموعة: ' + colPath;
-            el.adminImportStatus.classList.remove('hidden');
-            return;
-          }
-
-          const stats = await importExtractedKeysList(foundKeys);
-          el.adminImportStatus.innerHTML =
-            '📥 <strong>اكتمل النقل من المجموعة (' + colPath + ') إلى shard_0!</strong><br>' +
-            '• الأكواد المكتشفة: <strong class="code-font">' + foundKeys.length + '</strong><br>' +
-            '• المفاتيح الجديدة المنقولة: <strong class="code-font">' + stats.addedCount + '</strong><br>' +
-            '• المكررة المستبعدة: <strong class="code-font">' + stats.skippedCount + '</strong>';
-          el.adminImportStatus.classList.remove('hidden');
-        } catch (err) {
-          el.adminImportStatus.textContent = formatFirebaseError(err);
-          el.adminImportStatus.classList.remove('hidden');
-        } finally {
-          el.adminMigrateBtn.disabled = false;
-          el.adminMigrateBtn.textContent = '📥 سحب ونقل إلى shard_0';
-        }
-      });
-
-      // Reset Developer Browser State
       el.adminResetLocalBtn.addEventListener('click', function () {
         if (!adminUnlocked) return;
         userState = { myKey: null, copied: [], seen: [], helped: 0 };
