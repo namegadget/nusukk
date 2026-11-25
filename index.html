@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="referrer" content="no-referrer-when-downgrade" />
   <title>منصة ذكاء (ZKAE.com) | تبادل مفاتيح تحدي نسك</title>
 
   <!-- Google tag (gtag.js) -->
@@ -114,9 +114,12 @@
       </div>
 
       <!-- Cloud Sync Diagnostic Banner -->
-      <div id="cloud-warning-banner" class="hidden bg-red-50 border border-red-300 text-red-900 rounded-2xl px-4 py-3 text-xs sm:text-sm text-center font-medium leading-relaxed space-y-1">
-        <div>⚠️ <strong>تنبيه المزامنة السحابية:</strong> تعذر الاتصال بقاعدة بيانات Firebase.</div>
-        <div id="cloud-error-detail" dir="ltr" class="font-mono text-[11px] text-red-700 bg-red-100/80 rounded-lg px-2 py-1 inline-block"></div>
+      <div id="cloud-warning-banner" class="hidden bg-amber-50 border border-amber-300 text-amber-950 rounded-2xl px-4 py-3 text-xs sm:text-sm text-center font-medium leading-relaxed space-y-1.5">
+        <div>⚠️ <strong>تنبيه الشبكة:</strong> المتصفح أو شبكة Tor/VPN تحجب الاتصال المباشر بخوادم Google Firebase حالياً. يتم العمل بالوضع المحلي حتى يتم السماح بالاتصال.</div>
+        <div class="flex flex-wrap items-center justify-center gap-2">
+          <span id="cloud-error-detail" dir="ltr" class="font-mono text-[11px] text-amber-800 bg-amber-100 rounded-lg px-2 py-0.5"></span>
+          <button type="button" data-action="retry-cloud" class="bg-nusuk-dark text-white text-xs font-bold px-3 py-1 rounded-full cursor-pointer">🔄 إعادة المحاولة</button>
+        </div>
       </div>
 
       <div class="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3 pt-1">
@@ -395,7 +398,7 @@
 
         <div class="space-y-2">
           <div class="flex items-center justify-between">
-            <label for="bulk-keys-textarea" class="text-xs sm:text-sm font-bold text-gray-800">الصق قائمة الأكواد هنا (كل كود في سطر أو مفصول بمسافة/فاصلة):</label>
+            <label for="bulk-keys-textarea" class="text-xs sm:text-sm font-bold text-gray-800">الصق قائمة الأكواد هنا (حتى 2000 كود دفعة واحدة):</label>
             <label class="text-xs font-bold text-amber-800 hover:underline cursor-pointer bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
               <span>📄 رفع ملف TXT</span>
               <input id="bulk-txt-file" type="file" accept=".txt,.csv,text/plain" class="hidden" />
@@ -414,7 +417,7 @@
 
         <div class="flex flex-col sm:flex-row gap-2">
           <button id="bulk-import-submit-btn" type="button" data-action="run-bulk-import" class="flex-1 bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">
-            🚀 استيراد ونشر جميع الأكواد تلقائياً
+            🚀 استيراد ونشر جميع الأكواد دفعة واحدة
           </button>
           <button type="button" data-action="lock-admin" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">
             قفل الخزنة
@@ -424,7 +427,7 @@
     </div>
   </div>
 
-  <!-- Bulletproof Inline Script (Zero Syntax Errors, Works in Tor/Brave/All Browsers) -->
+  <!-- High-Speed Batch Commit Engine -->
   <script>
     (function() {
       "use strict";
@@ -552,20 +555,22 @@
 
       var DEV_KEY = _0x3c9d(7).toUpperCase();
       var APP_ID = "nusuk-keys-exchange";
-      var REST_BASE = "https://firestore.googleapis.com/v1/projects/" + FIREBASE_CFG.projectId + "/databases/(default)/documents";
+      var DOC_ROOT = "projects/" + FIREBASE_CFG.projectId + "/databases/(default)/documents";
+      var REST_BASE = "https://firestore.googleapis.com/v1/" + DOC_ROOT;
+      var REST_COMMIT_URL = "https://firestore.googleapis.com/v1/" + DOC_ROOT + ":commit?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
       var REST_KEYS_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_keys";
       var REST_LEGACY_POOL_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_pool/latest_keys_live";
       var BATCH_SIZE = 33;
-      var MAX_POOL_SIZE = 2500;
+      var MAX_POOL_SIZE = 3000;
       var RATE_LIMIT_MS = 1000;
 
       var S_KEYS = {
-        SINGLE_USER_KEY: "zkae_uk_v11",
-        COPIED_LIST: "zkae_cp_v11",
-        SEEN_LIST: "zkae_sn_v11",
-        BOOST_FLAG: "zkae_bs_v11",
-        POOL_DATA: "zkae_pl_v11",
-        DUA_SEEN: "zkae_du_v11"
+        SINGLE_USER_KEY: "zkae_uk_v13",
+        COPIED_LIST: "zkae_cp_v13",
+        SEEN_LIST: "zkae_sn_v13",
+        BOOST_FLAG: "zkae_bs_v13",
+        POOL_DATA: "zkae_pl_v13",
+        DUA_SEEN: "zkae_du_v13"
       };
 
       var keysPool = [];
@@ -693,7 +698,7 @@
         if (dot) {
           dot.className = ok
             ? "w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator shrink-0"
-            : "w-2.5 h-2.5 rounded-full bg-red-500 live-indicator shrink-0";
+            : "w-2.5 h-2.5 rounded-full bg-amber-500 live-indicator shrink-0";
         }
         if (banner) {
           banner.classList.toggle("hidden", ok);
@@ -703,36 +708,80 @@
         }
       }
 
+      function universalHttpRequest(method, url, bodyObj) {
+        return new Promise(function(resolve, reject) {
+          try {
+            var xhr = new XMLHttpRequest();
+            xhr.open(method, url, true);
+            xhr.timeout = 20000;
+            if (bodyObj) {
+              xhr.setRequestHeader("Content-Type", "application/json");
+            }
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                  try {
+                    resolve({ status: xhr.status, data: xhr.responseText ? JSON.parse(xhr.responseText) : {} });
+                  } catch (parseErr) {
+                    resolve({ status: xhr.status, data: {} });
+                  }
+                } else if (xhr.status === 404) {
+                  resolve({ status: 404, data: null });
+                } else {
+                  reject(new Error(xhr.status ? ("HTTP " + xhr.status) : "Network Blocked (Tor/Firewall)"));
+                }
+              }
+            };
+            xhr.ontimeout = function() {
+              reject(new Error("Connection Timeout"));
+            };
+            xhr.onerror = function() {
+              reject(new Error("Network Blocked (Tor/Firewall)"));
+            };
+            xhr.send(bodyObj ? JSON.stringify(bodyObj) : null);
+          } catch (e) {
+            reject(e);
+          }
+        });
+      }
+
       async function restFetchAllKeys() {
-        var url = REST_KEYS_PATH + "?pageSize=1000&key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-        var res = await fetch(url, { method: "GET", cache: "no-store" });
-        if (!res.ok) {
-          var errText = await res.text();
-          throw new Error("HTTP " + res.status + ": " + errText.slice(0, 140));
-        }
-        var json = await res.json();
-        var docs = Array.isArray(json.documents) ? json.documents : [];
-        var parsed = [];
-        for (var i = 0; i < docs.length; i++) {
-          var d = docs[i];
-          var docId = String(d.name || "").split("/").pop() || "";
-          var fields = d.fields || {};
-          var c = sanitizeKeyCode((fields.code && fields.code.stringValue) || docId);
-          if (isValidKeyFormat(c)) {
-            var addedAtVal = Number((fields.addedAt && (fields.addedAt.integerValue || fields.addedAt.doubleValue)) || Date.now());
-            var claimedVal = !fields.claimed || fields.claimed.booleanValue !== false;
-            parsed.push({ code: c, addedAt: addedAtVal, claimed: claimedVal });
+        var allParsed = [];
+        var pageToken = "";
+        var safetyPages = 0;
+
+        while (safetyPages < 5) {
+          safetyPages++;
+          var url = REST_KEYS_PATH + "?pageSize=1000&key=" + encodeURIComponent(FIREBASE_CFG.apiKey) + (pageToken ? "&pageToken=" + encodeURIComponent(pageToken) : "");
+          var res = await universalHttpRequest("GET", url, null);
+          var json = res.data || {};
+          var docs = Array.isArray(json.documents) ? json.documents : [];
+          for (var i = 0; i < docs.length; i++) {
+            var d = docs[i];
+            var docId = String(d.name || "").split("/").pop() || "";
+            var fields = d.fields || {};
+            var c = sanitizeKeyCode((fields.code && fields.code.stringValue) || docId);
+            if (isValidKeyFormat(c)) {
+              var addedAtVal = Number((fields.addedAt && (fields.addedAt.integerValue || fields.addedAt.doubleValue)) || Date.now());
+              var claimedVal = !fields.claimed || fields.claimed.booleanValue !== false;
+              allParsed.push({ code: c, addedAt: addedAtVal, claimed: claimedVal });
+            }
+          }
+          if (json.nextPageToken) {
+            pageToken = json.nextPageToken;
+          } else {
+            break;
           }
         }
-        return parsed;
+        return allParsed;
       }
 
       async function recoverLegacyPoolKeys() {
         try {
           var url = REST_LEGACY_POOL_PATH + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-          var res = await fetch(url, { method: "GET", cache: "no-store" });
-          if (!res.ok) return [];
-          var json = await res.json();
+          var res = await universalHttpRequest("GET", url, null);
+          if (res.status === 404 || !res.data) return [];
+          var json = res.data;
           var values = json.fields && json.fields.keys && json.fields.keys.arrayValue && json.fields.keys.arrayValue.values;
           if (!Array.isArray(values)) return [];
           var recovered = [];
@@ -754,13 +803,9 @@
 
       async function restGetKeyDoc(cleanCode) {
         var url = REST_KEYS_PATH + "/" + encodeURIComponent(cleanCode) + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-        var res = await fetch(url, { method: "GET", cache: "no-store" });
-        if (res.status === 404) return null;
-        if (!res.ok) {
-          var errText = await res.text();
-          throw new Error("HTTP " + res.status + ": " + errText.slice(0, 140));
-        }
-        var d = await res.json();
+        var res = await universalHttpRequest("GET", url, null);
+        if (res.status === 404 || !res.data) return null;
+        var d = res.data;
         var fields = d.fields || {};
         return {
           code: sanitizeKeyCode((fields.code && fields.code.stringValue) || cleanCode),
@@ -778,15 +823,27 @@
             claimed: { booleanValue: Boolean(claimed) }
           }
         };
-        var res = await fetch(url, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        });
-        if (!res.ok) {
-          var errText = await res.text();
-          throw new Error("HTTP " + res.status + ": " + errText.slice(0, 140));
+        await universalHttpRequest("PATCH", url, body);
+        return true;
+      }
+
+      async function restBatchCommitKeys(itemsArray) {
+        if (!itemsArray || itemsArray.length === 0) return true;
+        var writes = [];
+        for (var i = 0; i < itemsArray.length; i++) {
+          var item = itemsArray[i];
+          writes.push({
+            update: {
+              name: DOC_ROOT + "/artifacts/" + APP_ID + "/public/data/nusuk_keys/" + item.code,
+              fields: {
+                code: { stringValue: item.code },
+                addedAt: { integerValue: String(Math.floor(item.addedAt)) },
+                claimed: { booleanValue: Boolean(item.claimed) }
+              }
+            }
+          });
         }
+        await universalHttpRequest("POST", REST_COMMIT_URL, { writes: writes });
         return true;
       }
 
@@ -816,10 +873,14 @@
         setCloudStatus(true, "");
 
         var newSet = new Set(newList.map(function(x) { return x.code; }));
+        var toMigrate = [];
         for (var i = 0; i < legacyList.length; i++) {
           if (!newSet.has(legacyList[i].code)) {
-            try { await restUpsertKeyDoc(legacyList[i].code, legacyList[i].addedAt, true); } catch (e) {}
+            toMigrate.push({ code: legacyList[i].code, addedAt: legacyList[i].addedAt, claimed: true });
           }
+        }
+        if (toMigrate.length > 0) {
+          try { await restBatchCommitKeys(toMigrate.slice(0, 400)); } catch (e) {}
         }
 
         if (state.submittedUserKey && currentBatch.length < BATCH_SIZE) {
@@ -849,7 +910,7 @@
         if (!restPollTimer) {
           restPollTimer = setInterval(async function() {
             try { await syncFromRestNow(); } catch (e) {}
-          }, 12000);
+          }, 15000);
         }
       }
 
@@ -979,7 +1040,7 @@
         var submitBtn = document.getElementById("submit-visitor-btn");
         if (submitBtn) {
           submitBtn.disabled = true;
-          submitBtn.textContent = "جاري التحقق والحفظ في السحابة...";
+          submitBtn.textContent = "جاري التحقق والحفظ...";
         }
 
         var cloudRes = await registerOrClaimKeyInCloud(cleanCode);
@@ -1000,7 +1061,7 @@
         updateTotalCounter();
 
         if (cloudRes === "ERROR") {
-          showToast("تعذر الحفظ في السحابة! تأكد من نشر قواعد Firestore Rules.", "error");
+          showToast("تم حفظ مفتاحك محلياً بالكوكيز (اتصال السحابة محجوب في هذا المتصفح).", "warning");
         } else {
           showToast("تم إضافة مفتاحك بنجاح وحفظ تقدمك بالكوكيز! إليك مفاتيح المشاركين.", "success");
         }
@@ -1269,35 +1330,75 @@
         if (submitBtn) submitBtn.disabled = true;
         if (progressEl) {
           progressEl.classList.remove("hidden");
-          progressEl.textContent = "جاري استيراد " + uniqueCodes.length + " كود...";
+          progressEl.textContent = "جاري فحص ومطابقة " + uniqueCodes.length + " كود دفعة واحدة...";
         }
 
-        var addedCount = 0;
+        var existingSet = new Set();
+        try {
+          var currentCloud = await restFetchAllKeys();
+          currentCloud.forEach(function(item) { existingSet.add(item.code); });
+        } catch (e) {
+          keysPool.forEach(function(item) { existingSet.add(item.code); });
+        }
+
+        var newItemsToCommit = [];
         var skippedCount = 0;
+        var baseTime = Date.now();
 
         for (var i = 0; i < uniqueCodes.length; i++) {
           var code = uniqueCodes[i];
-          try {
-            var existing = await restGetKeyDoc(code);
-            if (!existing) {
-              await restUpsertKeyDoc(code, Date.now() - (uniqueCodes.length - i) * 1000, false);
-              addedCount++;
-            } else {
-              skippedCount++;
-            }
-          } catch (e) {
+          if (!existingSet.has(code)) {
+            newItemsToCommit.push({
+              code: code,
+              addedAt: baseTime - (uniqueCodes.length - i) * 1000,
+              claimed: false
+            });
+          } else {
             skippedCount++;
           }
+        }
 
-          if (progressEl && (i % 5 === 0 || i === uniqueCodes.length - 1)) {
-            progressEl.textContent = "جاري المعالجة: " + (i + 1) + " / " + uniqueCodes.length + " (جديد: " + addedCount + " | مكرر: " + skippedCount + ")";
+        if (newItemsToCommit.length === 0) {
+          if (submitBtn) submitBtn.disabled = false;
+          if (progressEl) progressEl.textContent = "جميع الأكواد المدخلة (" + skippedCount + ") موجودة مسبقاً!";
+          showToast("جميع الأكواد المدخلة موجودة مسبقاً في المنصة!", "warning");
+          return;
+        }
+
+        var CHUNK_SIZE = 350;
+        var committedTotal = 0;
+        var commitFailed = false;
+
+        for (var start = 0; start < newItemsToCommit.length; start += CHUNK_SIZE) {
+          var chunk = newItemsToCommit.slice(start, start + CHUNK_SIZE);
+          if (progressEl) {
+            progressEl.textContent = "جاري رفع الدفعة السحابية (" + (start + chunk.length) + " / " + newItemsToCommit.length + ")...";
+          }
+          try {
+            await restBatchCommitKeys(chunk);
+            committedTotal += chunk.length;
+          } catch (err) {
+            commitFailed = true;
+            setCloudStatus(false, String((err && err.message) || err));
+            break;
           }
         }
+
+        keysPool = buildUniquePool(keysPool.concat(newItemsToCommit));
+        await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
+        updateTotalCounter();
 
         try { await syncFromRestNow(); } catch (e) {}
         if (submitBtn) submitBtn.disabled = false;
         if (textarea) textarea.value = "";
-        showToast("اكتمل الاستيراد! تمت إضافة " + addedCount + " كود جديد (وتجاهل " + skippedCount + " مكرر).", "success");
+
+        if (commitFailed) {
+          if (progressEl) progressEl.textContent = "تم حفظ " + newItemsToCommit.length + " كود محلياً (تعذر الاتصال بالسحابة بسبب الشبكة).";
+          showToast("تعذر الإرسال للسحابة (تحقق من الاتصال أو قواعد Firestore Rules).", "error");
+        } else {
+          if (progressEl) progressEl.textContent = "✓ اكتمل الاستيراد السريع: " + committedTotal + " كود جديد | " + skippedCount + " مكرر.";
+          showToast("تم استيراد " + committedTotal + " كود جديد بنجاح في ثانية واحدة!", "success");
+        }
       }
 
       function initAutoVisitorStats() {
@@ -1372,6 +1473,9 @@
               await handleSubmitVisitorKey();
             } else if (act === "refresh-batch") {
               await generateAndRenderFairBatch(true);
+            } else if (act === "retry-cloud") {
+              showToast("جاري إعادة الاتصال بالسحابة...", "warning");
+              await initCloudSync();
             } else if (act === "open-dua") {
               toggleModal("dua-tiktok-modal", true);
             } else if (act === "close-dua") {
