@@ -332,7 +332,7 @@
           <strong id="extractedCodeText" class="code-font text-base"></strong>
         </div>
 
-        <div id="submitFeedback" class="hidden text-xs sm:text-sm font-medium px-4 py-3 rounded-xl"></div>
+        <div id="submitFeedback" class="hidden text-xs sm:text-sm font-medium px-4 py-3 rounded-xl leading-relaxed"></div>
       </div>
 
       <!-- Locked State After Successful Submission + 3x Share Booster -->
@@ -615,15 +615,16 @@
       </div>
 
       <!-- Unlocked Admin Panel -->
-      <div id="adminPanel" class="hidden space-y-4">
+      <div id="adminPanel" class="hidden space-y-5">
         <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-800 flex items-center justify-between">
           <span>✅ تم التحقق بنجاح — وضع الاستيراد الجماعي (PATCH واحد إلى shard_0 بحالة c: false)</span>
           <strong id="adminCurrentTotal" class="code-font">0</strong>
         </div>
 
+        <!-- Bulk Paste / File Import -->
         <div class="space-y-2">
-          <label class="block text-xs sm:text-sm font-bold text-nusukDark">الصق قائمة المفاتيح (أو رسائل نسك مختلطة):</label>
-          <textarea id="adminBulkText" rows="6" placeholder="NG-XXXXXXXX&#10;NG-YYYYYYYY&#10;..." class="w-full p-3.5 rounded-xl bg-nusukBg border border-black/10 outline-none focus:border-nusukGold code-font text-xs sm:text-sm"></textarea>
+          <label class="block text-xs sm:text-sm font-bold text-nusukDark">1) استيراد قائمة مفاتيح (لصق أو ملف .txt):</label>
+          <textarea id="adminBulkText" rows="5" placeholder="NG-XXXXXXXX&#10;NG-YYYYYYYY&#10;..." class="w-full p-3.5 rounded-xl bg-nusukBg border border-black/10 outline-none focus:border-nusukGold code-font text-xs sm:text-sm"></textarea>
         </div>
 
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -634,6 +635,25 @@
 
           <button id="adminImportBtn" type="button" class="px-6 py-2.5 rounded-xl bg-nusukEmerald hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold transition-all">
             🚀 تصفية ورفع الدفعة (PATCH واحد)
+          </button>
+        </div>
+
+        <!-- Migrate from Old Firestore Collection -->
+        <div class="border-t border-black/10 pt-4 space-y-2.5">
+          <label class="block text-xs sm:text-sm font-bold text-nusukDark">2) نقل الأكواد من المجموعة القديمة في Firestore (اختياري):</label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input id="oldCollectionInput" type="text" placeholder="اسم المجموعة القديمة مثل: nusuk_codes أو keys" class="flex-1 px-3.5 py-2.5 rounded-xl bg-nusukBg border border-black/10 outline-none focus:border-nusukGold code-font text-xs sm:text-sm" />
+            <button id="adminMigrateBtn" type="button" class="px-4 py-2.5 rounded-xl bg-nusukDark hover:bg-black text-white text-xs sm:text-sm font-bold transition-all">
+              📥 سحب ونقل إلى shard_0
+            </button>
+          </div>
+        </div>
+
+        <!-- Reset Local Test State -->
+        <div class="border-t border-black/10 pt-4 flex items-center justify-between gap-3">
+          <span class="text-xs text-gray-500">للمطور: تصفير كوكيز متصفحك الحالي لإعادة اختبار الإدخال:</span>
+          <button id="adminResetLocalBtn" type="button" class="px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-all">
+            🧹 تصفير حالة جهازي
           </button>
         </div>
 
@@ -667,16 +687,16 @@
 
       const FB_API_KEY = decodeXorB64(ENC_CFG.k);
       const FB_PROJECT_ID = decodeXorB64(ENC_CFG.p);
-      const SHARD_PATH = 'artifacts/nusuk-keys-exchange/public/data/nusuk_shards/shard_0';
-      const FIRESTORE_DOC_URL =
+      const FIRESTORE_BASE_DOCS =
         'https://firestore.googleapis.com/v1/projects/' +
         encodeURIComponent(FB_PROJECT_ID) +
-        '/databases/(default)/documents/' +
-        SHARD_PATH;
+        '/databases/(default)/documents/';
+      const SHARD_PATH = 'artifacts/nusuk-keys-exchange/public/data/nusuk_shards/shard_0';
+      const FIRESTORE_DOC_URL = FIRESTORE_BASE_DOCS + SHARD_PATH;
 
       const DEV_KEY = 'NG-O8dPL1lh';
       const BATCH_SIZE = 33;
-      const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes cache TTL (Zero HTTP 429)
+      const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes cache TTL
       const CACHE_STORAGE_KEY = 'zkae_shard0_cache_v2';
       const USER_STORAGE_KEY = 'zkae_u_state_v2';
       const USER_COOKIE_NAME = 'zkae_u_ck_v2';
@@ -684,7 +704,7 @@
       const STORAGE_XOR_SECRET = 'ZKAE#2026$Nusuk!Key';
 
       /* =========================================================
-       * 2. PURE-JS SHA-256 (Works everywhere incl. HTTP/Tor/Brave)
+       * 2. PURE-JS SHA-256
        * ========================================================= */
       function sha256Hex(ascii) {
         function rightRotate(value, amount) {
@@ -759,7 +779,6 @@
 
       /* =========================================================
        * 3. DUAL PERSISTENT STORAGE (Cookies 180d + LocalStorage)
-       *    XOR Encrypted + SHA-256 Signed
        * ========================================================= */
       function xorCipher(str, key) {
         let out = '';
@@ -773,8 +792,7 @@
         const json = JSON.stringify(obj);
         const sig = sha256Hex(json + '|' + STORAGE_XOR_SECRET).slice(0, 24);
         const payload = JSON.stringify({ d: json, s: sig });
-        const enc = btoa(unescape(encodeURIComponent(xorCipher(payload, STORAGE_XOR_SECRET))));
-        return enc;
+        return btoa(unescape(encodeURIComponent(xorCipher(payload, STORAGE_XOR_SECRET))));
       }
 
       function unpackSignedState(raw) {
@@ -838,7 +856,6 @@
       function saveUserState(state) {
         const packed = packSignedState(state);
         try { localStorage.setItem(USER_STORAGE_KEY, packed); } catch (e) {}
-        // Keep cookie within ~3.8KB safe browser limit
         if (packed.length < 3600) {
           setCookie(USER_COOKIE_NAME, packed, COOKIE_DAYS);
         } else {
@@ -854,13 +871,14 @@
 
       /* =========================================================
        * 4. FIRESTORE REST API (XMLHttpRequest ONLY — Zero SDK)
-       *    Single-Document Shard Architecture (shard_0)
        * ========================================================= */
+      let shardDocExists = false;
+
       function xhrJson(method, url, bodyObj) {
         return new Promise(function (resolve, reject) {
           const xhr = new XMLHttpRequest();
           xhr.open(method, url, true);
-          xhr.timeout = 14000;
+          xhr.timeout = 15000;
           xhr.setRequestHeader('Accept', 'application/json');
           if (bodyObj !== undefined) {
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -927,6 +945,7 @@
           const parsed = JSON.parse(raw);
           if (!parsed || !parsed.items || typeof parsed.ts !== 'number') return null;
           if (Date.now() - parsed.ts < CACHE_TTL_MS) {
+            if (Object.keys(parsed.items).length > 0) shardDocExists = true;
             return parsed.items;
           }
         } catch (e) {}
@@ -947,38 +966,19 @@
         const url = FIRESTORE_DOC_URL + '?key=' + encodeURIComponent(FB_API_KEY);
         try {
           const res = await xhrJson('GET', url);
+          shardDocExists = true;
           const items = parseShardDocument(res.data);
           writeShardCache(items);
           return { items: items, fromCache: false };
         } catch (err) {
           if (err && err.status === 404) {
+            shardDocExists = false;
             const empty = {};
             writeShardCache(empty);
             return { items: empty, fromCache: false };
           }
           throw err;
         }
-      }
-
-      async function patchSingleKeyToShard(code, t, claimed) {
-        const maskPath = 'items.`' + code + '`';
-        const url =
-          FIRESTORE_DOC_URL +
-          '?key=' +
-          encodeURIComponent(FB_API_KEY) +
-          '&updateMask.fieldPaths=' +
-          encodeURIComponent(maskPath);
-        const body = {
-          fields: {
-            items: {
-              mapValue: {
-                fields: {}
-              }
-            }
-          }
-        };
-        body.fields.items.mapValue.fields[code] = buildFirestoreItemValue(t, claimed);
-        await xhrJson('PATCH', url, body);
       }
 
       async function patchBulkItemsMap(mergedItems) {
@@ -1003,6 +1003,48 @@
           }
         };
         await xhrJson('PATCH', url, body);
+        shardDocExists = true;
+      }
+
+      async function patchSingleKeyToShard(code, t, claimed) {
+        // If shard_0 doesn't exist yet on Firestore, initialize full `items` map first
+        if (!shardDocExists || Object.keys(shardItems).length === 0) {
+          const initialMap = Object.assign({}, shardItems);
+          initialMap[code] = { t: t, c: claimed };
+          await patchBulkItemsMap(initialMap);
+          return;
+        }
+
+        const maskPath = 'items.`' + code + '`';
+        const url =
+          FIRESTORE_DOC_URL +
+          '?key=' +
+          encodeURIComponent(FB_API_KEY) +
+          '&updateMask.fieldPaths=' +
+          encodeURIComponent(maskPath);
+        const body = {
+          fields: {
+            items: {
+              mapValue: {
+                fields: {}
+              }
+            }
+          }
+        };
+        body.fields.items.mapValue.fields[code] = buildFirestoreItemValue(t, claimed);
+        await xhrJson('PATCH', url, body);
+      }
+
+      function formatFirebaseError(err) {
+        if (!err) return 'تعذر الاتصال بقاعدة البيانات حالياً.';
+        if (err.status === 403) {
+          return '⚠️ رفضت قواعد أمان Firebase العملية (HTTP 403). تأكد من نشر قواعد Firestore Rules الجديدة في لوحة Firebase.';
+        }
+        if (err.status === 400) {
+          const detail = err.data && err.data.error && err.data.error.message ? ' (' + err.data.error.message + ')' : '';
+          return '⚠️ خطأ في صيغة الطلب إلى قاعدة البيانات (HTTP 400)' + detail;
+        }
+        return '⚠️ تعذر الاتصال بقاعدة البيانات حالياً' + (err.status ? ' (HTTP ' + err.status + ')' : '') + '، يرجى المحاولة بعد لحظات.';
       }
 
       /* =========================================================
@@ -1048,8 +1090,8 @@
        * 6. APPLICATION STATE & DOM REFERENCES
        * ========================================================= */
       let userState = loadUserState();
-      let shardItems = {}; // { "NG-XXXX": { t, c } }
-      let currentBatch = []; // up to 33 codes currently displayed
+      let shardItems = {};
+      let currentBatch = [];
       let nextFeaturedCode = null;
       let toastTimer = null;
 
@@ -1100,6 +1142,9 @@
         adminBulkText: document.getElementById('adminBulkText'),
         adminFileInput: document.getElementById('adminFileInput'),
         adminImportBtn: document.getElementById('adminImportBtn'),
+        oldCollectionInput: document.getElementById('oldCollectionInput'),
+        adminMigrateBtn: document.getElementById('adminMigrateBtn'),
+        adminResetLocalBtn: document.getElementById('adminResetLocalBtn'),
         adminImportStatus: document.getElementById('adminImportStatus')
       };
 
@@ -1315,7 +1360,6 @@
           recordCopiedCode(activeCode);
           showToast('تم نسخ ' + activeCode + ' واستبداله فوراً', '✅');
 
-          // Instant In-Place Swap
           const exclude = currentBatch.slice();
           if (nextFeaturedCode) exclude.push(nextFeaturedCode);
           const replacements = getEligiblePool(exclude);
@@ -1429,7 +1473,6 @@
       /* =========================================================
        * 9. INTERACTION HANDLERS
        * ========================================================= */
-      // Next Code Copy + Instant Swap
       async function handleCopyNextKey(openAppAfter) {
         if (!nextFeaturedCode) return;
         const copied = nextFeaturedCode;
@@ -1464,21 +1507,18 @@
       el.copyNextKeyBtn.addEventListener('click', function () { handleCopyNextKey(false); });
       el.openNusukBtn.addEventListener('click', function () { handleCopyNextKey(true); });
 
-      // Developer Key Copy
       el.copyDevKeyBtn.addEventListener('click', async function () {
         pulseButton(el.copyDevKeyBtn);
         await copyTextToClipboard(DEV_KEY);
         showToast('شكراً لدعمك! تم نسخ مفتاح المطور ' + DEV_KEY, '⭐');
       });
 
-      // Refresh 33-Code Batch
       el.refreshBatchBtn.addEventListener('click', function () {
         pulseButton(el.refreshBatchBtn);
         buildFreshBatch();
         showToast('تم تحديث القائمة وجلب دفعة جديدة عشوائية', '🔄');
       });
 
-      // Smart Key Extraction on Input
       el.userKeyInput.addEventListener('input', function () {
         const extracted = extractSingleKey(el.userKeyInput.value);
         if (extracted) {
@@ -1491,7 +1531,6 @@
         }
       });
 
-      // Paste Button
       el.pasteKeyBtn.addEventListener('click', async function () {
         pulseButton(el.pasteKeyBtn);
         try {
@@ -1510,7 +1549,6 @@
         }
       });
 
-      // Submit User Key (Duplicate Protection + Auto-Claim)
       el.submitKeyBtn.addEventListener('click', async function () {
         if (userState.myKey) return;
         pulseButton(el.submitKeyBtn);
@@ -1529,7 +1567,6 @@
         el.submitKeyBtn.textContent = 'جاري التحقق...';
 
         try {
-          // Verify latest state once before write
           const latest = await fetchShardItems(true);
           shardItems = latest.items;
 
@@ -1550,6 +1587,10 @@
           userState.myKey = code;
           saveUserState(userState);
 
+          el.syncDot.classList.remove('bg-amber-500', 'bg-red-500');
+          el.syncDot.classList.add('bg-nusukEmerald');
+          el.syncStatusText.textContent = 'متصل ومُزامن لحظياً';
+
           animateCounter(el.totalKeysCounter, Object.keys(shardItems).length);
           renderUserSubmissionLock(
             isAutoClaim
@@ -1559,14 +1600,13 @@
           buildFreshBatch();
           showToast('تم حفظ مفتاحك ' + code + ' بنجاح!', '🎉');
         } catch (err) {
-          showSubmitFeedback('تعذر الاتصال بقاعدة البيانات حالياً، يرجى المحاولة بعد لحظات.', true);
+          showSubmitFeedback(formatFirebaseError(err), true);
         } finally {
           el.submitKeyBtn.disabled = false;
           el.submitKeyBtn.innerHTML = '<span>إضافة مفتاحي</span><span>🚀</span>';
         }
       });
 
-      // Share Buttons (3x Visibility Booster)
       document.querySelectorAll('.share-btn').forEach(function (btn) {
         btn.addEventListener('click', async function () {
           pulseButton(btn);
@@ -1595,7 +1635,6 @@
         });
       });
 
-      // FAQ Accordion
       document.querySelectorAll('.faq-toggle').forEach(function (btn) {
         btn.addEventListener('click', function () {
           const item = btn.closest('.faq-item');
@@ -1607,7 +1646,6 @@
         });
       });
 
-      // Dua Modal
       function toggleDuaModal(open) {
         el.duaModal.classList.toggle('hidden', !open);
         el.duaModal.classList.toggle('flex', open);
@@ -1624,8 +1662,7 @@
       });
 
       /* =========================================================
-       * 10. HIDDEN ENCRYPTED ADMIN VAULT
-       *     Trigger: 5 clicks on Brand Badge OR Ctrl + Shift + K
+       * 10. HIDDEN ENCRYPTED ADMIN VAULT + OLD DB MIGRATOR
        * ========================================================= */
       let brandClickCount = 0;
       let brandClickTimer = null;
@@ -1702,6 +1739,34 @@
         reader.readAsText(file);
       });
 
+      async function importExtractedKeysList(extracted) {
+        const latest = await fetchShardItems(true);
+        const merged = Object.assign({}, latest.items);
+        const nowTs = Date.now();
+        let addedCount = 0;
+        let skippedCount = 0;
+
+        for (let i = 0; i < extracted.length; i++) {
+          const code = extracted[i];
+          if (code === DEV_KEY || merged[code]) {
+            skippedCount++;
+          } else {
+            merged[code] = { t: nowTs, c: false };
+            addedCount++;
+          }
+        }
+
+        if (addedCount > 0) {
+          await patchBulkItemsMap(merged);
+          shardItems = merged;
+          writeShardCache(shardItems);
+          animateCounter(el.totalKeysCounter, Object.keys(shardItems).length);
+          el.adminCurrentTotal.textContent = Object.keys(shardItems).length + ' مفتاح';
+          buildFreshBatch();
+        }
+        return { addedCount: addedCount, skippedCount: skippedCount };
+      }
+
       el.adminImportBtn.addEventListener('click', async function () {
         if (!adminUnlocked) return;
         const extracted = extractAllKeys(el.adminBulkText.value);
@@ -1716,40 +1781,16 @@
         el.adminImportStatus.classList.add('hidden');
 
         try {
-          const latest = await fetchShardItems(true);
-          const merged = Object.assign({}, latest.items);
-          const nowTs = Date.now();
-          let addedCount = 0;
-          let skippedCount = 0;
-
-          for (let i = 0; i < extracted.length; i++) {
-            const code = extracted[i];
-            if (code === DEV_KEY || merged[code]) {
-              skippedCount++;
-            } else {
-              merged[code] = { t: nowTs, c: false }; // c: false enables Auto-Claim
-              addedCount++;
-            }
-          }
-
-          if (addedCount > 0) {
-            await patchBulkItemsMap(merged);
-            shardItems = merged;
-            writeShardCache(shardItems);
-            animateCounter(el.totalKeysCounter, Object.keys(shardItems).length);
-            el.adminCurrentTotal.textContent = Object.keys(shardItems).length + ' مفتاح';
-            buildFreshBatch();
-          }
-
+          const stats = await importExtractedKeysList(extracted);
           el.adminImportStatus.innerHTML =
             '✅ <strong>تمت العملية في طلب PATCH واحد!</strong><br>' +
-            '• المفاتيح الجديدة المضافة (c: false): <strong class="code-font">' + addedCount + '</strong><br>' +
-            '• المفاتيح المكررة المستبعدة: <strong class="code-font">' + skippedCount + '</strong><br>' +
+            '• المفاتيح الجديدة المضافة (c: false): <strong class="code-font">' + stats.addedCount + '</strong><br>' +
+            '• المفاتيح المكررة المستبعدة: <strong class="code-font">' + stats.skippedCount + '</strong><br>' +
             '• الإجمالي الحالي في shard_0: <strong class="code-font">' + Object.keys(shardItems).length + '</strong>';
           el.adminImportStatus.classList.remove('hidden');
-          if (addedCount > 0) el.adminBulkText.value = '';
+          if (stats.addedCount > 0) el.adminBulkText.value = '';
         } catch (err) {
-          el.adminImportStatus.textContent = '❌ فشل الرفع: ' + (err && err.message ? err.message : 'خطأ في الاتصال');
+          el.adminImportStatus.textContent = formatFirebaseError(err);
           el.adminImportStatus.classList.remove('hidden');
         } finally {
           el.adminImportBtn.disabled = false;
@@ -1757,8 +1798,67 @@
         }
       });
 
+      // Migrate Keys from Old Collection Path
+      el.adminMigrateBtn.addEventListener('click', async function () {
+        if (!adminUnlocked) return;
+        const colPath = el.oldCollectionInput.value.trim().replace(/^\/+|\/+$/g, '');
+        if (!colPath) {
+          el.adminImportStatus.textContent = '⚠️ اكتب اسم المجموعة القديمة أولاً (مثلاً: nusuk_codes أو keys).';
+          el.adminImportStatus.classList.remove('hidden');
+          return;
+        }
+
+        el.adminMigrateBtn.disabled = true;
+        el.adminMigrateBtn.textContent = 'جاري السحب...';
+        el.adminImportStatus.classList.add('hidden');
+
+        try {
+          const listUrl =
+            FIRESTORE_BASE_DOCS +
+            colPath +
+            '?pageSize=300&key=' +
+            encodeURIComponent(FB_API_KEY);
+          const res = await xhrJson('GET', listUrl);
+          const rawJsonStr = JSON.stringify(res.data || {});
+          const foundKeys = extractAllKeys(rawJsonStr);
+
+          if (foundKeys.length === 0) {
+            el.adminImportStatus.textContent = '⚠️ لم يتم العثور على أي أكواد NG-XXXX داخل المجموعة: ' + colPath;
+            el.adminImportStatus.classList.remove('hidden');
+            return;
+          }
+
+          const stats = await importExtractedKeysList(foundKeys);
+          el.adminImportStatus.innerHTML =
+            '📥 <strong>اكتمل النقل من المجموعة (' + colPath + ') إلى shard_0!</strong><br>' +
+            '• الأكواد المكتشفة: <strong class="code-font">' + foundKeys.length + '</strong><br>' +
+            '• المفاتيح الجديدة المنقولة: <strong class="code-font">' + stats.addedCount + '</strong><br>' +
+            '• المكررة المستبعدة: <strong class="code-font">' + stats.skippedCount + '</strong>';
+          el.adminImportStatus.classList.remove('hidden');
+        } catch (err) {
+          el.adminImportStatus.textContent = formatFirebaseError(err);
+          el.adminImportStatus.classList.remove('hidden');
+        } finally {
+          el.adminMigrateBtn.disabled = false;
+          el.adminMigrateBtn.textContent = '📥 سحب ونقل إلى shard_0';
+        }
+      });
+
+      // Reset Developer Browser State
+      el.adminResetLocalBtn.addEventListener('click', function () {
+        if (!adminUnlocked) return;
+        userState = { myKey: null, copied: [], seen: [], helped: 0 };
+        saveUserState(userState);
+        try { localStorage.removeItem(CACHE_STORAGE_KEY); } catch (e) {}
+        renderUserSubmissionLock();
+        renderCopiedHistory();
+        animateCounter(el.helpedCounter, 0);
+        buildFreshBatch();
+        showToast('تم تصفير حالة متصفحك بنجاح', '🧹');
+      });
+
       /* =========================================================
-       * 11. BOOTSTRAP & INITIALIZATION (1 Read Only, Zero Polling)
+       * 11. BOOTSTRAP & INITIALIZATION
        * ========================================================= */
       function initOnlineIndicator() {
         const base = 14 + (new Date().getMinutes() % 19);
@@ -1788,7 +1888,9 @@
         } catch (err) {
           el.syncDot.classList.remove('bg-nusukEmerald');
           el.syncDot.classList.add('bg-amber-500');
-          el.syncStatusText.textContent = 'وضع الطوارئ المحلي (تعذر الوصول للسحابة)';
+          el.syncStatusText.textContent = err && err.status === 403
+            ? 'بانتظار نشر قواعد Firestore Rules'
+            : 'وضع الطوارئ المحلي (تعذر الوصول للسحابة)';
           shardItems = {};
           buildFreshBatch();
         }
