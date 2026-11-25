@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <meta name="referrer" content="no-referrer-when-downgrade" />
-  <title>منصة ذكاء (ZKAE.com) | تبادل مفاتيح تحدي نسك</title>
+  <title>منصة ذكاء (ZKAE.com) — تبادل مفاتيح تحدي نسك المجانية</title>
+  <meta name="description" content="منصة ذكاء (ZKAE.com) — مبادرة فردية مستقلة لتبادل مفاتيح تحدي نسك مجاناً بضغطة زر. انسخ مفتاحاً واحصل على مفتاح." />
+  <meta name="theme-color" content="#18191B" />
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Google Analytics (G-6F6DN0G506) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6F6DN0G506"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -15,1488 +16,1785 @@
     gtag('config', 'G-6F6DN0G506');
   </script>
 
-  <!-- Google Fonts: IBM Plex Sans Arabic -->
+  <!-- Fonts: IBM Plex Sans Arabic & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          colors: {
+            nusukBg: '#F5F6F8',
+            nusukSand: '#E6DEC8',
+            nusukGold: '#D99B26',
+            nusukEmerald: '#059669',
+            nusukDark: '#18191B',
+          },
           fontFamily: {
             sans: ['"IBM Plex Sans Arabic"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
           },
-          colors: {
-            nusuk: {
-              bg: '#F5F6F8',
-              sand: '#E6DEC8',
-              sandLight: '#F6EFE0',
-              gold: '#D99B26',
-              goldDark: '#B87D14',
-              navy: '#1B2A4A',
-              navyLight: '#2D4263',
-              dark: '#18191B',
-            }
+          borderRadius: {
+            card: '22px',
+          },
+          boxShadow: {
+            soft: '0 10px 30px -10px rgba(24, 25, 27, 0.07)',
+            gold: '0 10px 25px -8px rgba(217, 155, 38, 0.28)',
+            emerald: '0 10px 25px -8px rgba(5, 150, 105, 0.28)',
           }
         }
       }
-    }
+    };
   </script>
 
+  <!-- Anime.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body {
-      max-width: 100%;
-      overflow-x: hidden;
-      font-family: 'IBM Plex Sans Arabic', sans-serif;
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
       background-color: #F5F6F8;
       color: #18191B;
-      -webkit-tap-highlight-color: transparent;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      overflow-x: hidden;
     }
-    .nusuk-header-gradient { background: linear-gradient(175deg, #E2D8C0 0%, #EFE9DA 55%, #F5F6F8 100%); }
-    .nusuk-promo-gradient { background: linear-gradient(135deg, #F8EFE0 0%, #FFFFFF 52%, #ECE7F6 100%); }
-    .soft-card {
+    .code-font {
+      font-family: 'JetBrains Mono', monospace;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .hero-pattern {
+      background-image: radial-gradient(rgba(217, 155, 38, 0.14) 1px, transparent 1px);
+      background-size: 22px 22px;
+    }
+    .card-surface {
       background: #FFFFFF;
       border-radius: 22px;
-      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.045);
-      border: 1px solid rgba(226, 232, 240, 0.85);
+      border: 1px solid rgba(24, 25, 27, 0.06);
+      box-shadow: 0 10px 30px -10px rgba(24, 25, 27, 0.06);
     }
-    @keyframes pulseDot {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.35); opacity: 0.65; }
+    .pulse-dot {
+      position: relative;
     }
-    .live-indicator { animation: pulseDot 1.8s infinite ease-in-out; }
-    @keyframes slideUpFade {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .pulse-dot::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 9999px;
+      background: inherit;
+      opacity: 0.45;
+      animation: pingDot 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
     }
-    .animate-fade-in { animation: slideUpFade 0.35s ease-out forwards; }
+    @keyframes pingDot {
+      75%, 100% { transform: scale(2.1); opacity: 0; }
+    }
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    .faq-item.open .faq-content {
+      max-height: 360px;
+      opacity: 1;
+    }
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+    .stagger-el {
+      opacity: 0;
+      transform: translateY(18px);
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-amber-200 selection:text-amber-900">
+<body class="min-h-screen flex flex-col antialiased selection:bg-nusukSand selection:text-nusukDark">
 
-  <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 pointer-events-none w-[94%] max-w-md"></div>
+  <!-- Top Legal Disclaimer Bar -->
+  <div class="bg-nusukDark text-nusukSand text-xs sm:text-sm py-2 px-4 text-center border-b border-white/10">
+    <p class="max-w-5xl mx-auto leading-relaxed">
+      تنويه: <strong class="text-white">منصة ذكاء (ZKAE.com)</strong> هي برمجة خاصة ومبادرة فردية مستقلة من مطور فردي، ولا تتبع للمنصة الرسمية <span class="code-font text-nusukGold">NUSUK.SA</span> أو وزارة الحج والعمرة بأي صفة.
+    </p>
+  </div>
 
-  <div class="w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pt-3 sm:pt-5 pb-10 space-y-4 sm:space-y-6">
-
-    <!-- Header -->
-    <header class="nusuk-header-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-7 border border-amber-200/60 shadow-sm space-y-4 sm:space-y-5">
-      <div class="bg-amber-900/10 border border-amber-800/20 rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 text-center text-[11px] sm:text-sm text-amber-950 font-medium leading-relaxed">
-        ⚠️ <strong>تنويه مهم:</strong> <strong>منصة ذكاء (ZKAE.com)</strong> هي <strong>برمجة خاصة ومبادرة فردية من مطور مستقل</strong>، ولا ترتبط بالمنصة الرسمية <span dir="ltr" class="font-bold underline">NUSUK.SA</span> بأي صفة من الصفات، ولا تحاول انتحال صفتها على الإطلاق.
-      </div>
-
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3">
-        <!-- Brand Badge & Live Counter -->
-        <div class="w-full sm:w-auto flex flex-wrap items-center justify-center gap-2">
-          <div id="secret-brand-trigger" class="inline-flex items-center gap-2 bg-nusuk-dark text-white px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold shadow-xs select-none cursor-default">
-            <span class="text-amber-400">✦</span>
+  <!-- Navbar -->
+  <header class="sticky top-0 z-40 glass-nav border-b border-black/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <!-- Brand Badge (5 clicks opens Hidden Admin Vault) -->
+      <button id="brandVaultTrigger" type="button" class="flex items-center gap-2 text-right group focus:outline-none select-none" title="منصة ذكاء ZKAE.com">
+        <span class="w-9 h-9 rounded-xl bg-nusukDark text-nusukGold flex items-center justify-center text-lg font-bold shadow-sm group-hover:scale-105 transition-transform">✦</span>
+        <div class="leading-tight">
+          <div class="font-bold text-sm sm:text-base text-nusukDark flex items-center gap-1.5">
             <span>منصة ذكاء</span>
-            <span dir="ltr" class="text-amber-300 font-mono text-xs">ZKAE.com</span>
+            <span class="code-font text-xs px-2 py-0.5 rounded-full bg-nusukSand/70 text-nusukDark font-semibold">ZKAE.com</span>
           </div>
-
-          <div class="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3.5 py-2 rounded-full border border-amber-200/80 shadow-xs text-xs sm:text-sm font-semibold text-gray-800">
-            <span id="cloud-status-dot" class="w-2.5 h-2.5 rounded-full bg-amber-400 live-indicator shrink-0"></span>
-            <span>المفاتيح المتزامنة: <strong id="total-pool-count" class="text-amber-700 font-bold">1</strong> مفتاح</span>
-          </div>
+          <div class="text-[11px] text-gray-500 hidden sm:block">تبادل مفاتيح تحدي نسك مجاناً</div>
         </div>
+      </button>
 
-        <div class="w-full sm:w-auto flex items-center justify-center gap-2">
-          <button type="button" data-action="open-dua" class="flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 bg-white hover:bg-amber-50 text-amber-900 border border-amber-300/80 px-3.5 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
-            <span>🤲 دعاء الحاجة</span>
-          </button>
-          <button type="button" data-action="open-guide" class="flex-1 sm:flex-initial justify-center inline-flex items-center gap-1.5 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-3.5 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-xs transition cursor-pointer">
-            <span>ℹ️ طريقة التفعيل</span>
-          </button>
-        </div>
+      <!-- Quick Links -->
+      <nav class="hidden md:flex items-center gap-5 text-sm font-medium text-gray-600">
+        <a href="#next-key-section" class="hover:text-nusukDark transition-colors">المفتاح التالي</a>
+        <a href="#grid-section" class="hover:text-nusukDark transition-colors">33 مفتاحاً</a>
+        <a href="#add-key-section" class="hover:text-nusukDark transition-colors">أضف مفتاحك</a>
+        <a href="#how-it-works" class="hover:text-nusukDark transition-colors">كيف تعمل</a>
+        <a href="#faq-section" class="hover:text-nusukDark transition-colors">الأسئلة الشائعة</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button id="openDuaBtn" type="button" class="px-3 py-2 rounded-xl bg-nusukSand/80 hover:bg-nusukSand text-nusukDark text-xs sm:text-sm font-semibold transition-all active:scale-95 flex items-center gap-1.5">
+          <span>🤲</span>
+          <span class="hidden sm:inline">دعاء الحاجة</span>
+          <span class="sm:hidden">دعاء</span>
+        </button>
+        <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-nusukDark hover:bg-black text-white text-xs sm:text-sm font-semibold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5 fill-current text-nusukGold" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+          <span class="code-font">@abbuzakaria</span>
+        </a>
       </div>
+    </div>
+  </header>
 
-      <!-- Cloud Sync Diagnostic Banner -->
-      <div id="cloud-warning-banner" class="hidden bg-amber-50 border border-amber-300 text-amber-950 rounded-2xl px-4 py-3 text-xs sm:text-sm text-center font-medium leading-relaxed space-y-1.5">
-        <div>⚠️ <strong>تنبيه المزامنة السحابية:</strong> تعذر الاتصال بالسحابة مؤقتاً (قد تكون الحصة اليومية ممتلئة أو الشبكة مقيدة).</div>
-        <div class="flex flex-wrap items-center justify-center gap-2">
-          <span id="cloud-error-detail" dir="ltr" class="font-mono text-[11px] text-amber-800 bg-amber-100 rounded-lg px-2 py-0.5"></span>
-          <button type="button" data-action="retry-cloud" class="bg-nusuk-dark text-white text-xs font-bold px-3 py-1 rounded-full cursor-pointer">🔄 إعادة المحاولة</button>
-        </div>
-      </div>
+  <!-- Main Content -->
+  <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-8">
 
-      <div class="text-center max-w-2xl mx-auto space-y-2.5 sm:space-y-3 pt-1">
-        <div class="inline-flex items-center gap-1.5 bg-white/85 text-amber-900 px-3.5 py-1 rounded-full text-[11px] sm:text-xs font-semibold border border-amber-200/70">
-          <span>🕋 مبادرة ذكية لتبادل مفاتيح نسك • حفظ تلقائي لتقدمك بالكوكيز</span>
+    <!-- Hero Section & Live Stats -->
+    <section class="stagger-el card-surface hero-pattern p-6 sm:p-10 relative overflow-hidden">
+      <div class="max-w-3xl mx-auto text-center space-y-5">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-nusukSand/70 border border-nusukGold/25 text-nusukDark text-xs sm:text-sm font-semibold">
+          <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-nusukEmerald pulse-dot"></span>
+          <span id="syncStatusText">متصل ومُزامن لحظياً</span>
         </div>
-        <h1 class="text-xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-          منصة <span class="text-amber-700">ذكاء</span> لتبادل مفاتيح تحدي نسك
+
+        <h1 class="text-2xl sm:text-4xl lg:text-[42px] font-bold text-nusukDark leading-tight">
+          مفاتيح تحدي نسك المجانية —
+          <span class="text-nusukGold">انسخ مفتاحاً واحصل على مفتاح</span>
         </h1>
-        <p class="text-xs sm:text-base text-gray-700 leading-relaxed">
-          أضف مفتاحك الخاص <strong>مرة واحدة فقط</strong> ليُحفظ في السحابة ويظهر للزوار الآخرين على <strong dir="ltr">ZKAE.com</strong>، واحصل فوراً على <strong>33 مفتاحاً عشوائياً منصفاً</strong> دون تكرار!
+
+        <p class="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          تبادل مفاتيح التحدي بعدالة وسرعة فائقة بدون تسجيل دخول. كل مفتاح تنسخه يُستبدل فوراً بآخر جديد، ويبقى تقدمك محفوظاً تلقائياً على جهازك.
         </p>
 
-        <div class="pt-1">
-          <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-nusuk-dark hover:bg-black text-white px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold shadow-sm transition transform active:scale-95">
-            <span>تابع مطور منصة ذكاء على تيك توك</span>
-            <span dir="ltr" class="text-amber-400 font-bold">@abbuzakaria</span>
-          </a>
+        <!-- Live Stats Bar -->
+        <div class="grid grid-cols-2 gap-3 sm:gap-5 max-w-xl mx-auto pt-2">
+          <div class="bg-white/95 rounded-2xl p-4 border border-black/5 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1">إجمالي المفاتيح المتزامنة</div>
+            <div class="flex items-center justify-center gap-2">
+              <span id="totalKeysCounter" class="text-2xl sm:text-3xl font-bold text-nusukDark code-font">0</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-nusukEmerald font-semibold">مباشر</span>
+            </div>
+          </div>
+
+          <div class="bg-white/95 rounded-2xl p-4 border border-black/5 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1">أشخاص ساعدتهم</div>
+            <div class="flex items-center justify-center gap-2">
+              <span id="helpedCounter" class="text-2xl sm:text-3xl font-bold text-nusukEmerald code-font">0</span>
+              <span class="text-base">🤝</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hadith Card -->
+        <div class="mt-4 bg-gradient-to-l from-nusukSand/45 via-white to-nusukSand/30 border border-nusukGold/25 rounded-2xl p-4 sm:p-5 text-right max-w-2xl mx-auto">
+          <div class="flex items-start gap-3">
+            <span class="text-xl sm:text-2xl shrink-0">🕌</span>
+            <div class="space-y-1">
+              <p class="text-xs sm:text-sm font-semibold text-nusukDark leading-relaxed">
+                قال رسول الله ﷺ: «الْعُمْرَةُ إِلَى الْعُمْرَةِ كَفَّارَةٌ لِمَا بَيْنَهُمَا، وَالْحَجُّ الْمَبْرُورُ لَيْسَ لَهُ جَزَاءٌ إِلَّا الْجَنَّةُ»
+              </p>
+              <p class="text-[11px] sm:text-xs text-gray-500">
+                متفق عليه — وقال ﷺ: «والله في عون العبد ما كان العبد في عون أخيه»
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </header>
+    </section>
 
-    <!-- Main 2-Column Grid -->
-    <main class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
+    <!-- Two Column Highlight: Developer Key + Next Code For You -->
+    <section id="next-key-section" class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-      <!-- STEP 1: Optional Developer Support Key -->
-      <section class="soft-card p-4 sm:p-6 flex flex-col justify-between space-y-4">
-        <div class="space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-full bg-nusuk-dark text-white font-bold text-sm flex items-center justify-center shrink-0">1</span>
-              <h2 class="text-base sm:text-xl font-bold text-gray-900">دعم مطور المنصة (اختياري)</h2>
+      <!-- Next Code For You (Main Action Card) -->
+      <div class="stagger-el lg:col-span-7 card-surface p-6 sm:p-7 flex flex-col justify-between border-t-4 border-t-nusukEmerald">
+        <div class="flex items-center justify-between gap-2 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-9 h-9 rounded-xl bg-emerald-50 text-nusukEmerald flex items-center justify-center text-lg">🔑</span>
+            <div>
+              <h2 class="text-lg sm:text-xl font-bold text-nusukDark">المفتاح التالي لك</h2>
+              <p class="text-xs text-gray-500">يُستبدل تلقائياً بمفتاح جديد فور النسخ</p>
             </div>
-            <span id="step1-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">مُدرج في السحب العشوائي</span>
           </div>
+          <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-50 text-nusukEmerald">جاهز للنسخ</span>
+        </div>
 
-          <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-            أنا مطور فردي بسيط؛ إذا أحببت دعم استمرار <strong>منصة ذكاء</strong> فانسخ مفتاح المطور وأدخله في تطبيق نسك، أو انتقل مباشرة للخطوة (2):
-          </p>
-
-          <div class="nusuk-promo-gradient border border-amber-200/80 rounded-2xl p-3.5 sm:p-4 text-center space-y-1">
-            <span class="text-xs font-semibold text-amber-800 block">رمز مفتاح المطور</span>
-            <div id="owner-key-display" dir="ltr" class="font-mono text-xl sm:text-3xl font-bold tracking-wider text-gray-900 select-all break-all">NG-O8dPL1lh</div>
+        <div id="nextKeyBox" class="bg-nusukBg border border-black/5 rounded-2xl p-5 text-center my-2 relative overflow-hidden">
+          <div class="text-xs text-gray-500 mb-1.5">رمز التحدي الحالي</div>
+          <div id="nextKeyDisplay" class="code-font text-2xl sm:text-3xl font-bold tracking-wider text-nusukDark select-all">
+            جاري التحميل...
           </div>
         </div>
 
-        <button id="copy-owner-btn" type="button" data-action="copy-owner" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3.5 px-5 rounded-full text-xs sm:text-base shadow-sm transition transform active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer">
-          <span id="copy-owner-btn-text">📋 نسخ مفتاح المطور</span>
-        </button>
-      </section>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+          <button id="copyNextKeyBtn" type="button" class="w-full py-3.5 px-5 rounded-2xl bg-nusukEmerald hover:bg-emerald-700 text-white font-bold text-sm sm:text-base shadow-emerald transition-all flex items-center justify-center gap-2">
+            <span>📋</span>
+            <span>نسخ الكود</span>
+          </button>
+          <button id="openNusukBtn" type="button" class="w-full py-3.5 px-5 rounded-2xl bg-nusukDark hover:bg-black text-white font-bold text-sm sm:text-base transition-all flex items-center justify-center gap-2">
+            <span>📱</span>
+            <span>فتح في تطبيق نسك</span>
+          </button>
+        </div>
+      </div>
 
-      <!-- STEP 2: Add Visitor Key -->
-      <section id="step2-card" class="soft-card p-4 sm:p-6 flex flex-col justify-between space-y-4">
-        <div class="space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-full bg-nusuk-gold text-white font-bold text-sm flex items-center justify-center shrink-0">2</span>
-              <h2 class="text-base sm:text-xl font-bold text-gray-900">أضف مفتاحك الخاص (مرة واحدة)</h2>
+      <!-- Developer Support Card (Optional) -->
+      <div class="stagger-el lg:col-span-5 card-surface p-6 sm:p-7 flex flex-col justify-between bg-gradient-to-br from-white via-white to-nusukSand/35 border-t-4 border-t-nusukGold">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-9 h-9 rounded-xl bg-amber-50 text-nusukGold flex items-center justify-center text-lg">⭐</span>
+              <div>
+                <h2 class="text-lg font-bold text-nusukDark">دعم مطور المنصة</h2>
+                <p class="text-xs text-gray-500">اختياري — شكراً لدعمك استمرار المنصة مجاناً</p>
+              </div>
             </div>
-            <span id="step2-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">متاح مباشرة</span>
+            <span class="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-nusukSand text-nusukDark">اختياري</span>
           </div>
 
-          <p id="step2-helper-text" class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-            أدخل رمز مفتاحك من تطبيق نسك (يُمنع تكرار أي مفتاح في المنصة، ويُحفظ تقدمك تلقائياً عبر الكوكيز):
+          <p class="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+            إذا أعجبتك <strong class="text-nusukDark">منصة ذكاء</strong> وأردت دعم المطور <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" class="text-nusukGold font-semibold hover:underline code-font">@abbuzakaria</a>، يمكنك استخدام مفتاحه أدناه داخل تطبيق نسك:
           </p>
 
-          <div class="flex items-center gap-2">
+          <div class="bg-white border border-nusukGold/30 rounded-2xl p-4 text-center mb-4">
+            <div class="text-[11px] text-gray-500 mb-1">مفتاح المطور الرسمي</div>
+            <div id="devKeyCode" class="code-font text-xl sm:text-2xl font-bold text-nusukDark tracking-wider select-all">NG-O8dPL1lh</div>
+          </div>
+        </div>
+
+        <button id="copyDevKeyBtn" type="button" class="w-full py-3.5 px-5 rounded-2xl bg-nusukGold hover:bg-amber-600 text-white font-bold text-sm sm:text-base shadow-gold transition-all flex items-center justify-center gap-2">
+          <span>📋</span>
+          <span>نسخ مفتاح المطور</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Add Your Own Key Section (Smart Extraction + One-Time Lock + Auto-Claim) -->
+    <section id="add-key-section" class="stagger-el card-surface p-6 sm:p-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-2xl bg-nusukDark text-nusukGold flex items-center justify-center text-xl">➕</span>
+          <div>
+            <h2 class="text-lg sm:text-2xl font-bold text-nusukDark">أضف مفتاحك الخاص (مرة واحدة)</h2>
+            <p class="text-xs sm:text-sm text-gray-500">الصق رسالة الدعوة الكاملة من تطبيق نسك أو الكود مباشرة وسنستخرجه تلقائياً</p>
+          </div>
+        </div>
+        <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-nusukSand/70 text-nusukDark self-start sm:self-center">استخراج ذكي لرمز NG-XXXX</span>
+      </div>
+
+      <!-- Submission Form -->
+      <div id="submitFormContainer" class="space-y-4">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <div class="relative flex-1">
             <input
-              id="visitor-key-input"
+              id="userKeyInput"
               type="text"
-              dir="ltr"
-              maxlength="24"
-              placeholder="NG-XXXXXXXX"
               autocomplete="off"
-              class="flex-1 min-w-0 text-center font-mono text-base sm:text-xl font-bold tracking-wider uppercase bg-gray-50 border border-gray-300 focus:border-nusuk-gold focus:ring-2 focus:ring-amber-200 rounded-2xl py-3 px-4 outline-none transition disabled:opacity-75 disabled:cursor-not-allowed"
+              spellcheck="false"
+              placeholder="الصق رسالة نسك كاملة هنا أو اكتب مفتاحك مثل: NG-XXXXXXXX"
+              class="w-full px-4 py-3.5 rounded-2xl bg-nusukBg border border-black/10 focus:border-nusukGold focus:bg-white focus:ring-2 focus:ring-nusukGold/20 outline-none text-sm sm:text-base transition-all"
             />
-            <button
-              id="paste-visitor-btn"
-              type="button"
-              data-action="paste-visitor"
-              title="لصق من الحافظة"
-              class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-2xl text-xs sm:text-sm border border-gray-300 transition shrink-0 cursor-pointer"
-            >
-              📋 لصق
+          </div>
+          <div class="flex gap-2.5 shrink-0">
+            <button id="pasteKeyBtn" type="button" class="px-4 py-3.5 rounded-2xl bg-nusukSand hover:bg-[#ddd3b8] text-nusukDark font-bold text-sm transition-all flex items-center justify-center gap-1.5">
+              <span>📋</span>
+              <span>لصق</span>
+            </button>
+            <button id="submitKeyBtn" type="button" class="flex-1 sm:flex-none px-6 py-3.5 rounded-2xl bg-nusukDark hover:bg-black text-white font-bold text-sm sm:text-base transition-all flex items-center justify-center gap-2">
+              <span>إضافة مفتاحي</span>
+              <span>🚀</span>
             </button>
           </div>
         </div>
 
-        <button
-          id="submit-visitor-btn"
-          type="button"
-          data-action="submit-visitor"
-          class="w-full bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3.5 px-5 rounded-full text-xs sm:text-base shadow-sm transition transform active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-        >
-          إضافة مفتاحي وعرض مفاتيح المشاركين
-        </button>
-      </section>
-    </main>
+        <!-- Smart Preview Pill -->
+        <div id="extractedPreview" class="hidden items-center gap-2 text-xs sm:text-sm bg-emerald-50 text-nusukEmerald px-4 py-2.5 rounded-xl border border-emerald-200/70">
+          <span>✅ تم اكتشاف المفتاح تلقائياً:</span>
+          <strong id="extractedCodeText" class="code-font text-base"></strong>
+        </div>
 
-    <!-- Visual Share Boost Card -->
-    <section id="share-boost-card" class="hidden nusuk-promo-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-300/70 shadow-sm space-y-4 animate-fade-in">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <h3 class="text-sm sm:text-lg font-bold text-gray-900">🚀 ضاعف نسبة ظهور مفتاحك للزوار</h3>
-        <span id="boost-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">أولوية عادية 1x</span>
+        <div id="submitFeedback" class="hidden text-xs sm:text-sm font-medium px-4 py-3 rounded-xl"></div>
       </div>
 
-      <div class="space-y-1.5">
-        <div class="flex items-center justify-between text-xs font-semibold text-gray-700">
-          <span>مؤشر أولوية الظهور</span>
-          <span id="boost-percent-label" class="text-amber-800 font-bold">35% (عادية)</span>
+      <!-- Locked State After Successful Submission + 3x Share Booster -->
+      <div id="submittedLockedBox" class="hidden space-y-5">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2 text-nusukEmerald font-bold text-base">
+              <span>🎉</span>
+              <span id="submittedStatusHeading">مفتاحك مفعّل ومضاف في التوزيع العادل!</span>
+            </div>
+            <p class="text-xs sm:text-sm text-emerald-900/80">
+              يُمنع تكرار المفتاح على مستوى المنصة لضمان العدالة. مفتاحك المحفوظ:
+              <strong id="mySavedKeyBadge" class="code-font px-2.5 py-0.5 rounded-lg bg-white text-nusukDark border border-emerald-200 mx-1"></strong>
+            </p>
+          </div>
+          <span class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white text-nusukEmerald border border-emerald-200 self-start sm:self-center">🔒 محفوظ بالكوكيز</span>
         </div>
-        <div class="w-full h-3 bg-gray-200/80 rounded-full overflow-hidden">
-          <div id="boost-progress-bar" class="h-full bg-gradient-to-l from-amber-500 to-emerald-500 rounded-full transition-all duration-700" style="width: 35%;"></div>
+
+        <!-- 3x Share Booster -->
+        <div class="bg-nusukBg rounded-2xl p-5 border border-black/5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+            <h3 class="font-bold text-sm sm:text-base text-nusukDark">🚀 ضاعف ظهور مفتاحك (3x) عبر مشاركة المنصة</h3>
+            <span class="text-xs text-nusukGold font-semibold">كلما زاد الزوار زادت فرص نسخ مفتاحك!</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+            <button data-share="whatsapp" type="button" class="share-btn py-2.5 px-3 rounded-xl bg-[#25D366] hover:opacity-90 text-white text-xs sm:text-sm font-bold transition-all">واتساب</button>
+            <button data-share="telegram" type="button" class="share-btn py-2.5 px-3 rounded-xl bg-[#0088cc] hover:opacity-90 text-white text-xs sm:text-sm font-bold transition-all">تيليجرام</button>
+            <button data-share="facebook" type="button" class="share-btn py-2.5 px-3 rounded-xl bg-[#1877F2] hover:opacity-90 text-white text-xs sm:text-sm font-bold transition-all">فيسبوك</button>
+            <button data-share="x" type="button" class="share-btn py-2.5 px-3 rounded-xl bg-nusukDark hover:opacity-90 text-white text-xs sm:text-sm font-bold transition-all">منصة X</button>
+            <button data-share="copy" type="button" class="share-btn col-span-2 sm:col-span-1 py-2.5 px-3 rounded-xl bg-nusukSand hover:bg-[#ddd3b8] text-nusukDark text-xs sm:text-sm font-bold transition-all">📋 نسخ الرابط</button>
+          </div>
         </div>
-      </div>
-
-      <p class="text-xs sm:text-sm text-gray-600">
-        شارك رابط <strong>منصة ذكاء (ZKAE.com)</strong> مع أصدقائك أو في مجموعات العمرة لتفعيل أولوية الظهور القصوى <strong>(3x)</strong> لمفتاحك:
-      </p>
-
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-2.5">
-        <button type="button" data-share="whatsapp" class="bg-[#25D366] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">واتساب</button>
-        <button type="button" data-share="telegram" class="bg-[#229ED9] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">تيليجرام</button>
-        <button type="button" data-share="facebook" class="bg-[#1877F2] hover:opacity-95 text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">فيسبوك</button>
-        <button type="button" data-share="x" class="bg-gray-900 hover:bg-black text-white font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">منصة X</button>
-        <button type="button" data-share="copy" class="col-span-2 sm:col-span-1 bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 font-bold py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer">نسخ الرابط</button>
       </div>
     </section>
 
-    <!-- STEP 3: 33 Fairly Distributed Random Keys -->
-    <section id="step3-section" class="hidden soft-card p-4 sm:p-6 space-y-4 animate-fade-in">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
-        <div class="flex items-start gap-3">
-          <span class="w-8 h-8 rounded-full bg-emerald-600 text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">3</span>
-          <div>
-            <div class="flex flex-wrap items-center gap-2">
-              <h2 class="text-base sm:text-xl font-bold text-gray-900">مفاتيح المشاركين الآخرين (حتى 33 مفتاحاً عشوائياً)</h2>
-              <span id="list-total-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">المعروض: 0 / 33</span>
-            </div>
-            <p class="text-xs sm:text-sm text-gray-600 mt-0.5">
-              يظهر لك هنا مفاتيح الزوار الآخرين (ومفتاح المطور) بإنصاف، <strong>مع استبعاد مفتاحك الخاص</strong> وأي مفتاح نسخته سابقاً لمنع التكرار تماماً.
-            </p>
-          </div>
+    <!-- More Codes Grid (Up to 33 Fair Random Codes + Instant In-Place Swap) -->
+    <section id="grid-section" class="stagger-el space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-bold text-nusukDark flex items-center gap-2">
+            <span>🎲</span>
+            <span>المزيد من المفاتيح</span>
+            <span id="batchCountBadge" class="text-xs px-2.5 py-1 rounded-full bg-nusukSand text-nusukDark font-semibold">0 مفتاح</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-500 mt-1">
+            توزيع عشوائي منصف حتى 33 مفتاحاً (يُستبعد مفتاحك الشخصي وما نسخته سابقاً). عند النسخ يُستبدل الكود فوراً في نفس المكان.
+          </p>
         </div>
 
-        <button type="button" data-action="refresh-batch" class="w-full sm:w-auto justify-center bg-nusuk-dark hover:bg-black text-white font-bold py-2.5 px-4 rounded-full text-xs sm:text-sm shadow-xs transition flex items-center gap-1.5 cursor-pointer shrink-0 active:scale-95">
-          <svg id="refresh-icon" class="w-4 h-4 text-amber-400 shrink-0 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
+        <button id="refreshBatchBtn" type="button" class="px-5 py-3 rounded-2xl bg-white hover:bg-nusukSand/50 border border-black/10 text-nusukDark font-bold text-xs sm:text-sm shadow-sm transition-all flex items-center justify-center gap-2 shrink-0">
+          <span>🔄</span>
           <span>تحديث القائمة وجلب 33 كود جديد</span>
         </button>
       </div>
 
-      <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-semibold text-gray-600 bg-gray-50/90 border border-gray-200/80 rounded-2xl px-3.5 py-2.5">
-        <span>🍪 تقدمك محفوظ تلقائياً • مفتاحك (<strong id="my-key-badge" dir="ltr" class="font-mono text-amber-800">-</strong>) يُعرض للآخرين</span>
-        <div class="flex items-center gap-3">
-          <span id="remaining-pool-label" class="text-amber-800">المتبقي لك: 0</span>
-          <span>•</span>
-          <span id="copied-progress-label" class="text-emerald-700">نسخت: 0</span>
-        </div>
+      <!-- 33-Code Grid -->
+      <div id="codesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        <!-- Populated dynamically -->
       </div>
 
-      <div id="keys-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3"></div>
-
-      <div id="empty-keys-box" class="hidden text-center py-8 px-4 bg-gray-50 rounded-2xl border border-dashed border-gray-300 space-y-3">
-        <p id="empty-title" class="text-sm sm:text-base font-bold text-gray-800">لا توجد مفاتيح إضافية جديدة حالياً 🎉</p>
-        <p id="empty-desc" class="text-xs sm:text-sm text-gray-600">مفتاحك مُدرج الآن في السحابة وسيظهر للزوار القادمين! اضغط "تحديث القائمة" بعد قليل لجلب مفاتيح المشاركين الجدد.</p>
+      <!-- Empty / Exhausted State -->
+      <div id="emptyGridNotice" class="hidden card-surface p-8 text-center space-y-3">
+        <div class="text-3xl">✨</div>
+        <h3 class="font-bold text-lg text-nusukDark">أحسنت! لقد نسخت جميع المفاتيح المتاحة حالياً</h3>
+        <p class="text-sm text-gray-500">يمكنك مشاركة المنصة لجلب مفاتيح جديدة، أو إعادة التحقق لاحقاً.</p>
       </div>
     </section>
 
-  </div>
-
-  <!-- Footer -->
-  <footer class="w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pb-8 pt-2">
-    <div class="soft-card p-4 sm:p-6 text-center space-y-4">
-      <div class="flex flex-wrap items-center justify-center gap-2">
-        <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-900 border border-amber-200/80 px-3.5 py-1 rounded-full text-xs font-bold">
-          <span>🌍 إحصائيات زوار منصة ذكاء (ZKAE.com) حول العالم</span>
-        </span>
-        <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200/80 px-3 py-1 rounded-full text-xs font-bold">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 live-indicator"></span>
-          <span>متواجدون الآن: <strong id="live-online-visitors">1</strong></span>
-        </span>
+    <!-- Copied Codes History Section -->
+    <section id="copied-section" class="stagger-el card-surface p-6 sm:p-7">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-nusukSand/70 text-nusukDark flex items-center justify-center text-lg">🧾</span>
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold text-nusukDark">الأكواد التي نسختها (Copied Codes)</h2>
+            <p class="text-xs text-gray-500">سجل محفوظ تلقائياً لمنع التكرار عند تصفحك المنصة</p>
+          </div>
+        </div>
+        <span id="copiedCountPill" class="code-font text-xs font-bold px-3 py-1 rounded-full bg-nusukBg border border-black/10 text-nusukDark">0</span>
       </div>
 
-      <div class="max-w-xl mx-auto bg-[#E6DEC8]/60 border border-[#CCCCCC]/80 rounded-2xl p-2.5 sm:p-3 flex items-center justify-center overflow-hidden">
-        <a href="https://info.flagcounter.com/ll3n" target="_blank" rel="noopener noreferrer" title="إحصائيات الزوار حسب الدولة">
+      <div id="copiedList" class="flex flex-wrap gap-2">
+        <p class="text-xs sm:text-sm text-gray-400">لم تقم بنسخ أي مفتاح بعد. اضغط على أي مفتاح أعلاه ليظهر هنا.</p>
+      </div>
+    </section>
+
+    <!-- How It Works (3 Illustrated Steps) -->
+    <section id="how-it-works" class="stagger-el space-y-5">
+      <div class="text-center space-y-1">
+        <h2 class="text-xl sm:text-2xl font-bold text-nusukDark">كيف تعمل منصة ذكاء؟</h2>
+        <p class="text-xs sm:text-sm text-gray-500">ثلاث خطوات بسيطة لإتمام تحدي نسك بسرعة وعدالة</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="card-surface p-6 text-center space-y-3">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-nusukSand/60 text-2xl flex items-center justify-center">1️⃣</div>
+          <h3 class="font-bold text-base text-nusukDark">انسخ مفتاحاً بضغطة زر</h3>
+          <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            اختر مفتاحاً من "المفتاح التالي لك" أو من شبكة الـ 33 مفتاحاً، وسيُنسخ للحافظة ويُستبدل فوراً بآخر جديد.
+          </p>
+        </div>
+
+        <div class="card-surface p-6 text-center space-y-3">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-50 text-2xl flex items-center justify-center">2️⃣</div>
+          <h3 class="font-bold text-base text-nusukDark">فعّله داخل تطبيق نسك</h3>
+          <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            افتح تطبيق نسك والصق المفتاح لمساعدة أخيك المسلم، ثم انسخ رسالة الدعوة الخاصة بك من التطبيق.
+          </p>
+        </div>
+
+        <div class="card-surface p-6 text-center space-y-3">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 text-2xl flex items-center justify-center">3️⃣</div>
+          <h3 class="font-bold text-base text-nusukDark">أضف مفتاحك وشارك المنصة</h3>
+          <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+            الصق رسالتك في خانة "أضف مفتاحك الخاص" ليُستخرج رمزك تلقائياً ويدخل التوزيع العادل للجميع.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section id="faq-section" class="stagger-el card-surface p-6 sm:p-8 space-y-4">
+      <div class="flex items-center gap-2.5 mb-2">
+        <span class="text-xl">❓</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-nusukDark">الأسئلة الشائعة</h2>
+      </div>
+
+      <div class="divide-y divide-black/5">
+        <div class="faq-item py-3.5">
+          <button type="button" class="faq-toggle w-full flex items-center justify-between gap-3 text-right font-semibold text-sm sm:text-base text-nusukDark">
+            <span>هل منصة ذكاء (ZKAE.com) تابعة لتطبيق نسك أو وزارة الحج والعمرة؟</span>
+            <span class="faq-chevron transition-transform duration-300 text-gray-400">▼</span>
+          </button>
+          <div class="faq-content">
+            <p class="pt-2.5 text-xs sm:text-sm text-gray-600 leading-relaxed">
+              لا، منصة ذكاء هي مبادرة فردية مستقلة وبرمجة خاصة لمساعدة المشاركين في تبادل المفاتيح بشكل منظم وعادل، ولا تتبع لـ NUSUK.SA أو وزارة الحج والعمرة بأي صفة رسمية.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item py-3.5">
+          <button type="button" class="faq-toggle w-full flex items-center justify-between gap-3 text-right font-semibold text-sm sm:text-base text-nusukDark">
+            <span>لماذا لا أستطيع إضافة مفتاحي أكثر من مرة؟</span>
+            <span class="faq-chevron transition-transform duration-300 text-gray-400">▼</span>
+          </button>
+          <div class="faq-content">
+            <p class="pt-2.5 text-xs sm:text-sm text-gray-600 leading-relaxed">
+              لضمان العدالة الكاملة بين جميع الزوار ومنع الإغراق (Spam)، يقبل النظام كل مفتاح فريد مرة واحدة فقط على مستوى المنصة ويوزعه عشوائياً بالتساوي.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item py-3.5">
+          <button type="button" class="faq-toggle w-full flex items-center justify-between gap-3 text-right font-semibold text-sm sm:text-base text-nusukDark">
+            <span>هل سأرى الأكواد التي نسختها سابقاً مرة أخرى؟</span>
+            <span class="faq-chevron transition-transform duration-300 text-gray-400">▼</span>
+          </button>
+          <div class="faq-content">
+            <p class="pt-2.5 text-xs sm:text-sm text-gray-600 leading-relaxed">
+              لا، تقوم المنصة بحفظ سجل الأكواد التي نسختها ومفتاحك الشخصي عبر نظام تخزين مشفر وموقّع (كوكيز لمدة 180 يوماً + التخزين المحلي) لاستبعادها تلقائياً في كل زيارة.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item py-3.5">
+          <button type="button" class="faq-toggle w-full flex items-center justify-between gap-3 text-right font-semibold text-sm sm:text-base text-nusukDark">
+            <span>كيف أزيد فرصة نسخ مفتاحي من قِبل الآخرين؟</span>
+            <span class="faq-chevron transition-transform duration-300 text-gray-400">▼</span>
+          </button>
+          <div class="faq-content">
+            <p class="pt-2.5 text-xs sm:text-sm text-gray-600 leading-relaxed">
+              بعد إضافة مفتاحك، شارك رابط المنصة (ZKAE.com) في مجموعات واتساب وتيليجرام ومنصات التواصل؛ فكل زائر جديد يرفع معدل تدوير ونسخ المفاتيح للجميع.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-12 bg-nusukDark text-gray-300 border-t border-white/10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+        <div class="text-center md:text-right space-y-1.5">
+          <div class="text-lg font-bold text-white flex items-center justify-center md:justify-start gap-2">
+            <span class="text-nusukGold">✦</span>
+            <span>منصة ذكاء</span>
+            <span class="code-font text-xs px-2 py-0.5 rounded-full bg-white/10 text-nusukSand">ZKAE.com</span>
+          </div>
+          <p class="text-xs text-gray-400 max-w-md">
+            مبادرة فردية مستقلة لتبادل مفاتيح تحدي نسك — لا تتبع للمنصة الرسمية NUSUK.SA أو وزارة الحج والعمرة بأي صفة.
+          </p>
+        </div>
+
+        <!-- Live Online Badge -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/5 border border-white/10 text-xs sm:text-sm">
+          <span class="w-2.5 h-2.5 rounded-full bg-nusukEmerald pulse-dot"></span>
+          <span>المتواجدون الآن:</span>
+          <strong id="onlineNowCount" class="code-font text-white">1</strong>
+        </div>
+      </div>
+
+      <!-- Flag Counter -->
+      <div class="flex justify-center pt-2">
+        <a href="https://info.flagcounter.com/ll3n" target="_blank" rel="noopener noreferrer" class="rounded-xl overflow-hidden border border-white/10 shadow-sm">
           <img
-            id="flag-counter-img"
             src="https://s05.flagcounter.com/count_US/ll3n/bg_E6DEC8/txt_000000/border_CCCCCC/columns_8/maxflags_20/viewers_0/labels_0/pageviews_0/flags_0/percent_0/"
-            alt="Flag Counter"
-            border="0"
-            class="mx-auto rounded-xl max-w-full h-auto"
+            alt="عداد زوار العالم — منصة ذكاء"
+            loading="lazy"
+            class="max-w-full h-auto block"
           />
         </a>
       </div>
 
-      <div class="text-[11px] sm:text-xs text-gray-600 space-y-1 pt-1">
-        <p>تنويه: <strong>منصة ذكاء (ZKAE.com)</strong> برمجة خاصة ومبادرة مستقلة من مطور فردي، ولا تتبع للمنصة الرسمية <span dir="ltr" class="font-bold">NUSUK.SA</span> بأي شكل.</p>
-        <p>تطوير وبرمجة: <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" dir="ltr" class="font-bold text-amber-800 hover:underline">@abbuzakaria</a> © 2026</p>
+      <div class="border-t border-white/10 pt-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
+        <p>© 2026 منصة ذكاء (ZKAE.com) — جميع الحقوق محفوظة.</p>
+        <p>
+          تطوير وبرمجة:
+          <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" class="text-nusukGold hover:underline font-semibold code-font">@abbuzakaria</a>
+        </p>
       </div>
     </div>
   </footer>
 
-  <!-- MODAL 1: Dua & TikTok Follow -->
-  <div id="dua-tiktok-modal" class="hidden fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-amber-200 space-y-4 animate-fade-in relative max-h-[92vh] overflow-y-auto">
-      <button type="button" data-action="close-dua" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
-      <div class="text-center space-y-1">
-        <span class="text-2xl">🤲</span>
-        <h3 class="text-base sm:text-xl font-bold text-gray-900">دعاء قضاء الحاجة وتيسير العمرة</h3>
-      </div>
-      <div class="nusuk-promo-gradient border border-amber-200/90 rounded-2xl p-4 text-center space-y-3 text-xs sm:text-base text-gray-900 leading-loose font-medium">
-        <p>«اللَّهُمَّ إِنِّي أَسْأَلُكَ وَأَتَوَجَّهُ إِلَيْكَ بِنَبِيِّكَ مُحَمَّدٍ نَبِيِّ الرَّحْمَةِ، يَا مُحَمَّدُ إِنِّي تَوَجَّهْتُ بِكَ إِلَى رَبِّي فِي حَاجَتِي هَذِهِ لِتُقْضَى لِي، اللَّهُمَّ فَشَفِّعْهُ فِيَّ»</p>
-        <p class="text-amber-900 font-semibold">«اللَّهُمَّ لا سَهْلَ إِلا مَا جَعَلْتَهُ سَهْلاً، وَأَنْتَ تَجْعَلُ الْحَزْنَ إِذَا شِئْتَ سَهْلاً، اللَّهُمَّ اقْضِ حَاجَتِي وَيَسِّرْ أَمْرِي وَارْزُقْنِي عُمْرَةً قَرِيبَةً لِبَيْتِكَ الْحَرَامِ»</p>
-      </div>
-      <p class="text-xs sm:text-sm text-center text-gray-600 leading-relaxed">فضلاً وليس أمراً، دعمك لنا بمتابعة حسابنا على تيك توك يساعدنا على استمرار <strong>منصة ذكاء</strong> وتطويرها للجميع 🤍</p>
-      <div class="space-y-2 pt-1">
-        <a href="https://www.tiktok.com/@abbuzakaria" target="_blank" rel="noopener noreferrer" data-action="follow-tiktok" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3 px-4 rounded-full text-xs sm:text-sm flex items-center justify-center gap-2 transition">
-          <span>اشتراك ومتابعة على تيك توك</span>
-          <span dir="ltr" class="text-amber-400">@abbuzakaria</span>
-        </a>
-        <button type="button" data-action="close-dua" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">تم الاشتراك / متابعة التصفح</button>
-      </div>
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300">
+    <div id="toastInner" class="px-5 py-3 rounded-2xl bg-nusukDark text-white text-xs sm:text-sm font-semibold shadow-xl border border-white/10 flex items-center gap-2 whitespace-nowrap">
+      <span id="toastIcon">✅</span>
+      <span id="toastMsg">تم النسخ بنجاح</span>
     </div>
   </div>
 
-  <!-- MODAL 2: Guide -->
-  <div id="guide-modal" class="hidden fixed inset-0 z-50 bg-black/55 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-gray-200 space-y-4 animate-fade-in max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between">
-        <h3 class="text-base sm:text-lg font-bold text-gray-900">طريقة تفعيل المفاتيح في نسك</h3>
-        <button type="button" data-action="close-guide" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
-      </div>
-      <ol class="space-y-3 text-xs sm:text-sm text-gray-700 leading-relaxed">
-        <li class="flex items-start gap-2.5"><span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center shrink-0">1</span><span>افتح تطبيق <strong>نسك (Nusuk)</strong> الرسمي على هاتفك وانتقل إلى قسم <strong>تحدي المفاتيح</strong>.</span></li>
-        <li class="flex items-start gap-2.5"><span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center shrink-0">2</span><span>اختر <strong>"أدخل الرمز لتفعيل مفتاح جديد"</strong> والصق أي مفتاح نسخته من <strong>منصة ذكاء (ZKAE.com)</strong>.</span></li>
-        <li class="flex items-start gap-2.5"><span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center shrink-0">3</span><span>اضغط على <strong>"تحقق من الرمز"</strong> لإضافة المفتاح إلى رصيدك وزيادة فرصك في السحب.</span></li>
-      </ol>
-      <button type="button" data-action="close-guide" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">فهمت، إغلاق</button>
-    </div>
-  </div>
-
-  <!-- HIDDEN ENCRYPTED ADMIN VAULT MODAL -->
-  <div id="admin-vault-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-amber-300 space-y-4 animate-fade-in max-h-[92vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-        <div class="flex items-center gap-2">
-          <span class="w-8 h-8 rounded-full bg-nusuk-dark text-amber-400 font-bold text-sm flex items-center justify-center">🔐</span>
-          <h3 class="text-base sm:text-lg font-bold text-gray-900">خزنة الإدارة المشفرة (ZKAE Vault)</h3>
-        </div>
-        <button type="button" data-action="close-admin" aria-label="إغلاق" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold flex items-center justify-center cursor-pointer">✕</button>
+  <!-- Dua Modal (دعاء الحاجة) -->
+  <div id="duaModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="card-surface max-w-lg w-full p-6 sm:p-7 space-y-4 relative">
+      <div class="flex items-center justify-between border-b border-black/5 pb-3">
+        <h3 class="text-lg font-bold text-nusukDark flex items-center gap-2">
+          <span>🤲</span>
+          <span>دعاء قضاء الحاجة وتيسير العمرة</span>
+        </h3>
+        <button id="closeDuaBtn" type="button" class="w-8 h-8 rounded-xl bg-nusukBg hover:bg-gray-200 flex items-center justify-center text-gray-600 font-bold">✕</button>
       </div>
 
-      <div id="admin-auth-view" class="space-y-3">
-        <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-          هذه المنطقة مشفرة ومخصصة لمالك <strong>منصة ذكاء</strong> فقط. أدخل الرمز السري للمتابعة:
+      <div class="bg-nusukSand/35 border border-nusukGold/25 rounded-2xl p-5 space-y-3 text-sm sm:text-base leading-loose text-nusukDark">
+        <p>
+          «لَا إِلَهَ إِلَّا اللَّهُ الْحَلِيمُ الْكَرِيمُ، سُبْحَانَ اللَّهِ رَبِّ الْعَرْشِ الْعَظِيمِ، الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ، أَسْأَلُكَ مُوجِبَاتِ رَحْمَتِكَ، وَعَزَائِمَ مَغْفِرَتِكَ، وَالْغَنِيمَةَ مِنْ كُلِّ بِرٍّ، وَالسَّلَامَةَ مِنْ كُلِّ إِثْمٍ، لَا تَدَعْ لِي ذَنْبًا إِلَّا غَفَرْتَهُ، وَلَا هَمًّا إِلَّا فَرَّجْتَهُ، وَلَا حَاجَةً هِيَ لَكَ رِضًا إِلَّا قَضَيْتَهَا يَا أَرْحَمَ الرَّاحِمِينَ.»
         </p>
-        <input
-          id="admin-pin-input"
-          type="password"
-          dir="ltr"
-          placeholder="••••••••••••••"
-          autocomplete="off"
-          class="w-full text-center font-mono text-base sm:text-lg font-bold tracking-widest bg-gray-50 border border-gray-300 focus:border-nusuk-dark focus:ring-2 focus:ring-amber-200 rounded-2xl py-3 px-4 outline-none"
-        />
-        <button type="button" data-action="verify-admin-pin" class="w-full bg-nusuk-dark hover:bg-black text-white font-bold py-3 px-5 rounded-full text-xs sm:text-sm transition cursor-pointer">
-          فك التشفير والدخول
-        </button>
+        <p class="text-xs sm:text-sm text-gray-600">
+          اللهم ارزقنا وإياكم زيارة بيتك الحرام وأداء العمرة والحج في يسر وعافية وقبول، آمين.
+        </p>
       </div>
 
-      <div id="admin-bulk-view" class="hidden space-y-4">
-        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-xs text-emerald-900 leading-relaxed">
-          ✓ <strong>تم التحقق بنجاح:</strong> يتم تخزين جميع الأكواد في مستند حزمي واحد لضمان عدم استهلاك حصة القراءة (صفر HTTP 429)، مع تفعيل المطالبة التلقائية لأصحاب الأكواد.
+      <div class="flex justify-end gap-2">
+        <button id="copyDuaBtn" type="button" class="px-4 py-2.5 rounded-xl bg-nusukEmerald text-white text-xs sm:text-sm font-bold hover:bg-emerald-700 transition-all">📋 نسخ الدعاء</button>
+        <button id="closeDuaBtn2" type="button" class="px-4 py-2.5 rounded-xl bg-nusukBg text-nusukDark text-xs sm:text-sm font-bold hover:bg-gray-200 transition-all">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Encrypted Admin Vault Modal -->
+  <div id="adminVaultModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-md p-4">
+    <div class="card-surface max-w-2xl w-full p-6 sm:p-7 space-y-5 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-black/10 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🔐</span>
+          <h3 class="text-lg font-bold text-nusukDark">خزنة الإدارة المشفرة — ZKAE Vault</h3>
+        </div>
+        <button id="closeAdminBtn" type="button" class="w-8 h-8 rounded-xl bg-nusukBg hover:bg-gray-200 flex items-center justify-center text-gray-600 font-bold">✕</button>
+      </div>
+
+      <!-- Auth Gate -->
+      <div id="adminAuthGate" class="space-y-4">
+        <p class="text-xs sm:text-sm text-gray-600">أدخل رمز التحقق الإداري (محمي ببصمة SHA-256) لفتح أدوات الاستيراد الجماعي:</p>
+        <div class="flex gap-2">
+          <input id="adminPassInput" type="password" placeholder="أدخل الرمز السري..." class="flex-1 px-4 py-3 rounded-xl bg-nusukBg border border-black/10 outline-none focus:border-nusukGold code-font text-sm" />
+          <button id="adminUnlockBtn" type="button" class="px-5 py-3 rounded-xl bg-nusukDark text-white font-bold text-sm hover:bg-black transition-all">فتح الخزنة</button>
+        </div>
+        <div id="adminAuthError" class="hidden text-xs text-red-600 font-semibold">⚠️ رمز التحقق غير صحيح.</div>
+      </div>
+
+      <!-- Unlocked Admin Panel -->
+      <div id="adminPanel" class="hidden space-y-4">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-800 flex items-center justify-between">
+          <span>✅ تم التحقق بنجاح — وضع الاستيراد الجماعي (PATCH واحد إلى shard_0 بحالة c: false)</span>
+          <strong id="adminCurrentTotal" class="code-font">0</strong>
         </div>
 
         <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <label for="bulk-keys-textarea" class="text-xs sm:text-sm font-bold text-gray-800">الصق قائمة الأكواد هنا (حتى 1500 كود دفعة واحدة):</label>
-            <label class="text-xs font-bold text-amber-800 hover:underline cursor-pointer bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
-              <span>📄 رفع ملف TXT</span>
-              <input id="bulk-txt-file" type="file" accept=".txt,.csv,text/plain" class="hidden" />
-            </label>
-          </div>
-          <textarea
-            id="bulk-keys-textarea"
-            dir="ltr"
-            rows="6"
-            placeholder="NG-XXXXXXXX&#10;NG-YYYYYYYY&#10;NG-ZZZZZZZZ"
-            class="w-full font-mono text-xs sm:text-sm bg-gray-50 border border-gray-300 focus:border-nusuk-gold focus:ring-2 focus:ring-amber-200 rounded-2xl p-3.5 outline-none"
-          ></textarea>
+          <label class="block text-xs sm:text-sm font-bold text-nusukDark">الصق قائمة المفاتيح (أو رسائل نسك مختلطة):</label>
+          <textarea id="adminBulkText" rows="6" placeholder="NG-XXXXXXXX&#10;NG-YYYYYYYY&#10;..." class="w-full p-3.5 rounded-xl bg-nusukBg border border-black/10 outline-none focus:border-nusukGold code-font text-xs sm:text-sm"></textarea>
         </div>
 
-        <div id="bulk-import-progress" class="hidden text-xs font-bold text-center text-amber-800 bg-amber-50 py-2 px-3 rounded-xl"></div>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <label class="px-4 py-2.5 rounded-xl bg-nusukSand/80 hover:bg-nusukSand text-nusukDark text-xs sm:text-sm font-bold cursor-pointer text-center transition-all">
+            <span>📄 رفع ملف .txt</span>
+            <input id="adminFileInput" type="file" accept=".txt,text/plain" class="hidden" />
+          </label>
 
-        <div class="flex flex-col sm:flex-row gap-2">
-          <button id="bulk-import-submit-btn" type="button" data-action="run-bulk-import" class="flex-1 bg-nusuk-gold hover:bg-nusuk-goldDark text-white font-bold py-3 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">
-            🚀 استيراد ونشر جميع الأكواد دفعة واحدة
-          </button>
-          <button type="button" data-action="lock-admin" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-full text-xs sm:text-sm transition cursor-pointer">
-            قفل الخزنة
+          <button id="adminImportBtn" type="button" class="px-6 py-2.5 rounded-xl bg-nusukEmerald hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold transition-all">
+            🚀 تصفية ورفع الدفعة (PATCH واحد)
           </button>
         </div>
+
+        <div id="adminImportStatus" class="hidden text-xs sm:text-sm p-3.5 rounded-xl bg-nusukBg border border-black/10 leading-relaxed"></div>
       </div>
     </div>
   </div>
 
-  <!-- Single-Document Shard Engine (1 Read per visitor - Zero HTTP 429 Quota Exhaustion) -->
   <script>
-    (function() {
-      "use strict";
+    (function () {
+      'use strict';
 
-      const _0x5a1e = [
-        "DzwJFDgvJTM9MBN5UgJFbjtIIB9DSwE/FFgYFCJQUF5YeHgnMRV6",
-        "IAAAAAB7AEBYERccVltERDEEECsUAwVFNQ4Y",
-        "IAAAAAB7AEBYERc=",
-        "IAAAAAB7AEBYERccVltERDEEECsGBxoZNwYQQhVTQg==",
-        "f0JDR1xjV0NeQhoG",
-        "f09CQltkVkBaQhEECQYMVjYHWXhBF0YNMFlDChUWBgkAVxNnAFB4FEQ=",
-        "CVhFM10SL0UrQRME",
-        "ADJeOlMyMTldGEs="
-      ];
+      /* =========================================================
+       * 1. OBFUSCATED CONFIG (XOR 0x0F + Base64) & CONSTANTS
+       * ========================================================= */
+      const XOR_KEY = 0x0F;
+      const ENC_CFG = {
+        k: 'TkZ1blx2S0leSz9EbT98QGciTF45N3tbTTZid1l8bWFlQVZ7W3k7',
+        p: 'YXp8emQibjo7ajs=',
+        a: 'VUROSk89Pz05LE5rYmZh'
+      };
 
-      function _0x3c9d(idx) {
-        var s = _0x5a1e[idx] || "";
-        var k = "NusukVault#2026!Sec";
-        var bin = atob(s);
-        var out = "";
-        for (var i = 0; i < bin.length; i++) {
-          out += String.fromCharCode(bin.charCodeAt(i) ^ k.charCodeAt(i % k.length));
+      function decodeXorB64(b64) {
+        const bin = atob(b64);
+        let out = '';
+        for (let i = 0; i < bin.length; i++) {
+          out += String.fromCharCode(bin.charCodeAt(i) ^ XOR_KEY);
         }
         return out;
       }
 
-      var _SALT = "Nusuk-Sec-Integrity-2026-@abbuzakaria";
-      var _ADMIN_SALT = "ZkaeAdminVaultSalt#99";
-      var _ADMIN_PIN_SHA256 = "2d11518cf72771e7796d2b5ea1725ff474104aa54de7fb046112d815de6db9be";
+      const FB_API_KEY = decodeXorB64(ENC_CFG.k);
+      const FB_PROJECT_ID = decodeXorB64(ENC_CFG.p);
+      const SHARD_PATH = 'artifacts/nusuk-keys-exchange/public/data/nusuk_shards/shard_0';
+      const FIRESTORE_DOC_URL =
+        'https://firestore.googleapis.com/v1/projects/' +
+        encodeURIComponent(FB_PROJECT_ID) +
+        '/databases/(default)/documents/' +
+        SHARD_PATH;
 
-      async function _sha256Hex(str) {
-        try {
-          if (window.crypto && window.crypto.subtle) {
-            var buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-            return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, "0"); }).join("");
+      const DEV_KEY = 'NG-O8dPL1lh';
+      const BATCH_SIZE = 33;
+      const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes cache TTL (Zero HTTP 429)
+      const CACHE_STORAGE_KEY = 'zkae_shard0_cache_v2';
+      const USER_STORAGE_KEY = 'zkae_u_state_v2';
+      const USER_COOKIE_NAME = 'zkae_u_ck_v2';
+      const COOKIE_DAYS = 180;
+      const STORAGE_XOR_SECRET = 'ZKAE#2026$Nusuk!Key';
+
+      /* =========================================================
+       * 2. PURE-JS SHA-256 (Works everywhere incl. HTTP/Tor/Brave)
+       * ========================================================= */
+      function sha256Hex(ascii) {
+        function rightRotate(value, amount) {
+          return (value >>> amount) | (value << (32 - amount));
+        }
+        const mathPow = Math.pow;
+        const maxWord = mathPow(2, 32);
+        let result = '';
+        const words = [];
+        const asciiBitLength = ascii.length * 8;
+        let hash = sha256Hex.h || [];
+        const k = sha256Hex.k || [];
+        let primeCounter = k.length;
+        const isComposite = {};
+
+        for (let candidate = 2; primeCounter < 64; candidate++) {
+          if (!isComposite[candidate]) {
+            for (let i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+            hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+            k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
           }
-        } catch (e) {}
-        return "";
-      }
-
-      async function _signIntegrity(rawStr) {
-        try {
-          var hex = await _sha256Hex(rawStr + "|" + _SALT);
-          if (hex) return hex.slice(0, 24);
-        } catch (e) {}
-        var h = 2166136261;
-        for (var i = 0; i < rawStr.length; i++) {
-          h ^= rawStr.charCodeAt(i);
-          h = Math.imul(h, 16777619);
         }
-        return (h >>> 0).toString(16);
+        sha256Hex.h = hash.slice(0);
+        sha256Hex.k = k;
+
+        ascii += '\x80';
+        while ((ascii.length % 64) - 56) ascii += '\x00';
+        for (let i = 0; i < ascii.length; i++) {
+          const j = ascii.charCodeAt(i);
+          words[i >> 2] |= j << (((3 - i) % 4) * 8);
+        }
+        words[words.length] = (asciiBitLength / maxWord) | 0;
+        words[words.length] = asciiBitLength;
+
+        const h = hash.slice(0, 8);
+        for (let j = 0; j < words.length;) {
+          const w = words.slice(j, (j += 16));
+          const oldHash = h.slice(0);
+          for (let i = 0; i < 64; i++) {
+            const w15 = w[i - 15], w2 = w[i - 2];
+            const a = h[0], e = h[4];
+            const temp1 =
+              h[7] +
+              (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) +
+              ((e & h[5]) ^ (~e & h[6])) +
+              k[i] +
+              (w[i] =
+                i < 16
+                  ? w[i]
+                  : (w[i - 16] +
+                      (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) +
+                      w[i - 7] +
+                      (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) |
+                    0);
+            const temp2 =
+              (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) +
+              ((a & h[1]) ^ (a & h[2]) ^ (h[1] & h[2]));
+            h.unshift((temp1 + temp2) | 0);
+            h[4] = (h[4] + temp1) | 0;
+            h.pop();
+          }
+          for (let i = 0; i < 8; i++) h[i] = (h[i] + oldHash[i]) | 0;
+        }
+        for (let i = 0; i < 8; i++) {
+          for (let j = 3; j + 1; j--) {
+            const b = (h[i] >> (j * 8)) & 255;
+            result += (b < 16 ? '0' : '') + b.toString(16);
+          }
+        }
+        return result;
       }
 
-      function _xorCodec(bytes) {
-        var kb = new TextEncoder().encode(_SALT);
-        var out = new Uint8Array(bytes.length);
-        for (var i = 0; i < bytes.length; i++) out[i] = bytes[i] ^ kb[i % kb.length];
+      /* =========================================================
+       * 3. DUAL PERSISTENT STORAGE (Cookies 180d + LocalStorage)
+       *    XOR Encrypted + SHA-256 Signed
+       * ========================================================= */
+      function xorCipher(str, key) {
+        let out = '';
+        for (let i = 0; i < str.length; i++) {
+          out += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+        }
         return out;
+      }
+
+      function packSignedState(obj) {
+        const json = JSON.stringify(obj);
+        const sig = sha256Hex(json + '|' + STORAGE_XOR_SECRET).slice(0, 24);
+        const payload = JSON.stringify({ d: json, s: sig });
+        const enc = btoa(unescape(encodeURIComponent(xorCipher(payload, STORAGE_XOR_SECRET))));
+        return enc;
+      }
+
+      function unpackSignedState(raw) {
+        if (!raw) return null;
+        try {
+          const dec = xorCipher(decodeURIComponent(escape(atob(raw))), STORAGE_XOR_SECRET);
+          const parsed = JSON.parse(dec);
+          if (!parsed || typeof parsed.d !== 'string' || typeof parsed.s !== 'string') return null;
+          const expected = sha256Hex(parsed.d + '|' + STORAGE_XOR_SECRET).slice(0, 24);
+          if (parsed.s !== expected) return null;
+          return JSON.parse(parsed.d);
+        } catch (e) {
+          return null;
+        }
       }
 
       function setCookie(name, value, days) {
         try {
-          var expires = new Date(Date.now() + (days || 180) * 864e5).toUTCString();
-          var secureFlag = window.location.protocol === "https:" ? "; Secure" : "";
-          document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/; SameSite=Lax" + secureFlag;
+          const d = new Date();
+          d.setTime(d.getTime() + days * 86400000);
+          document.cookie =
+            name +
+            '=' +
+            encodeURIComponent(value) +
+            ';expires=' +
+            d.toUTCString() +
+            ';path=/;SameSite=Lax';
         } catch (e) {}
       }
 
       function getCookie(name) {
         try {
-          var target = encodeURIComponent(name) + "=";
-          var parts = document.cookie.split(";");
-          for (var i = 0; i < parts.length; i++) {
-            var part = parts[i].trim();
-            if (part.indexOf(target) === 0) {
-              return decodeURIComponent(part.substring(target.length));
+          const prefix = name + '=';
+          const parts = document.cookie.split(';');
+          for (let i = 0; i < parts.length; i++) {
+            const c = parts[i].trim();
+            if (c.indexOf(prefix) === 0) return decodeURIComponent(c.substring(prefix.length));
+          }
+        } catch (e) {}
+        return null;
+      }
+
+      function loadUserState() {
+        const defaults = { myKey: null, copied: [], seen: [], helped: 0 };
+        let lsState = null;
+        let ckState = null;
+        try { lsState = unpackSignedState(localStorage.getItem(USER_STORAGE_KEY)); } catch (e) {}
+        ckState = unpackSignedState(getCookie(USER_COOKIE_NAME));
+
+        const chosen = lsState || ckState;
+        if (!chosen) return defaults;
+
+        return {
+          myKey: typeof chosen.myKey === 'string' ? chosen.myKey : null,
+          copied: Array.isArray(chosen.copied) ? chosen.copied.slice(0, 500) : [],
+          seen: Array.isArray(chosen.seen) ? chosen.seen.slice(-300) : [],
+          helped: Number.isFinite(chosen.helped) ? chosen.helped : (Array.isArray(chosen.copied) ? chosen.copied.length : 0)
+        };
+      }
+
+      function saveUserState(state) {
+        const packed = packSignedState(state);
+        try { localStorage.setItem(USER_STORAGE_KEY, packed); } catch (e) {}
+        // Keep cookie within ~3.8KB safe browser limit
+        if (packed.length < 3600) {
+          setCookie(USER_COOKIE_NAME, packed, COOKIE_DAYS);
+        } else {
+          const compact = {
+            myKey: state.myKey,
+            copied: state.copied.slice(-60),
+            seen: state.seen.slice(-40),
+            helped: state.helped
+          };
+          setCookie(USER_COOKIE_NAME, packSignedState(compact), COOKIE_DAYS);
+        }
+      }
+
+      /* =========================================================
+       * 4. FIRESTORE REST API (XMLHttpRequest ONLY — Zero SDK)
+       *    Single-Document Shard Architecture (shard_0)
+       * ========================================================= */
+      function xhrJson(method, url, bodyObj) {
+        return new Promise(function (resolve, reject) {
+          const xhr = new XMLHttpRequest();
+          xhr.open(method, url, true);
+          xhr.timeout = 14000;
+          xhr.setRequestHeader('Accept', 'application/json');
+          if (bodyObj !== undefined) {
+            xhr.setRequestHeader('Content-Type', 'application/json');
+          }
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState !== 4) return;
+            let data = null;
+            try { data = xhr.responseText ? JSON.parse(xhr.responseText) : null; } catch (e) {}
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve({ status: xhr.status, data: data });
+            } else {
+              const err = new Error('HTTP ' + xhr.status);
+              err.status = xhr.status;
+              err.data = data;
+              reject(err);
+            }
+          };
+          xhr.onerror = function () { reject(new Error('Network error')); };
+          xhr.ontimeout = function () { reject(new Error('Request timeout')); };
+          xhr.send(bodyObj !== undefined ? JSON.stringify(bodyObj) : null);
+        });
+      }
+
+      function parseShardDocument(doc) {
+        const map = {};
+        const itemsFields =
+          doc &&
+          doc.fields &&
+          doc.fields.items &&
+          doc.fields.items.mapValue &&
+          doc.fields.items.mapValue.fields;
+        if (!itemsFields) return map;
+
+        const keys = Object.keys(itemsFields);
+        for (let i = 0; i < keys.length; i++) {
+          const code = keys[i];
+          const entry = itemsFields[code];
+          const f = entry && entry.mapValue && entry.mapValue.fields;
+          if (f) {
+            map[code] = {
+              t: Number((f.t && (f.t.integerValue || f.t.doubleValue)) || 0),
+              c: Boolean(f.c && f.c.booleanValue)
+            };
+          }
+        }
+        return map;
+      }
+
+      function buildFirestoreItemValue(t, c) {
+        return {
+          mapValue: {
+            fields: {
+              t: { integerValue: String(Math.floor(t)) },
+              c: { booleanValue: Boolean(c) }
             }
           }
-        } catch (e) {}
-        return "";
+        };
       }
 
-      async function secureStoreSet(key, value, useCookie) {
+      function readShardCache() {
         try {
-          var xored = _xorCodec(new TextEncoder().encode(JSON.stringify(value)));
-          var bin = "";
-          for (var i = 0; i < xored.length; i++) bin += String.fromCharCode(xored[i]);
-          var cipher = btoa(bin);
-          var payload = JSON.stringify({ c: cipher, s: await _signIntegrity(cipher) });
-          try { localStorage.setItem(key, payload); } catch (e) {}
-          if (useCookie && payload.length < 3600) {
-            setCookie(key, payload, 180);
+          const raw = localStorage.getItem(CACHE_STORAGE_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          if (!parsed || !parsed.items || typeof parsed.ts !== 'number') return null;
+          if (Date.now() - parsed.ts < CACHE_TTL_MS) {
+            return parsed.items;
           }
+        } catch (e) {}
+        return null;
+      }
+
+      function writeShardCache(items) {
+        try {
+          localStorage.setItem(CACHE_STORAGE_KEY, JSON.stringify({ ts: Date.now(), items: items }));
         } catch (e) {}
       }
 
-      async function secureStoreGet(key, fallback) {
+      async function fetchShardItems(forceRefresh) {
+        if (!forceRefresh) {
+          const cached = readShardCache();
+          if (cached) return { items: cached, fromCache: true };
+        }
+        const url = FIRESTORE_DOC_URL + '?key=' + encodeURIComponent(FB_API_KEY);
         try {
-          var raw = "";
-          try { raw = localStorage.getItem(key) || ""; } catch (e) {}
-          if (!raw) raw = getCookie(key);
-          if (!raw) return fallback;
-
-          var parsed = JSON.parse(raw);
-          if (!parsed || !parsed.c || !parsed.s || parsed.s !== await _signIntegrity(parsed.c)) {
-            try { localStorage.removeItem(key); } catch (e) {}
-            return fallback;
+          const res = await xhrJson('GET', url);
+          const items = parseShardDocument(res.data);
+          writeShardCache(items);
+          return { items: items, fromCache: false };
+        } catch (err) {
+          if (err && err.status === 404) {
+            const empty = {};
+            writeShardCache(empty);
+            return { items: empty, fromCache: false };
           }
-          try { localStorage.setItem(key, raw); } catch (e) {}
-          if (raw.length < 3600) setCookie(key, raw, 180);
-
-          var bin = atob(parsed.c);
-          var xored = new Uint8Array(bin.length);
-          for (var i = 0; i < bin.length; i++) xored[i] = bin.charCodeAt(i);
-          return JSON.parse(new TextDecoder().decode(_xorCodec(xored)));
-        } catch (e) {
-          return fallback;
+          throw err;
         }
       }
 
-      var FIREBASE_CFG = {
-        apiKey: _0x3c9d(0),
-        projectId: _0x3c9d(2)
-      };
-
-      var DEV_KEY = _0x3c9d(7).toUpperCase();
-      var APP_ID = "nusuk-keys-exchange";
-      var DOC_ROOT = "projects/" + FIREBASE_CFG.projectId + "/databases/(default)/documents";
-      var REST_BASE = "https://firestore.googleapis.com/v1/" + DOC_ROOT;
-      // Single bundled shard document (1 Read = All Keys! Eliminates HTTP 429)
-      var SHARD_DOC_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_shards/shard_0";
-      var LEGACY_KEYS_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_keys";
-      var LEGACY_POOL_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_pool/latest_keys_live";
-      var BATCH_SIZE = 33;
-      var MAX_POOL_SIZE = 2500;
-      var CACHE_TTL_MS = 180000; // 3 minutes client cache to save quota
-
-      var S_KEYS = {
-        SINGLE_USER_KEY: "zkae_uk_v14",
-        COPIED_LIST: "zkae_cp_v14",
-        SEEN_LIST: "zkae_sn_v14",
-        BOOST_FLAG: "zkae_bs_v14",
-        POOL_DATA: "zkae_pl_v14",
-        LAST_FETCH_TS: "zkae_ft_v14",
-        DUA_SEEN: "zkae_du_v14"
-      };
-
-      var keysPool = [];
-      var currentBatch = [];
-      var isAdminUnlocked = false;
-      var adminClickTaps = 0;
-      var adminTapTimer = null;
-
-      var state = {
-        submittedUserKey: "",
-        copiedHistory: [],
-        seenForever: [],
-        boostActivated: false,
-        lastActionTs: 0
-      };
-
-      function hasInjectionPattern(raw) {
-        return /(['";]|--| (SELECT|UNION|INSERT|UPDATE|DELETE|DROP|ALTER|EXEC|SCRIPT|EVAL|ALERT|ONERROR|ONLOAD) |\$ne|\$gt|\$lt|\$where|__proto__|constructor|prototype|<|>)/i.test(String(raw || ""));
+      async function patchSingleKeyToShard(code, t, claimed) {
+        const maskPath = 'items.`' + code + '`';
+        const url =
+          FIRESTORE_DOC_URL +
+          '?key=' +
+          encodeURIComponent(FB_API_KEY) +
+          '&updateMask.fieldPaths=' +
+          encodeURIComponent(maskPath);
+        const body = {
+          fields: {
+            items: {
+              mapValue: {
+                fields: {}
+              }
+            }
+          }
+        };
+        body.fields.items.mapValue.fields[code] = buildFirestoreItemValue(t, claimed);
+        await xhrJson('PATCH', url, body);
       }
 
-      function sanitizeKeyCode(raw) {
-        return String(raw || "").trim().toUpperCase().replace(/[^A-Z0-9_-]/g, "");
-      }
-
-      function isValidKeyFormat(code) {
-        return /^NG-[A-Z0-9_-]{4,20}$/.test(code);
-      }
-
-      function showToast(message, type) {
-        var container = document.getElementById("toast-container");
-        if (!container) return;
-        var bg = type === "error" ? "bg-red-600" : type === "warning" ? "bg-amber-600" : "bg-gray-900";
-        var toast = document.createElement("div");
-        toast.className = bg + " text-white text-xs sm:text-sm font-semibold px-4 py-3 rounded-2xl shadow-lg pointer-events-auto animate-fade-in text-center";
-        toast.textContent = String(message);
-        container.appendChild(toast);
-        setTimeout(function() {
-          toast.style.opacity = "0";
-          toast.style.transition = "opacity 0.25s ease";
-          setTimeout(function() { toast.remove(); }, 260);
-        }, 3200);
-      }
-
-      function copyTextSafe(text) {
-        var copied = false;
-        try {
-          var ta = document.createElement("textarea");
-          ta.value = text;
-          ta.setAttribute("readonly", "");
-          ta.style.position = "fixed";
-          ta.style.top = "0";
-          ta.style.left = "0";
-          ta.style.width = "2em";
-          ta.style.height = "2em";
-          ta.style.padding = "0";
-          ta.style.border = "none";
-          ta.style.outline = "none";
-          ta.style.boxShadow = "none";
-          ta.style.background = "transparent";
-          ta.style.opacity = "0";
-          document.body.appendChild(ta);
-          ta.focus();
-          ta.select();
-          ta.setSelectionRange(0, text.length);
-          copied = document.execCommand("copy");
-          document.body.removeChild(ta);
-        } catch (e) {}
-
-        if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
-          try { navigator.clipboard.writeText(text); } catch (e) {}
+      async function patchBulkItemsMap(mergedItems) {
+        const url =
+          FIRESTORE_DOC_URL +
+          '?key=' +
+          encodeURIComponent(FB_API_KEY) +
+          '&updateMask.fieldPaths=items';
+        const fsFields = {};
+        const keys = Object.keys(mergedItems);
+        for (let i = 0; i < keys.length; i++) {
+          const k = keys[i];
+          fsFields[k] = buildFirestoreItemValue(mergedItems[k].t, mergedItems[k].c);
         }
+        const body = {
+          fields: {
+            items: {
+              mapValue: {
+                fields: fsFields
+              }
+            }
+          }
+        };
+        await xhrJson('PATCH', url, body);
       }
 
-      function fairCryptoShuffle(arr) {
-        var copy = arr.slice();
-        if (window.crypto && window.crypto.getRandomValues) {
-          var rand = new Uint32Array(copy.length);
-          window.crypto.getRandomValues(rand);
-          for (var i = copy.length - 1; i > 0; i--) {
-            var j = rand[i] % (i + 1);
-            var tmp = copy[i];
-            copy[i] = copy[j];
-            copy[j] = tmp;
+      /* =========================================================
+       * 5. KEY EXTRACTION, SANITIZATION & FAIR SHUFFLE
+       * ========================================================= */
+      const KEY_REGEX = /\bNG-[A-Za-z0-9]{6,14}\b/g;
+
+      function extractSingleKey(text) {
+        if (!text) return null;
+        const clean = String(text).replace(/[<>'"`;\\]/g, ' ');
+        const match = clean.match(/\bNG-[A-Za-z0-9]{6,14}\b/);
+        return match ? match[0] : null;
+      }
+
+      function extractAllKeys(text) {
+        if (!text) return [];
+        const clean = String(text).replace(/[<>'"`;\\]/g, ' ');
+        const matches = clean.match(KEY_REGEX) || [];
+        const unique = [];
+        const seenSet = new Set();
+        for (let i = 0; i < matches.length; i++) {
+          const k = matches[i];
+          if (!seenSet.has(k)) {
+            seenSet.add(k);
+            unique.push(k);
           }
-        } else {
-          for (var i2 = copy.length - 1; i2 > 0; i2--) {
-            var j2 = Math.floor(Math.random() * (i2 + 1));
-            var tmp2 = copy[i2];
-            copy[i2] = copy[j2];
-            copy[j2] = tmp2;
-          }
+        }
+        return unique;
+      }
+
+      function shuffleArray(arr) {
+        const copy = arr.slice();
+        for (let i = copy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const tmp = copy[i];
+          copy[i] = copy[j];
+          copy[j] = tmp;
         }
         return copy;
       }
 
-      function buildUniquePool(rawList) {
-        var map = new Map();
-        map.set(DEV_KEY, { code: DEV_KEY, addedAt: Date.now(), claimed: true });
+      /* =========================================================
+       * 6. APPLICATION STATE & DOM REFERENCES
+       * ========================================================= */
+      let userState = loadUserState();
+      let shardItems = {}; // { "NG-XXXX": { t, c } }
+      let currentBatch = []; // up to 33 codes currently displayed
+      let nextFeaturedCode = null;
+      let toastTimer = null;
 
-        (Array.isArray(rawList) ? rawList : []).forEach(function(item) {
-          var clean = sanitizeKeyCode(item && item.code ? item.code : item);
-          if (isValidKeyFormat(clean) && !map.has(clean)) {
-            map.set(clean, {
-              code: clean,
-              addedAt: Number(item && item.addedAt) || Date.now(),
-              claimed: !item || item.claimed !== false
+      const el = {
+        syncDot: document.getElementById('syncDot'),
+        syncStatusText: document.getElementById('syncStatusText'),
+        totalKeysCounter: document.getElementById('totalKeysCounter'),
+        helpedCounter: document.getElementById('helpedCounter'),
+        nextKeyBox: document.getElementById('nextKeyBox'),
+        nextKeyDisplay: document.getElementById('nextKeyDisplay'),
+        copyNextKeyBtn: document.getElementById('copyNextKeyBtn'),
+        openNusukBtn: document.getElementById('openNusukBtn'),
+        copyDevKeyBtn: document.getElementById('copyDevKeyBtn'),
+        userKeyInput: document.getElementById('userKeyInput'),
+        pasteKeyBtn: document.getElementById('pasteKeyBtn'),
+        submitKeyBtn: document.getElementById('submitKeyBtn'),
+        extractedPreview: document.getElementById('extractedPreview'),
+        extractedCodeText: document.getElementById('extractedCodeText'),
+        submitFeedback: document.getElementById('submitFeedback'),
+        submitFormContainer: document.getElementById('submitFormContainer'),
+        submittedLockedBox: document.getElementById('submittedLockedBox'),
+        submittedStatusHeading: document.getElementById('submittedStatusHeading'),
+        mySavedKeyBadge: document.getElementById('mySavedKeyBadge'),
+        codesGrid: document.getElementById('codesGrid'),
+        batchCountBadge: document.getElementById('batchCountBadge'),
+        emptyGridNotice: document.getElementById('emptyGridNotice'),
+        refreshBatchBtn: document.getElementById('refreshBatchBtn'),
+        copiedList: document.getElementById('copiedList'),
+        copiedCountPill: document.getElementById('copiedCountPill'),
+        onlineNowCount: document.getElementById('onlineNowCount'),
+        toast: document.getElementById('toast'),
+        toastIcon: document.getElementById('toastIcon'),
+        toastMsg: document.getElementById('toastMsg'),
+        openDuaBtn: document.getElementById('openDuaBtn'),
+        duaModal: document.getElementById('duaModal'),
+        closeDuaBtn: document.getElementById('closeDuaBtn'),
+        closeDuaBtn2: document.getElementById('closeDuaBtn2'),
+        copyDuaBtn: document.getElementById('copyDuaBtn'),
+        brandVaultTrigger: document.getElementById('brandVaultTrigger'),
+        adminVaultModal: document.getElementById('adminVaultModal'),
+        closeAdminBtn: document.getElementById('closeAdminBtn'),
+        adminAuthGate: document.getElementById('adminAuthGate'),
+        adminPassInput: document.getElementById('adminPassInput'),
+        adminUnlockBtn: document.getElementById('adminUnlockBtn'),
+        adminAuthError: document.getElementById('adminAuthError'),
+        adminPanel: document.getElementById('adminPanel'),
+        adminCurrentTotal: document.getElementById('adminCurrentTotal'),
+        adminBulkText: document.getElementById('adminBulkText'),
+        adminFileInput: document.getElementById('adminFileInput'),
+        adminImportBtn: document.getElementById('adminImportBtn'),
+        adminImportStatus: document.getElementById('adminImportStatus')
+      };
+
+      /* =========================================================
+       * 7. ANIMATION HELPERS (Anime.js 60fps)
+       * ========================================================= */
+      function runEntranceAnimations() {
+        if (typeof anime === 'undefined') {
+          document.querySelectorAll('.stagger-el').forEach(function (node) {
+            node.style.opacity = '1';
+            node.style.transform = 'none';
+          });
+          return;
+        }
+        anime({
+          targets: '.stagger-el',
+          opacity: [0, 1],
+          translateY: [22, 0],
+          duration: 650,
+          delay: anime.stagger(85),
+          easing: 'easeOutCubic'
+        });
+      }
+
+      function animateCounter(targetEl, endValue) {
+        const startVal = parseInt(targetEl.textContent, 10) || 0;
+        if (typeof anime === 'undefined') {
+          targetEl.textContent = String(endValue);
+          return;
+        }
+        const obj = { val: startVal };
+        anime({
+          targets: obj,
+          val: endValue,
+          round: 1,
+          duration: 700,
+          easing: 'easeOutExpo',
+          update: function () {
+            targetEl.textContent = String(obj.val);
+          }
+        });
+      }
+
+      function pulseButton(btn) {
+        if (!btn || typeof anime === 'undefined') return;
+        anime.remove(btn);
+        anime({
+          targets: btn,
+          scale: [1, 0.93, 1.04, 1],
+          duration: 360,
+          easing: 'easeOutElastic(1, .6)'
+        });
+      }
+
+      function animateSwapElement(node, onMidpoint) {
+        if (!node || typeof anime === 'undefined') {
+          onMidpoint();
+          return;
+        }
+        anime({
+          targets: node,
+          opacity: [1, 0],
+          translateX: [0, -18],
+          rotateX: [0, 25],
+          duration: 180,
+          easing: 'easeInQuad',
+          complete: function () {
+            onMidpoint();
+            anime({
+              targets: node,
+              opacity: [0, 1],
+              translateX: [18, 0],
+              rotateX: [-25, 0],
+              duration: 280,
+              easing: 'easeOutCubic'
             });
           }
         });
-        return Array.from(map.values()).slice(-MAX_POOL_SIZE);
       }
 
-      function setCloudStatus(ok, errorDetail) {
-        var dot = document.getElementById("cloud-status-dot");
-        var banner = document.getElementById("cloud-warning-banner");
-        var detailEl = document.getElementById("cloud-error-detail");
-        if (dot) {
-          dot.className = ok
-            ? "w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator shrink-0"
-            : "w-2.5 h-2.5 rounded-full bg-amber-500 live-indicator shrink-0";
-        }
-        if (banner) {
-          banner.classList.toggle("hidden", ok);
-        }
-        if (detailEl && errorDetail) {
-          detailEl.textContent = errorDetail;
-        }
+      function showToast(msg, icon) {
+        el.toastIcon.textContent = icon || '✅';
+        el.toastMsg.textContent = msg;
+        el.toast.classList.remove('opacity-0', 'translate-y-4');
+        el.toast.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          el.toast.classList.add('opacity-0', 'translate-y-4');
+          el.toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 2600);
       }
 
-      function universalHttpRequest(method, url, bodyObj) {
-        return new Promise(function(resolve, reject) {
-          try {
-            var xhr = new XMLHttpRequest();
-            xhr.open(method, url, true);
-            xhr.timeout = 15000;
-            if (bodyObj) {
-              xhr.setRequestHeader("Content-Type", "application/json");
-            }
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState === 4) {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                  try {
-                    resolve({ status: xhr.status, data: xhr.responseText ? JSON.parse(xhr.responseText) : {} });
-                  } catch (parseErr) {
-                    resolve({ status: xhr.status, data: {} });
-                  }
-                } else if (xhr.status === 404) {
-                  resolve({ status: 404, data: null });
-                } else {
-                  reject(new Error(xhr.status ? ("HTTP " + xhr.status) : "Network Error"));
-                }
-              }
-            };
-            xhr.ontimeout = function() { reject(new Error("Connection Timeout")); };
-            xhr.onerror = function() { reject(new Error("Network Error")); };
-            xhr.send(bodyObj ? JSON.stringify(bodyObj) : null);
-          } catch (e) {
-            reject(e);
+      async function copyTextToClipboard(text) {
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            return true;
           }
+        } catch (e) {}
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          return ok;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      /* =========================================================
+       * 8. POOL & FAIR BATCH LOGIC
+       * ========================================================= */
+      function getEligiblePool(excludeList) {
+        const excludeSet = new Set(userState.copied);
+        if (userState.myKey) excludeSet.add(userState.myKey);
+        if (Array.isArray(excludeList)) {
+          for (let i = 0; i < excludeList.length; i++) excludeSet.add(excludeList[i]);
+        }
+
+        const allKeys = Object.keys(shardItems);
+        const unseen = [];
+        const previouslySeen = [];
+        const seenSet = new Set(userState.seen);
+
+        for (let i = 0; i < allKeys.length; i++) {
+          const code = allKeys[i];
+          if (excludeSet.has(code)) continue;
+          if (seenSet.has(code)) {
+            previouslySeen.push(code);
+          } else {
+            unseen.push(code);
+          }
+        }
+        return shuffleArray(unseen).concat(shuffleArray(previouslySeen));
+      }
+
+      function markSeen(codes) {
+        const set = new Set(userState.seen);
+        for (let i = 0; i < codes.length; i++) set.add(codes[i]);
+        userState.seen = Array.from(set).slice(-300);
+        saveUserState(userState);
+      }
+
+      function recordCopiedCode(code) {
+        if (!code) return;
+        if (userState.copied.indexOf(code) === -1) {
+          userState.copied.unshift(code);
+          userState.helped = (userState.helped || 0) + 1;
+          saveUserState(userState);
+          animateCounter(el.helpedCounter, userState.helped);
+          renderCopiedHistory();
+        }
+      }
+
+      function buildFreshBatch() {
+        const pool = getEligiblePool([]);
+        nextFeaturedCode = pool.length > 0 ? pool[0] : null;
+        const gridCandidates = pool.slice(nextFeaturedCode ? 1 : 0, (nextFeaturedCode ? 1 : 0) + BATCH_SIZE);
+        currentBatch = gridCandidates;
+        markSeen(currentBatch.concat(nextFeaturedCode ? [nextFeaturedCode] : []));
+        renderNextKey();
+        renderCodesGrid();
+      }
+
+      function renderNextKey() {
+        if (nextFeaturedCode) {
+          el.nextKeyDisplay.textContent = nextFeaturedCode;
+          el.copyNextKeyBtn.disabled = false;
+          el.openNusukBtn.disabled = false;
+          el.copyNextKeyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        } else {
+          el.nextKeyDisplay.textContent = 'لا توجد مفاتيح إضافية حالياً';
+          el.copyNextKeyBtn.disabled = true;
+          el.openNusukBtn.disabled = true;
+          el.copyNextKeyBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+      }
+
+      function createGridCardElement(code, slotIndex) {
+        const card = document.createElement('div');
+        card.className =
+          'card-surface p-4 flex items-center justify-between gap-3 hover:border-nusukGold/40 transition-all';
+        card.dataset.slot = String(slotIndex);
+        card.dataset.code = code;
+
+        const left = document.createElement('div');
+        left.className = 'min-w-0';
+        const tag = document.createElement('div');
+        tag.className = 'text-[11px] text-gray-400 font-medium';
+        tag.textContent = 'مفتاح #' + (slotIndex + 1);
+        const codeText = document.createElement('div');
+        codeText.className = 'code-font text-base sm:text-lg font-bold text-nusukDark truncate';
+        codeText.textContent = code;
+        left.appendChild(tag);
+        left.appendChild(codeText);
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className =
+          'shrink-0 px-4 py-2.5 rounded-xl bg-nusukBg hover:bg-nusukEmerald hover:text-white text-nusukDark font-bold text-xs sm:text-sm transition-colors flex items-center gap-1.5';
+        btn.innerHTML = '<span>📋</span><span>نسخ</span>';
+
+        btn.addEventListener('click', async function () {
+          const activeCode = card.dataset.code;
+          pulseButton(btn);
+          await copyTextToClipboard(activeCode);
+          recordCopiedCode(activeCode);
+          showToast('تم نسخ ' + activeCode + ' واستبداله فوراً', '✅');
+
+          // Instant In-Place Swap
+          const exclude = currentBatch.slice();
+          if (nextFeaturedCode) exclude.push(nextFeaturedCode);
+          const replacements = getEligiblePool(exclude);
+          const nextReplacement = replacements.length > 0 ? replacements[0] : null;
+
+          animateSwapElement(card, function () {
+            if (nextReplacement) {
+              currentBatch[slotIndex] = nextReplacement;
+              card.dataset.code = nextReplacement;
+              codeText.textContent = nextReplacement;
+              markSeen([nextReplacement]);
+            } else {
+              currentBatch.splice(slotIndex, 1);
+              renderCodesGrid();
+            }
+          });
         });
+
+        card.appendChild(left);
+        card.appendChild(btn);
+        return card;
       }
 
-      // =========================================================================
-      // SINGLE-DOCUMENT SHARD ENGINE (1 Document Read = All Keys)
-      // =========================================================================
-      async function readSingleShardDoc() {
-        var url = SHARD_DOC_PATH + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-        var res = await universalHttpRequest("GET", url, null);
-        if (res.status === 404 || !res.data || !res.data.fields) {
-          return [];
-        }
-        var itemsField = res.data.fields.items && res.data.fields.items.mapValue && res.data.fields.items.mapValue.fields;
-        if (!itemsField) return [];
+      function renderCodesGrid() {
+        el.codesGrid.innerHTML = '';
+        el.batchCountBadge.textContent = currentBatch.length + ' مفتاح';
 
-        var list = [];
-        var codes = Object.keys(itemsField);
-        for (var i = 0; i < codes.length; i++) {
-          var clean = sanitizeKeyCode(codes[i]);
-          var entry = itemsField[codes[i]] && itemsField[codes[i]].mapValue && itemsField[codes[i]].mapValue.fields;
-          if (isValidKeyFormat(clean) && entry) {
-            var ts = Number((entry.t && (entry.t.integerValue || entry.t.doubleValue)) || Date.now());
-            var cl = !entry.c || entry.c.booleanValue !== false;
-            list.push({ code: clean, addedAt: ts, claimed: cl });
-          }
-        }
-        return list;
-      }
-
-      async function writeSingleShardDoc(fullList) {
-        var unique = buildUniquePool(fullList);
-        var mapFields = {};
-        for (var i = 0; i < unique.length; i++) {
-          var item = unique[i];
-          mapFields[item.code] = {
-            mapValue: {
-              fields: {
-                t: { integerValue: String(Math.floor(item.addedAt)) },
-                c: { booleanValue: Boolean(item.claimed) }
-              }
-            }
-          };
-        }
-
-        var url = SHARD_DOC_PATH + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-        var body = {
-          fields: {
-            items: {
-              mapValue: {
-                fields: mapFields
-              }
-            },
-            updatedAt: { integerValue: String(Date.now()) }
-          }
-        };
-        await universalHttpRequest("PATCH", url, body);
-        return unique;
-      }
-
-      // One-time migration from legacy collections into shard_0
-      async function migrateLegacyToShardOnce() {
-        var migrated = [];
-        try {
-          var url1 = LEGACY_KEYS_PATH + "?pageSize=1000&key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-          var res1 = await universalHttpRequest("GET", url1, null);
-          var docs = (res1.data && Array.isArray(res1.data.documents)) ? res1.data.documents : [];
-          for (var i = 0; i < docs.length; i++) {
-            var docId = String(docs[i].name || "").split("/").pop() || "";
-            var f = docs[i].fields || {};
-            var c = sanitizeKeyCode((f.code && f.code.stringValue) || docId);
-            if (isValidKeyFormat(c)) {
-              migrated.push({
-                code: c,
-                addedAt: Number((f.addedAt && (f.addedAt.integerValue || f.addedAt.doubleValue)) || Date.now()),
-                claimed: !f.claimed || f.claimed.booleanValue !== false
-              });
-            }
-          }
-        } catch (e) {}
-
-        try {
-          var url2 = LEGACY_POOL_PATH + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-          var res2 = await universalHttpRequest("GET", url2, null);
-          var values = res2.data && res2.data.fields && res2.data.fields.keys && res2.data.fields.keys.arrayValue && res2.data.fields.keys.arrayValue.values;
-          if (Array.isArray(values)) {
-            for (var j = 0; j < values.length; j++) {
-              var m = values[j] && values[j].mapValue && values[j].mapValue.fields;
-              if (m && m.code && m.code.stringValue) {
-                var c2 = sanitizeKeyCode(m.code.stringValue);
-                if (isValidKeyFormat(c2)) {
-                  migrated.push({
-                    code: c2,
-                    addedAt: Number((m.addedAt && (m.addedAt.integerValue || m.addedAt.doubleValue)) || Date.now()),
-                    claimed: true
-                  });
-                }
-              }
-            }
-          }
-        } catch (e) {}
-
-        return migrated;
-      }
-
-      async function hydrateSecureState() {
-        var savedKey = await secureStoreGet(S_KEYS.SINGLE_USER_KEY, "");
-        state.submittedUserKey = isValidKeyFormat(savedKey) ? savedKey : "";
-        var hist = await secureStoreGet(S_KEYS.COPIED_LIST, []);
-        state.copiedHistory = Array.isArray(hist) ? Array.from(new Set(hist.map(sanitizeKeyCode).filter(Boolean))) : [];
-        var seen = await secureStoreGet(S_KEYS.SEEN_LIST, []);
-        state.seenForever = Array.isArray(seen) ? Array.from(new Set(seen.map(sanitizeKeyCode).filter(Boolean))) : [];
-        state.boostActivated = (await secureStoreGet(S_KEYS.BOOST_FLAG, false)) === true;
-
-        var cachedPool = await secureStoreGet(S_KEYS.POOL_DATA, []);
-        keysPool = buildUniquePool(cachedPool);
-      }
-
-      async function syncSingleShardNow(forceNetwork) {
-        var lastFetchTs = Number(localStorage.getItem(S_KEYS.LAST_FETCH_TS) || 0);
-        if (!forceNetwork && keysPool.length > 1 && (Date.now() - lastFetchTs < CACHE_TTL_MS)) {
-          updateTotalCounter();
-          setCloudStatus(true, "");
+        if (currentBatch.length === 0) {
+          el.emptyGridNotice.classList.remove('hidden');
           return;
         }
+        el.emptyGridNotice.classList.add('hidden');
 
-        // Only 1 single document read!
-        var shardList = await readSingleShardDoc();
-        if (shardList.length === 0) {
-          // If shard_0 is empty on first run, migrate legacy keys once
-          var legacy = await migrateLegacyToShardOnce();
-          var merged = buildUniquePool(keysPool.concat(legacy));
-          if (state.submittedUserKey) {
-            merged = buildUniquePool(merged.concat([{ code: state.submittedUserKey, addedAt: Date.now(), claimed: true }]));
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < currentBatch.length; i++) {
+          frag.appendChild(createGridCardElement(currentBatch[i], i));
+        }
+        el.codesGrid.appendChild(frag);
+
+        if (typeof anime !== 'undefined') {
+          anime({
+            targets: '#codesGrid > div',
+            opacity: [0, 1],
+            translateY: [14, 0],
+            duration: 380,
+            delay: anime.stagger(22),
+            easing: 'easeOutQuad'
+          });
+        }
+      }
+
+      function renderCopiedHistory() {
+        el.copiedCountPill.textContent = String(userState.copied.length);
+        el.copiedList.innerHTML = '';
+        if (userState.copied.length === 0) {
+          el.copiedList.innerHTML =
+            '<p class="text-xs sm:text-sm text-gray-400">لم تقم بنسخ أي مفتاح بعد. اضغط على أي مفتاح أعلاه ليظهر هنا.</p>';
+          return;
+        }
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < userState.copied.length; i++) {
+          const code = userState.copied[i];
+          const chip = document.createElement('button');
+          chip.type = 'button';
+          chip.className =
+            'code-font text-xs font-semibold px-3 py-1.5 rounded-xl bg-nusukBg hover:bg-nusukSand/60 border border-black/5 text-nusukDark transition-all';
+          chip.textContent = '✓ ' + code;
+          chip.title = 'اضغط لإعادة النسخ';
+          chip.addEventListener('click', async function () {
+            await copyTextToClipboard(code);
+            showToast('أُعيد نسخ ' + code, '📋');
+          });
+          frag.appendChild(chip);
+        }
+        el.copiedList.appendChild(frag);
+      }
+
+      function renderUserSubmissionLock(customHeading) {
+        if (userState.myKey) {
+          el.submitFormContainer.classList.add('hidden');
+          el.submittedLockedBox.classList.remove('hidden');
+          el.mySavedKeyBadge.textContent = userState.myKey;
+          if (customHeading) {
+            el.submittedStatusHeading.textContent = customHeading;
           }
-          shardList = await writeSingleShardDoc(merged);
-        }
-
-        keysPool = buildUniquePool(keysPool.concat(shardList));
-        await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
-        try { localStorage.setItem(S_KEYS.LAST_FETCH_TS, String(Date.now())); } catch (e) {}
-        updateTotalCounter();
-        setCloudStatus(true, "");
-
-        if (state.submittedUserKey && currentBatch.length < BATCH_SIZE) {
-          await generateAndRenderFairBatch(false);
+        } else {
+          el.submitFormContainer.classList.remove('hidden');
+          el.submittedLockedBox.classList.add('hidden');
         }
       }
 
-      async function initCloudSync() {
-        updateTotalCounter();
-        try {
-          await syncSingleShardNow(false);
-        } catch (err) {
-          console.warn("Shard sync warning:", err);
-          setCloudStatus(false, String((err && err.message) || err));
+      function showSubmitFeedback(msg, isError) {
+        el.submitFeedback.textContent = msg;
+        el.submitFeedback.classList.remove(
+          'hidden',
+          'bg-red-50',
+          'text-red-700',
+          'border',
+          'border-red-200',
+          'bg-emerald-50',
+          'text-emerald-700',
+          'border-emerald-200'
+        );
+        if (isError) {
+          el.submitFeedback.classList.add('bg-red-50', 'text-red-700', 'border', 'border-red-200');
+        } else {
+          el.submitFeedback.classList.add('bg-emerald-50', 'text-emerald-700', 'border', 'border-emerald-200');
         }
       }
 
-      async function registerOrClaimKeyInShard(cleanCode) {
-        try {
-          var currentShard = await readSingleShardDoc();
-          var existing = currentShard.find(function(x) { return x.code === cleanCode; });
-          if (existing) {
-            if (existing.claimed === false) {
-              // Auto-claim pre-imported key!
-              var updatedList = currentShard.map(function(x) {
-                return x.code === cleanCode ? { code: cleanCode, addedAt: x.addedAt, claimed: true } : x;
-              });
-              keysPool = await writeSingleShardDoc(updatedList);
-              await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
-              setCloudStatus(true, "");
-              return "CLAIMED";
-            }
-            return "EXISTS";
-          }
+      /* =========================================================
+       * 9. INTERACTION HANDLERS
+       * ========================================================= */
+      // Next Code Copy + Instant Swap
+      async function handleCopyNextKey(openAppAfter) {
+        if (!nextFeaturedCode) return;
+        const copied = nextFeaturedCode;
+        pulseButton(openAppAfter ? el.openNusukBtn : el.copyNextKeyBtn);
+        await copyTextToClipboard(copied);
+        recordCopiedCode(copied);
 
-          var nextList = currentShard.concat([{ code: cleanCode, addedAt: Date.now(), claimed: true }]);
-          keysPool = await writeSingleShardDoc(nextList);
-          await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
-          try { localStorage.setItem(S_KEYS.LAST_FETCH_TS, String(Date.now())); } catch (e) {}
-          setCloudStatus(true, "");
-          return "CREATED";
-        } catch (err) {
-          console.warn("Shard write failed:", err);
-          setCloudStatus(false, String((err && err.message) || err));
-          return "ERROR";
+        if (openAppAfter) {
+          showToast('تم نسخ ' + copied + ' — جاري توجيهك لتطبيق نسك', '📱');
+        } else {
+          showToast('تم نسخ المفتاح ' + copied + ' بنجاح!', '✅');
+        }
+
+        const exclude = currentBatch.slice();
+        const pool = getEligiblePool(exclude);
+        const replacement = pool.length > 0 ? pool[0] : (currentBatch.length > 0 ? currentBatch.shift() : null);
+
+        animateSwapElement(el.nextKeyBox, function () {
+          nextFeaturedCode = replacement;
+          if (replacement) markSeen([replacement]);
+          renderNextKey();
+          renderCodesGrid();
+        });
+
+        if (openAppAfter) {
+          setTimeout(function () {
+            window.open('https://www.nusuk.sa/', '_blank', 'noopener,noreferrer');
+          }, 350);
         }
       }
 
-      function updateTotalCounter() {
-        var el = document.getElementById("total-pool-count");
-        if (el) el.textContent = String(keysPool.length);
-      }
+      el.copyNextKeyBtn.addEventListener('click', function () { handleCopyNextKey(false); });
+      el.openNusukBtn.addEventListener('click', function () { handleCopyNextKey(true); });
 
-      function formatRelativeTime(ts) {
-        var diffSec = Math.max(1, Math.floor((Date.now() - (ts || Date.now())) / 1000));
-        if (diffSec < 60) return "منذ لحظات";
-        var diffMin = Math.floor(diffSec / 60);
-        if (diffMin < 60) return "منذ " + diffMin + " د";
-        var diffHr = Math.floor(diffMin / 60);
-        if (diffHr < 24) return "منذ " + diffHr + " س";
-        return "منذ " + Math.floor(diffHr / 24) + " ي";
-      }
+      // Developer Key Copy
+      el.copyDevKeyBtn.addEventListener('click', async function () {
+        pulseButton(el.copyDevKeyBtn);
+        await copyTextToClipboard(DEV_KEY);
+        showToast('شكراً لدعمك! تم نسخ مفتاح المطور ' + DEV_KEY, '⭐');
+      });
 
-      function syncUIState() {
-        var devDisplay = document.getElementById("owner-key-display");
-        if (devDisplay) devDisplay.textContent = DEV_KEY;
+      // Refresh 33-Code Batch
+      el.refreshBatchBtn.addEventListener('click', function () {
+        pulseButton(el.refreshBatchBtn);
+        buildFreshBatch();
+        showToast('تم تحديث القائمة وجلب دفعة جديدة عشوائية', '🔄');
+      });
 
-        var step2Badge = document.getElementById("step2-status-badge");
-        var step2Helper = document.getElementById("step2-helper-text");
-        var inputEl = document.getElementById("visitor-key-input");
-        var pasteBtn = document.getElementById("paste-visitor-btn");
-        var submitBtn = document.getElementById("submit-visitor-btn");
-        var boostCard = document.getElementById("share-boost-card");
-        var step3Section = document.getElementById("step3-section");
-        var myKeyBadge = document.getElementById("my-key-badge");
-
-        if (state.submittedUserKey) {
-          step2Badge.textContent = "تم الإدراج ✓ (1/1)";
-          step2Helper.textContent = "تم حفظ مفتاحك في الكوكيز والسحابة للزوار الآخرين! يظهر لك أدناه مفاتيح المشاركين الآخرين دون تكرار.";
-          inputEl.value = state.submittedUserKey;
-          inputEl.disabled = true;
-          inputEl.readOnly = true;
-          if (pasteBtn) pasteBtn.classList.add("hidden");
-          submitBtn.disabled = true;
-          submitBtn.textContent = "مفتاحك مُدرج للزوار الآخرين ✓";
-          if (myKeyBadge) myKeyBadge.textContent = state.submittedUserKey;
-
-          boostCard.classList.remove("hidden");
-          step3Section.classList.remove("hidden");
-          applySavedBoostUI();
-          if (currentBatch.length === 0) {
-            generateAndRenderFairBatch(false);
-          } else {
-            renderBatchCards(currentBatch, null);
-          }
+      // Smart Key Extraction on Input
+      el.userKeyInput.addEventListener('input', function () {
+        const extracted = extractSingleKey(el.userKeyInput.value);
+        if (extracted) {
+          el.extractedCodeText.textContent = extracted;
+          el.extractedPreview.classList.remove('hidden');
+          el.extractedPreview.classList.add('flex');
+        } else {
+          el.extractedPreview.classList.add('hidden');
+          el.extractedPreview.classList.remove('flex');
         }
-      }
+      });
 
-      async function handlePasteVisitorKey() {
-        var inputEl = document.getElementById("visitor-key-input");
-        if (!inputEl || inputEl.disabled) return;
+      // Paste Button
+      el.pasteKeyBtn.addEventListener('click', async function () {
+        pulseButton(el.pasteKeyBtn);
         try {
           if (navigator.clipboard && navigator.clipboard.readText) {
-            var clipText = await navigator.clipboard.readText();
-            if (clipText) {
-              inputEl.value = sanitizeKeyCode(clipText);
-              showToast("تم لصق الرمز بنجاح!", "success");
+            const txt = await navigator.clipboard.readText();
+            if (txt) {
+              el.userKeyInput.value = txt;
+              el.userKeyInput.dispatchEvent(new Event('input'));
+              showToast('تم لصق النص وفحص المفتاح', '📋');
               return;
             }
           }
-        } catch (e) {}
-        inputEl.focus();
-        showToast("اضغط مطولاً داخل الخانة (أو Ctrl+V) للصق الرمز.", "warning");
-      }
+          showToast('يرجى اللصق يدوياً داخل الخانة (Ctrl+V)', 'ℹ️');
+        } catch (e) {
+          showToast('يرجى السماح باللصق أو اللصق يدوياً داخل الخانة', 'ℹ️');
+        }
+      });
 
-      async function handleSubmitVisitorKey() {
-        if (state.submittedUserKey) {
-          showToast("لقد أضفت مفتاحك مسبقاً؛ يُسمح بمفتاح واحد فقط لكل زائر.", "warning");
+      // Submit User Key (Duplicate Protection + Auto-Claim)
+      el.submitKeyBtn.addEventListener('click', async function () {
+        if (userState.myKey) return;
+        pulseButton(el.submitKeyBtn);
+
+        const code = extractSingleKey(el.userKeyInput.value);
+        if (!code) {
+          showSubmitFeedback('لم يتم العثور على مفتاح نسك صالح (يجب أن يبدأ بـ NG- متبوعاً بأحرف وأرقام).', true);
+          return;
+        }
+        if (code === DEV_KEY) {
+          showSubmitFeedback('هذا هو مفتاح المطور الافتراضي، يرجى إدخال مفتاحك الشخصي.', true);
           return;
         }
 
-        var inputEl = document.getElementById("visitor-key-input");
-        var rawInput = inputEl ? inputEl.value : "";
-
-        if (hasInjectionPattern(rawInput)) {
-          showToast("تم رفض الإدخال لاحتوائه على رموز غير مسموح بها.", "error");
-          if (inputEl) inputEl.value = "";
-          return;
-        }
-
-        var cleanCode = sanitizeKeyCode(rawInput);
-        if (!isValidKeyFormat(cleanCode)) {
-          showToast("صيغة المفتاح غير صحيحة! يجب أن يبدأ بـ NG- متبوعاً بالرمز الصحيح.", "error");
-          return;
-        }
-        if (cleanCode === DEV_KEY) {
-          showToast("هذا مفتاح المطور! يرجى إدخال مفتاحك الخاص من تطبيق نسك.", "warning");
-          return;
-        }
-
-        var localMatch = keysPool.find(function(k) { return sanitizeKeyCode(k.code) === cleanCode; });
-        if (localMatch && localMatch.claimed === true) {
-          showToast("هذا المفتاح مُدخل مسبقاً في المنصة! لا يمكن إدخال نفس الكود مرتين.", "warning");
-          return;
-        }
-
-        var submitBtn = document.getElementById("submit-visitor-btn");
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.textContent = "جاري التحقق والحفظ...";
-        }
-
-        var cloudRes = await registerOrClaimKeyInShard(cleanCode);
-        if (cloudRes === "EXISTS") {
-          showToast("هذا المفتاح مُسجل مسبقاً في المنصة! يُمنع إدخال أي كود أكثر من مرة.", "warning");
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = "إضافة مفتاحي وعرض مفاتيح المشاركين";
-          }
-          return;
-        }
-
-        state.submittedUserKey = cleanCode;
-        await secureStoreSet(S_KEYS.SINGLE_USER_KEY, cleanCode, true);
-
-        keysPool = buildUniquePool(keysPool.filter(function(k) { return k.code !== cleanCode; }).concat([{ code: cleanCode, addedAt: Date.now(), claimed: true }]));
-        await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
-        updateTotalCounter();
-
-        if (cloudRes === "ERROR") {
-          showToast("تم حفظ مفتاحك محلياً بالكوكيز.", "warning");
-        } else {
-          showToast("تم إضافة مفتاحك بنجاح وحفظ تقدمك بالكوكيز! إليك مفاتيح المشاركين.", "success");
-        }
-        syncUIState();
-      }
-
-      function applySavedBoostUI() {
-        if (state.boostActivated) {
-          var badge = document.getElementById("boost-status-badge");
-          var label = document.getElementById("boost-percent-label");
-          var bar = document.getElementById("boost-progress-bar");
-          if (badge) {
-            badge.textContent = "أولوية قصوى 3x مفعّلة 🔥";
-            badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
-          }
-          if (label) label.textContent = "100% (مضاعفة 3x)";
-          if (bar) bar.style.width = "100%";
-        }
-      }
-
-      async function handleShareBoost(platform) {
-        var pageUrl = window.location.href;
-        var shareText = encodeURIComponent("منصة ذكاء (ZKAE.com) لتبادل مفاتيح تحدي نسك مجاناً 🕋✨ أضف مفتاحك واحصل على 33 مفتاحاً عشوائياً جديداً من هنا: ");
-        var encodedUrl = encodeURIComponent(pageUrl);
-
-        var links = {
-          whatsapp: "https://api.whatsapp.com/send?text=" + shareText + encodedUrl,
-          telegram: "https://t.me/share/url?url=" + encodedUrl + "&text=" + shareText,
-          facebook: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
-          x: "https://twitter.com/intent/tweet?text=" + shareText + "&url=" + encodedUrl
-        };
-
-        if (links[platform]) {
-          window.open(links[platform], "_blank", "noopener,noreferrer");
-        } else {
-          copyTextSafe(pageUrl);
-          showToast("تم نسخ رابط منصة ذكاء لمشاركته!", "success");
-        }
-
-        state.boostActivated = true;
-        await secureStoreSet(S_KEYS.BOOST_FLAG, true, true);
-        applySavedBoostUI();
-      }
-
-      async function generateAndRenderFairBatch(isUserRefresh) {
-        if (isUserRefresh) {
-          try { await syncSingleShardNow(true); } catch (e) {}
-        }
-
-        var myKey = state.submittedUserKey.toUpperCase();
-        var copiedSet = new Set(state.copiedHistory.map(function(c) { return c.toUpperCase(); }));
-        var seenSet = new Set(state.seenForever.map(function(c) { return c.toUpperCase(); }));
-
-        var uncopiedOthers = keysPool.filter(function(item) {
-          var code = sanitizeKeyCode(item.code);
-          return code && code !== myKey && !copiedSet.has(code);
-        });
-
-        var unseenCandidates = uncopiedOthers.filter(function(item) {
-          return !seenSet.has(sanitizeKeyCode(item.code));
-        });
-
-        if (unseenCandidates.length === 0 && uncopiedOthers.length > 0) {
-          state.seenForever = state.copiedHistory.slice();
-          await secureStoreSet(S_KEYS.SEEN_LIST, state.seenForever, true);
-          unseenCandidates = uncopiedOthers.slice();
-        }
-
-        var uniqueMap = new Map();
-        fairCryptoShuffle(unseenCandidates).forEach(function(item) {
-          var c = sanitizeKeyCode(item.code);
-          if (!uniqueMap.has(c) && uniqueMap.size < BATCH_SIZE) {
-            uniqueMap.set(c, item);
-          }
-        });
-
-        var selected = Array.from(uniqueMap.values());
-
-        selected.forEach(function(item) {
-          var c = sanitizeKeyCode(item.code);
-          if (state.seenForever.indexOf(c) === -1) state.seenForever.push(c);
-        });
-        await secureStoreSet(S_KEYS.SEEN_LIST, state.seenForever.slice(-180), true);
-
-        currentBatch = selected;
-        renderBatchCards(currentBatch, uncopiedOthers.length);
-
-        if (isUserRefresh) {
-          var icon = document.getElementById("refresh-icon");
-          if (icon) {
-            icon.style.transform = "rotate(360deg)";
-            setTimeout(function() { icon.style.transform = "rotate(0deg)"; }, 520);
-          }
-          if (selected.length > 0) {
-            showToast("تم تحديث القائمة وجلب " + selected.length + " مفتاحاً دون تكرار!", "success");
-          } else {
-            showToast("لا توجد مفاتيح جديدة إضافية حالياً؛ حاول بعد قليل.", "warning");
-          }
-        }
-      }
-
-      function renderBatchCards(batchList, totalRemainingCount) {
-        var container = document.getElementById("keys-list-container");
-        var emptyBox = document.getElementById("empty-keys-box");
-        var totalBadge = document.getElementById("list-total-badge");
-        var remainingLabel = document.getElementById("remaining-pool-label");
-        var progressLabel = document.getElementById("copied-progress-label");
-        if (!container) return;
-
-        var myKey = state.submittedUserKey.toUpperCase();
-        var copiedSet = new Set(state.copiedHistory.map(function(c) { return c.toUpperCase(); }));
-
-        if (totalRemainingCount === null || totalRemainingCount === undefined) {
-          totalRemainingCount = keysPool.filter(function(item) {
-            var code = sanitizeKeyCode(item.code);
-            return code && code !== myKey && !copiedSet.has(code);
-          }).length;
-        }
-
-        if (totalBadge) totalBadge.textContent = "المعروض: " + batchList.length + " / " + BATCH_SIZE;
-        if (remainingLabel) remainingLabel.textContent = "المتبقي لك: " + totalRemainingCount;
-        if (progressLabel) progressLabel.textContent = "نسخت: " + copiedSet.size;
-
-        container.replaceChildren();
-
-        if (batchList.length === 0) {
-          emptyBox.classList.remove("hidden");
-          return;
-        }
-
-        emptyBox.classList.add("hidden");
-
-        batchList.forEach(function(item, idx) {
-          var safeCode = sanitizeKeyCode(item.code);
-          var alreadyCopied = copiedSet.has(safeCode);
-
-          var card = document.createElement("div");
-          card.className = alreadyCopied
-            ? "flex items-center justify-between gap-2.5 bg-emerald-50/85 border border-emerald-300 rounded-2xl p-3 sm:p-3.5 transition"
-            : "flex items-center justify-between gap-2.5 bg-gray-50/90 hover:bg-white border border-gray-200/90 rounded-2xl p-3 sm:p-3.5 transition";
-
-          var leftWrap = document.createElement("div");
-          leftWrap.className = "flex items-center gap-2.5 min-w-0";
-
-          var indexBadge = document.createElement("span");
-          indexBadge.className = alreadyCopied
-            ? "w-7 h-7 rounded-full bg-emerald-200 text-emerald-900 font-bold text-xs flex items-center justify-center shrink-0"
-            : "w-7 h-7 rounded-full bg-amber-100 text-amber-900 font-bold text-xs flex items-center justify-center shrink-0";
-          indexBadge.textContent = String(idx + 1);
-
-          var infoWrap = document.createElement("div");
-          infoWrap.className = "min-w-0";
-
-          var codeEl = document.createElement("div");
-          codeEl.dir = "ltr";
-          codeEl.className = "font-mono font-bold text-xs sm:text-base text-gray-900 truncate select-all";
-          codeEl.textContent = safeCode;
-
-          var timeEl = document.createElement("div");
-          timeEl.className = "text-[11px] text-gray-500";
-          timeEl.textContent = formatRelativeTime(item.addedAt);
-
-          infoWrap.appendChild(codeEl);
-          infoWrap.appendChild(timeEl);
-          leftWrap.appendChild(indexBadge);
-          leftWrap.appendChild(infoWrap);
-
-          var copyBtn = document.createElement("button");
-          copyBtn.type = "button";
-          if (alreadyCopied) {
-            copyBtn.textContent = "تم النسخ ✓";
-            copyBtn.disabled = true;
-            copyBtn.className = "bg-emerald-600 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 cursor-default";
-          } else {
-            copyBtn.textContent = "نسخ";
-            copyBtn.className = "bg-nusuk-dark hover:bg-black text-white font-bold text-xs px-4 py-2 rounded-full shrink-0 transition cursor-pointer";
-          }
-
-          copyBtn.addEventListener("click", async function() {
-            if (copyBtn.disabled) return;
-            copyTextSafe(safeCode);
-            if (state.copiedHistory.indexOf(safeCode) === -1) {
-              state.copiedHistory.push(safeCode);
-              await secureStoreSet(S_KEYS.COPIED_LIST, state.copiedHistory.slice(-180), true);
-            }
-
-            card.className = "flex items-center justify-between gap-2.5 bg-emerald-50/85 border border-emerald-300 rounded-2xl p-3 sm:p-3.5 transition";
-            indexBadge.className = "w-7 h-7 rounded-full bg-emerald-200 text-emerald-900 font-bold text-xs flex items-center justify-center shrink-0";
-            copyBtn.textContent = "تم النسخ ✓";
-            copyBtn.disabled = true;
-            copyBtn.className = "bg-emerald-600 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 cursor-default";
-
-            var newRemaining = Math.max(0, totalRemainingCount - 1);
-            if (remainingLabel) remainingLabel.textContent = "المتبقي لك: " + newRemaining;
-            if (progressLabel) progressLabel.textContent = "نسخت: " + state.copiedHistory.length;
-            showToast("تم نسخ المفتاح " + safeCode + " وحفظ تقدمك بالكوكيز!", "success");
-          });
-
-          card.appendChild(leftWrap);
-          card.appendChild(copyBtn);
-          container.appendChild(card);
-        });
-      }
-
-      // HIDDEN ENCRYPTED ADMIN VAULT LOGIC (Single-Shard Atomic Write)
-      function openAdminVaultModal() {
-        var modal = document.getElementById("admin-vault-modal");
-        var authView = document.getElementById("admin-auth-view");
-        var bulkView = document.getElementById("admin-bulk-view");
-        var pinInput = document.getElementById("admin-pin-input");
-        if (!modal) return;
-
-        modal.classList.remove("hidden");
-        if (isAdminUnlocked) {
-          if (authView) authView.classList.add("hidden");
-          if (bulkView) bulkView.classList.remove("hidden");
-        } else {
-          if (authView) authView.classList.remove("hidden");
-          if (bulkView) bulkView.classList.add("hidden");
-          if (pinInput) {
-            pinInput.value = "";
-            setTimeout(function() { pinInput.focus(); }, 100);
-          }
-        }
-      }
-
-      async function verifyAdminPin() {
-        var pinInput = document.getElementById("admin-pin-input");
-        var rawPin = String((pinInput && pinInput.value) || "").trim();
-        if (!rawPin) return;
-
-        var computedHash = await _sha256Hex(rawPin + "|" + _ADMIN_SALT);
-        if ((computedHash && computedHash === _ADMIN_PIN_SHA256) || rawPin === "ZKAE@2026#Admin") {
-          isAdminUnlocked = true;
-          if (pinInput) pinInput.value = "";
-          var authView = document.getElementById("admin-auth-view");
-          var bulkView = document.getElementById("admin-bulk-view");
-          if (authView) authView.classList.add("hidden");
-          if (bulkView) bulkView.classList.remove("hidden");
-          showToast("تم فك تشفير خزنة الإدارة بنجاح.", "success");
-        } else {
-          if (pinInput) pinInput.value = "";
-          showToast("رمز التحقق غير صحيح!", "error");
-        }
-      }
-
-      async function runAdminBulkImport() {
-        if (!isAdminUnlocked) {
-          showToast("غير مصرح! يرجى إدخال الرمز السري أولاً.", "error");
-          return;
-        }
-
-        var textarea = document.getElementById("bulk-keys-textarea");
-        var progressEl = document.getElementById("bulk-import-progress");
-        var submitBtn = document.getElementById("bulk-import-submit-btn");
-        var rawText = String((textarea && textarea.value) || "");
-
-        var matches = rawText.toUpperCase().match(/NG-[A-Z0-9_-]{4,20}/g) || [];
-        var uniqueCodes = Array.from(new Set(matches.map(sanitizeKeyCode).filter(function(c) { return isValidKeyFormat(c) && c !== DEV_KEY; })));
-
-        if (uniqueCodes.length === 0) {
-          showToast("لم يتم العثور على أي أكواد صالحة بصيغة NG-XXXX!", "warning");
-          return;
-        }
-
-        if (submitBtn) submitBtn.disabled = true;
-        if (progressEl) {
-          progressEl.classList.remove("hidden");
-          progressEl.textContent = "جاري دمج " + uniqueCodes.length + " كود في مستند واحد...";
-        }
-
-        var baseList = keysPool.slice();
-        try {
-          var cloudList = await readSingleShardDoc();
-          if (cloudList.length > 0) baseList = buildUniquePool(baseList.concat(cloudList));
-        } catch (e) {}
-
-        var existingSet = new Set(baseList.map(function(x) { return x.code; }));
-        var addedCount = 0;
-        var skippedCount = 0;
-        var baseTime = Date.now();
-
-        for (var i = 0; i < uniqueCodes.length; i++) {
-          var code = uniqueCodes[i];
-          if (!existingSet.has(code)) {
-            baseList.push({
-              code: code,
-              addedAt: baseTime - (uniqueCodes.length - i) * 1000,
-              claimed: false
-            });
-            existingSet.add(code);
-            addedCount++;
-          } else {
-            skippedCount++;
-          }
-        }
+        el.submitKeyBtn.disabled = true;
+        el.submitKeyBtn.textContent = 'جاري التحقق...';
 
         try {
-          keysPool = await writeSingleShardDoc(baseList);
-          await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
-          try { localStorage.setItem(S_KEYS.LAST_FETCH_TS, String(Date.now())); } catch (e) {}
-          updateTotalCounter();
-          setCloudStatus(true, "");
+          // Verify latest state once before write
+          const latest = await fetchShardItems(true);
+          shardItems = latest.items;
 
-          if (progressEl) progressEl.textContent = "✓ تم نشر " + addedCount + " كود جديد بنجاح (وتجاهل " + skippedCount + " مكرر).";
-          showToast("تم نشر " + addedCount + " كود جديد في طلب واحد!", "success");
-        } catch (err) {
-          keysPool = buildUniquePool(baseList);
-          await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
-          updateTotalCounter();
-          setCloudStatus(false, String((err && err.message) || err));
-          if (progressEl) progressEl.textContent = "تم الحفظ محلياً (تعذر الرفع للسحابة: " + String((err && err.message) || err) + ").";
-          showToast("تعذر الإرسال للسحابة حالياً.", "error");
-        }
-
-        if (submitBtn) submitBtn.disabled = false;
-        if (textarea) textarea.value = "";
-      }
-
-      function initAutoVisitorStats() {
-        var onlineEl = document.getElementById("live-online-visitors");
-        var flagImg = document.getElementById("flag-counter-img");
-        var updateOnline = function() {
-          if (onlineEl) onlineEl.textContent = String(Math.max(1, Math.min(25, Math.floor(keysPool.length / 4) + 1)) + Math.floor(Math.random() * 3));
-        };
-        updateOnline();
-        setInterval(updateOnline, 25000);
-        if (flagImg) {
-          var baseSrc = flagImg.src.split("?")[0];
-          setInterval(function() { flagImg.src = baseSrc + "?t=" + Date.now(); }, 180000);
-        }
-      }
-
-      function toggleModal(id, show) {
-        var el = document.getElementById(id);
-        if (el) el.classList.toggle("hidden", !show);
-      }
-
-      function bindSecureEvents() {
-        var brandTrigger = document.getElementById("secret-brand-trigger");
-        if (brandTrigger) {
-          brandTrigger.addEventListener("click", function() {
-            adminClickTaps++;
-            clearTimeout(adminTapTimer);
-            adminTapTimer = setTimeout(function() { adminClickTaps = 0; }, 1500);
-            if (adminClickTaps >= 5) {
-              adminClickTaps = 0;
-              openAdminVaultModal();
-            }
-          });
-        }
-
-        document.addEventListener("keydown", function(e) {
-          if (e.ctrlKey && e.shiftKey && (e.key === "K" || e.key === "k")) {
-            e.preventDefault();
-            openAdminVaultModal();
-          }
-        });
-
-        var txtInput = document.getElementById("bulk-txt-file");
-        if (txtInput) {
-          txtInput.addEventListener("change", function(e) {
-            var file = e.target.files && e.target.files[0];
-            if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-              var ta = document.getElementById("bulk-keys-textarea");
-              if (ta) {
-                var nl = String.fromCharCode(10);
-                ta.value = (ta.value ? ta.value + nl : "") + String((ev.target && ev.target.result) || "");
-              }
-              showToast("تم تحميل الملف (" + file.name + ") بنجاح.", "success");
-            };
-            reader.readAsText(file);
-            txtInput.value = "";
-          });
-        }
-
-        document.addEventListener("click", async function(e) {
-          var actionBtn = e.target.closest("[data-action]");
-          if (actionBtn) {
-            var act = actionBtn.getAttribute("data-action");
-            if (act === "copy-owner") {
-              copyTextSafe(DEV_KEY);
-              showToast("تم نسخ مفتاح المطور (" + DEV_KEY + ") — شكراً لدعمك!", "success");
-            } else if (act === "paste-visitor") {
-              await handlePasteVisitorKey();
-            } else if (act === "submit-visitor") {
-              await handleSubmitVisitorKey();
-            } else if (act === "refresh-batch") {
-              await generateAndRenderFairBatch(true);
-            } else if (act === "retry-cloud") {
-              showToast("جاري إعادة الاتصال بالسحابة...", "warning");
-              await syncSingleShardNow(true);
-            } else if (act === "open-dua") {
-              toggleModal("dua-tiktok-modal", true);
-            } else if (act === "close-dua") {
-              toggleModal("dua-tiktok-modal", false);
-            } else if (act === "open-guide") {
-              toggleModal("guide-modal", true);
-            } else if (act === "close-guide") {
-              toggleModal("guide-modal", false);
-            } else if (act === "follow-tiktok") {
-              await secureStoreSet(S_KEYS.DUA_SEEN, true, true);
-            } else if (act === "close-admin") {
-              toggleModal("admin-vault-modal", false);
-            } else if (act === "verify-admin-pin") {
-              await verifyAdminPin();
-            } else if (act === "run-bulk-import") {
-              await runAdminBulkImport();
-            } else if (act === "lock-admin") {
-              isAdminUnlocked = false;
-              toggleModal("admin-vault-modal", false);
-              showToast("تم قفل الخزنة وتشفير الجلسة.", "success");
-            }
+          const existing = shardItems[code];
+          if (existing && existing.c === true) {
+            showSubmitFeedback('هذا المفتاح (' + code + ') مضاف ومطالب به مسبقاً في المنصة ولا يمكن تكراره.', true);
             return;
           }
-          var shareBtn = e.target.closest("[data-share]");
-          if (shareBtn) await handleShareBoost(shareBtn.getAttribute("data-share"));
+
+          const nowTs = Date.now();
+          const isAutoClaim = Boolean(existing && existing.c === false);
+
+          await patchSingleKeyToShard(code, nowTs, true);
+
+          shardItems[code] = { t: nowTs, c: true };
+          writeShardCache(shardItems);
+
+          userState.myKey = code;
+          saveUserState(userState);
+
+          animateCounter(el.totalKeysCounter, Object.keys(shardItems).length);
+          renderUserSubmissionLock(
+            isAutoClaim
+              ? 'تم التحقق والمطالبة التلقائية بمفتاحك بنجاح (Auto-Claim)!'
+              : 'تمت إضافة مفتاحك بنجاح ودخوله التوزيع العادل!'
+          );
+          buildFreshBatch();
+          showToast('تم حفظ مفتاحك ' + code + ' بنجاح!', '🎉');
+        } catch (err) {
+          showSubmitFeedback('تعذر الاتصال بقاعدة البيانات حالياً، يرجى المحاولة بعد لحظات.', true);
+        } finally {
+          el.submitKeyBtn.disabled = false;
+          el.submitKeyBtn.innerHTML = '<span>إضافة مفتاحي</span><span>🚀</span>';
+        }
+      });
+
+      // Share Buttons (3x Visibility Booster)
+      document.querySelectorAll('.share-btn').forEach(function (btn) {
+        btn.addEventListener('click', async function () {
+          pulseButton(btn);
+          const type = btn.getAttribute('data-share');
+          const shareUrl = 'https://zkae.com';
+          const shareText =
+            '🔑 تبادل مفاتيح تحدي نسك مجاناً وبسرعة عبر منصة ذكاء (ZKAE.com) — انسخ مفتاحاً واحصل على مفتاح: ' +
+            shareUrl;
+
+          if (type === 'whatsapp') {
+            window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank', 'noopener');
+          } else if (type === 'telegram') {
+            window.open(
+              'https://t.me/share/url?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(shareText),
+              '_blank',
+              'noopener'
+            );
+          } else if (type === 'facebook') {
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl), '_blank', 'noopener');
+          } else if (type === 'x') {
+            window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText), '_blank', 'noopener');
+          } else if (type === 'copy') {
+            await copyTextToClipboard(shareUrl);
+            showToast('تم نسخ رابط المنصة https://zkae.com', '📋');
+          }
         });
+      });
 
-        var vInput = document.getElementById("visitor-key-input");
-        if (vInput) {
-          vInput.addEventListener("keydown", async function(e) {
-            if (e.key === "Enter") { e.preventDefault(); await handleSubmitVisitorKey(); }
+      // FAQ Accordion
+      document.querySelectorAll('.faq-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const item = btn.closest('.faq-item');
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(function (other) {
+            other.classList.remove('open');
           });
-        }
+          if (!isOpen) item.classList.add('open');
+        });
+      });
 
-        var aInput = document.getElementById("admin-pin-input");
-        if (aInput) {
-          aInput.addEventListener("keydown", async function(e) {
-            if (e.key === "Enter") { e.preventDefault(); await verifyAdminPin(); }
-          });
+      // Dua Modal
+      function toggleDuaModal(open) {
+        el.duaModal.classList.toggle('hidden', !open);
+        el.duaModal.classList.toggle('flex', open);
+      }
+      el.openDuaBtn.addEventListener('click', function () { toggleDuaModal(true); });
+      el.closeDuaBtn.addEventListener('click', function () { toggleDuaModal(false); });
+      el.closeDuaBtn2.addEventListener('click', function () { toggleDuaModal(false); });
+      el.duaModal.addEventListener('click', function (e) { if (e.target === el.duaModal) toggleDuaModal(false); });
+      el.copyDuaBtn.addEventListener('click', async function () {
+        const duaText =
+          'لا إله إلا الله الحليم الكريم، سبحان الله رب العرش العظيم، الحمد لله رب العالمين، أسألك موجبات رحمتك، وعزائم مغفرتك، والغنيمة من كل بر، والسلامة من كل إثم، لا تدع لي ذنباً إلا غفرته، ولا هماً إلا فرجته، ولا حاجة هي لك رضاً إلا قضيتها يا أرحم الراحمين.';
+        await copyTextToClipboard(duaText);
+        showToast('تم نسخ دعاء الحاجة', '🤲');
+      });
+
+      /* =========================================================
+       * 10. HIDDEN ENCRYPTED ADMIN VAULT
+       *     Trigger: 5 clicks on Brand Badge OR Ctrl + Shift + K
+       * ========================================================= */
+      let brandClickCount = 0;
+      let brandClickTimer = null;
+      let adminUnlocked = false;
+
+      function openAdminVault() {
+        el.adminVaultModal.classList.remove('hidden');
+        el.adminVaultModal.classList.add('flex');
+        el.adminCurrentTotal.textContent = Object.keys(shardItems).length + ' مفتاح';
+        if (!adminUnlocked) {
+          el.adminPassInput.value = '';
+          el.adminAuthError.classList.add('hidden');
+          setTimeout(function () { el.adminPassInput.focus(); }, 60);
         }
       }
 
-      async function bootstrapApp() {
-        bindSecureEvents();
-        await hydrateSecureState();
-        syncUIState();
-        initAutoVisitorStats();
-        await initCloudSync();
+      function closeAdminVault() {
+        el.adminVaultModal.classList.add('hidden');
+        el.adminVaultModal.classList.remove('flex');
+      }
 
-        if ((await secureStoreGet(S_KEYS.DUA_SEEN, false)) !== true) {
-          setTimeout(async function() {
-            await secureStoreSet(S_KEYS.DUA_SEEN, true, true);
-            toggleModal("dua-tiktok-modal", true);
-          }, 3000);
+      el.brandVaultTrigger.addEventListener('click', function () {
+        brandClickCount++;
+        clearTimeout(brandClickTimer);
+        brandClickTimer = setTimeout(function () { brandClickCount = 0; }, 1600);
+        if (brandClickCount >= 5) {
+          brandClickCount = 0;
+          openAdminVault();
+        }
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey && e.shiftKey && (e.key === 'K' || e.key === 'k')) {
+          e.preventDefault();
+          openAdminVault();
+        } else if (e.key === 'Escape') {
+          toggleDuaModal(false);
+          closeAdminVault();
+        }
+      });
+
+      el.closeAdminBtn.addEventListener('click', closeAdminVault);
+      el.adminVaultModal.addEventListener('click', function (e) {
+        if (e.target === el.adminVaultModal) closeAdminVault();
+      });
+
+      function verifyAdminPassword() {
+        const enteredHash = sha256Hex(el.adminPassInput.value);
+        const expectedHash = sha256Hex(decodeXorB64(ENC_CFG.a));
+        if (enteredHash === expectedHash) {
+          adminUnlocked = true;
+          el.adminAuthGate.classList.add('hidden');
+          el.adminPanel.classList.remove('hidden');
+          el.adminAuthError.classList.add('hidden');
+          el.adminCurrentTotal.textContent = Object.keys(shardItems).length + ' مفتاح';
+        } else {
+          el.adminAuthError.classList.remove('hidden');
         }
       }
 
-      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootstrapApp);
-      else bootstrapApp();
+      el.adminUnlockBtn.addEventListener('click', verifyAdminPassword);
+      el.adminPassInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') verifyAdminPassword();
+      });
+
+      el.adminFileInput.addEventListener('change', function (e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          el.adminBulkText.value = (el.adminBulkText.value ? el.adminBulkText.value + '\n' : '') + String(ev.target.result || '');
+          showToast('تمت قراءة الملف ' + file.name, '📄');
+        };
+        reader.readAsText(file);
+      });
+
+      el.adminImportBtn.addEventListener('click', async function () {
+        if (!adminUnlocked) return;
+        const extracted = extractAllKeys(el.adminBulkText.value);
+        if (extracted.length === 0) {
+          el.adminImportStatus.textContent = '⚠️ لم يتم العثور على أي مفاتيح بصيغة NG-XXXX في النص.';
+          el.adminImportStatus.classList.remove('hidden');
+          return;
+        }
+
+        el.adminImportBtn.disabled = true;
+        el.adminImportBtn.textContent = 'جاري المزامنة والرفع...';
+        el.adminImportStatus.classList.add('hidden');
+
+        try {
+          const latest = await fetchShardItems(true);
+          const merged = Object.assign({}, latest.items);
+          const nowTs = Date.now();
+          let addedCount = 0;
+          let skippedCount = 0;
+
+          for (let i = 0; i < extracted.length; i++) {
+            const code = extracted[i];
+            if (code === DEV_KEY || merged[code]) {
+              skippedCount++;
+            } else {
+              merged[code] = { t: nowTs, c: false }; // c: false enables Auto-Claim
+              addedCount++;
+            }
+          }
+
+          if (addedCount > 0) {
+            await patchBulkItemsMap(merged);
+            shardItems = merged;
+            writeShardCache(shardItems);
+            animateCounter(el.totalKeysCounter, Object.keys(shardItems).length);
+            el.adminCurrentTotal.textContent = Object.keys(shardItems).length + ' مفتاح';
+            buildFreshBatch();
+          }
+
+          el.adminImportStatus.innerHTML =
+            '✅ <strong>تمت العملية في طلب PATCH واحد!</strong><br>' +
+            '• المفاتيح الجديدة المضافة (c: false): <strong class="code-font">' + addedCount + '</strong><br>' +
+            '• المفاتيح المكررة المستبعدة: <strong class="code-font">' + skippedCount + '</strong><br>' +
+            '• الإجمالي الحالي في shard_0: <strong class="code-font">' + Object.keys(shardItems).length + '</strong>';
+          el.adminImportStatus.classList.remove('hidden');
+          if (addedCount > 0) el.adminBulkText.value = '';
+        } catch (err) {
+          el.adminImportStatus.textContent = '❌ فشل الرفع: ' + (err && err.message ? err.message : 'خطأ في الاتصال');
+          el.adminImportStatus.classList.remove('hidden');
+        } finally {
+          el.adminImportBtn.disabled = false;
+          el.adminImportBtn.textContent = '🚀 تصفية ورفع الدفعة (PATCH واحد)';
+        }
+      });
+
+      /* =========================================================
+       * 11. BOOTSTRAP & INITIALIZATION (1 Read Only, Zero Polling)
+       * ========================================================= */
+      function initOnlineIndicator() {
+        const base = 14 + (new Date().getMinutes() % 19);
+        el.onlineNowCount.textContent = String(base);
+      }
+
+      async function initApp() {
+        runEntranceAnimations();
+        initOnlineIndicator();
+        animateCounter(el.helpedCounter, userState.helped || 0);
+        renderCopiedHistory();
+        renderUserSubmissionLock();
+
+        try {
+          const result = await fetchShardItems(false);
+          shardItems = result.items || {};
+          const total = Object.keys(shardItems).length;
+          animateCounter(el.totalKeysCounter, total);
+
+          el.syncDot.classList.remove('bg-amber-500', 'bg-red-500');
+          el.syncDot.classList.add('bg-nusukEmerald');
+          el.syncStatusText.textContent = result.fromCache
+            ? 'متصل (ذاكرة سريعة — استهلاك صفري)'
+            : 'متصل ومُزامن لحظياً';
+
+          buildFreshBatch();
+        } catch (err) {
+          el.syncDot.classList.remove('bg-nusukEmerald');
+          el.syncDot.classList.add('bg-amber-500');
+          el.syncStatusText.textContent = 'وضع الطوارئ المحلي (تعذر الوصول للسحابة)';
+          shardItems = {};
+          buildFreshBatch();
+        }
+      }
+
+      initApp();
     })();
   </script>
 </body>
