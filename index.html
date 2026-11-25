@@ -624,8 +624,8 @@
 
         <!-- Bulk Paste / File Import -->
         <div class="space-y-2">
-          <label class="block text-xs sm:text-sm font-bold text-nusukDark">1) استيراد قائمة مفاتيح (لصق أو ملف .txt):</label>
-          <textarea id="adminBulkText" rows="5" placeholder="NG-XXXXXXXX&#10;NG-YYYYYYYY&#10;..." class="w-full p-3.5 rounded-xl bg-nusukBg border border-black/10 outline-none focus:border-nusukGold code-font text-xs sm:text-sm"></textarea>
+          <label class="block text-xs sm:text-sm font-bold text-nusukDark">استيراد قائمة مفاتيح (لصق أو ملف .txt):</label>
+          <textarea id="adminBulkText" rows="6" placeholder="NG-XXXXXXXX&#10;NG-YYYYYYYY&#10;..." class="w-full p-3.5 rounded-xl bg-nusukBg border border-black/10 outline-none focus:border-nusukGold code-font text-xs sm:text-sm"></textarea>
         </div>
 
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -662,13 +662,14 @@
        * ========================================================= */
       const XOR_KEY = 0x0F;
       const ENC_CFG = {
-        k: 'TkZ1blx2TUFLf1hlVXxcbHg3UmN6TjxYYlZCTWEyQlZmRWczZW1CMWUyNWE=',
+        k: 'TkZ1blx2TUFLf1hlVXxcbHg3RmN6TjxYbVZCTWEyQlZmRWczZW1CMWUyOWE=',
         p: 'dWRuaiJhenx6ZCI6a2k4Ow==',
         a: 'VUROSk89Pz05LE5rYmZh'
       };
 
       function decodeXorB64(val) {
         if (!val) return '';
+        if (val.indexOf('AIza') === 0 || /^[a-z0-9-]+$/.test(val)) return val;
         const bin = atob(val);
         let out = '';
         for (let i = 0; i < bin.length; i++) {
@@ -1044,7 +1045,7 @@
           const detail = err.data && err.data.error && err.data.error.message ? ' (' + err.data.error.message + ')' : '';
           return '⚠️ خطأ في صيغة الطلب إلى قاعدة البيانات (HTTP 400)' + detail;
         }
-        return '⚠️ تعذر الاتصال بقاعدة البيانات حالياً' + (err.status ? ' (HTTP ' + err.status + ')' : '') + '، يرجى المحاولة بعد لحظات.';
+        return '⚠️ تعذر الاتصال بقاعدة البيانات حالياً' + (err.status ? ' (HTTP ' + err.status + ')' : ' — تأكد من إيقاف VPN/Tor أو درع الحماية');
       }
 
       /* =========================================================
