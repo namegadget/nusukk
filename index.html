@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -184,7 +183,7 @@
             أدخل رمز مفتاحك من تطبيق نسك (يُمنع تكرار أي مفتاح في المنصة، ويُحفظ تقدمك تلقائياً عبر الكوكيز):
           </p>
 
-          <div>
+          <div class="flex items-center gap-2">
             <input
               id="visitor-key-input"
               type="text"
@@ -192,8 +191,17 @@
               maxlength="24"
               placeholder="NG-XXXXXXXX"
               autocomplete="off"
-              class="w-full text-center font-mono text-base sm:text-xl font-bold tracking-wider uppercase bg-gray-50 border border-gray-300 focus:border-nusuk-gold focus:ring-2 focus:ring-amber-200 rounded-2xl py-3 px-4 outline-none transition disabled:opacity-75 disabled:cursor-not-allowed"
+              class="flex-1 min-w-0 text-center font-mono text-base sm:text-xl font-bold tracking-wider uppercase bg-gray-50 border border-gray-300 focus:border-nusuk-gold focus:ring-2 focus:ring-amber-200 rounded-2xl py-3 px-4 outline-none transition disabled:opacity-75 disabled:cursor-not-allowed"
             />
+            <button
+              id="paste-visitor-btn"
+              type="button"
+              data-action="paste-visitor"
+              title="لصق من الحافظة"
+              class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-2xl text-xs sm:text-sm border border-gray-300 transition shrink-0 cursor-pointer"
+            >
+              📋 لصق
+            </button>
           </div>
         </div>
 
@@ -416,9 +424,9 @@
     </div>
   </div>
 
-  <!-- Standard Script (Zero external module blockages in Tor/Brave/WebViews) -->
+  <!-- Bulletproof Inline Script (Zero Syntax Errors, Works in Tor/Brave/All Browsers) -->
   <script>
-    (() => {
+    (function() {
       "use strict";
 
       const _0x5a1e = [
@@ -433,25 +441,25 @@
       ];
 
       function _0x3c9d(idx) {
-        const s = _0x5a1e[idx] || "";
-        const k = "NusukVault#2026!Sec";
-        const bin = atob(s);
-        let out = "";
-        for (let i = 0; i < bin.length; i++) {
+        var s = _0x5a1e[idx] || "";
+        var k = "NusukVault#2026!Sec";
+        var bin = atob(s);
+        var out = "";
+        for (var i = 0; i < bin.length; i++) {
           out += String.fromCharCode(bin.charCodeAt(i) ^ k.charCodeAt(i % k.length));
         }
         return out;
       }
 
-      const _SALT = "Nusuk-Sec-Integrity-2026-@abbuzakaria";
-      const _ADMIN_SALT = "ZkaeAdminVaultSalt#99";
-      const _ADMIN_PIN_SHA256 = "2d11518cf72771e7796d2b5ea1725ff474104aa54de7fb046112d815de6db9be";
+      var _SALT = "Nusuk-Sec-Integrity-2026-@abbuzakaria";
+      var _ADMIN_SALT = "ZkaeAdminVaultSalt#99";
+      var _ADMIN_PIN_SHA256 = "2d11518cf72771e7796d2b5ea1725ff474104aa54de7fb046112d815de6db9be";
 
       async function _sha256Hex(str) {
         try {
           if (window.crypto && window.crypto.subtle) {
-            const buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+            var buf = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+            return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, "0"); }).join("");
           }
         } catch (e) {}
         return "";
@@ -459,11 +467,11 @@
 
       async function _signIntegrity(rawStr) {
         try {
-          const hex = await _sha256Hex(rawStr + "|" + _SALT);
+          var hex = await _sha256Hex(rawStr + "|" + _SALT);
           if (hex) return hex.slice(0, 24);
         } catch (e) {}
-        let h = 2166136261;
-        for (let i = 0; i < rawStr.length; i++) {
+        var h = 2166136261;
+        for (var i = 0; i < rawStr.length; i++) {
           h ^= rawStr.charCodeAt(i);
           h = Math.imul(h, 16777619);
         }
@@ -471,26 +479,26 @@
       }
 
       function _xorCodec(bytes) {
-        const kb = new TextEncoder().encode(_SALT);
-        const out = new Uint8Array(bytes.length);
-        for (let i = 0; i < bytes.length; i++) out[i] = bytes[i] ^ kb[i % kb.length];
+        var kb = new TextEncoder().encode(_SALT);
+        var out = new Uint8Array(bytes.length);
+        for (var i = 0; i < bytes.length; i++) out[i] = bytes[i] ^ kb[i % kb.length];
         return out;
       }
 
       function setCookie(name, value, days) {
         try {
-          const expires = new Date(Date.now() + (days || 180) * 864e5).toUTCString();
-          const secureFlag = window.location.protocol === "https:" ? "; Secure" : "";
+          var expires = new Date(Date.now() + (days || 180) * 864e5).toUTCString();
+          var secureFlag = window.location.protocol === "https:" ? "; Secure" : "";
           document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/; SameSite=Lax" + secureFlag;
         } catch (e) {}
       }
 
       function getCookie(name) {
         try {
-          const target = encodeURIComponent(name) + "=";
-          const parts = document.cookie.split(";");
-          for (let i = 0; i < parts.length; i++) {
-            const part = parts[i].trim();
+          var target = encodeURIComponent(name) + "=";
+          var parts = document.cookie.split(";");
+          for (var i = 0; i < parts.length; i++) {
+            var part = parts[i].trim();
             if (part.indexOf(target) === 0) {
               return decodeURIComponent(part.substring(target.length));
             }
@@ -501,11 +509,11 @@
 
       async function secureStoreSet(key, value, useCookie) {
         try {
-          const xored = _xorCodec(new TextEncoder().encode(JSON.stringify(value)));
-          let bin = "";
-          for (let i = 0; i < xored.length; i++) bin += String.fromCharCode(xored[i]);
-          const cipher = btoa(bin);
-          const payload = JSON.stringify({ c: cipher, s: await _signIntegrity(cipher) });
+          var xored = _xorCodec(new TextEncoder().encode(JSON.stringify(value)));
+          var bin = "";
+          for (var i = 0; i < xored.length; i++) bin += String.fromCharCode(xored[i]);
+          var cipher = btoa(bin);
+          var payload = JSON.stringify({ c: cipher, s: await _signIntegrity(cipher) });
           try { localStorage.setItem(key, payload); } catch (e) {}
           if (useCookie && payload.length < 3600) {
             setCookie(key, payload, 180);
@@ -515,12 +523,12 @@
 
       async function secureStoreGet(key, fallback) {
         try {
-          let raw = "";
+          var raw = "";
           try { raw = localStorage.getItem(key) || ""; } catch (e) {}
           if (!raw) raw = getCookie(key);
           if (!raw) return fallback;
 
-          const parsed = JSON.parse(raw);
+          var parsed = JSON.parse(raw);
           if (!parsed || !parsed.c || !parsed.s || parsed.s !== await _signIntegrity(parsed.c)) {
             try { localStorage.removeItem(key); } catch (e) {}
             return fallback;
@@ -528,46 +536,46 @@
           try { localStorage.setItem(key, raw); } catch (e) {}
           if (raw.length < 3600) setCookie(key, raw, 180);
 
-          const bin = atob(parsed.c);
-          const xored = new Uint8Array(bin.length);
-          for (let i = 0; i < bin.length; i++) xored[i] = bin.charCodeAt(i);
+          var bin = atob(parsed.c);
+          var xored = new Uint8Array(bin.length);
+          for (var i = 0; i < bin.length; i++) xored[i] = bin.charCodeAt(i);
           return JSON.parse(new TextDecoder().decode(_xorCodec(xored)));
         } catch (e) {
           return fallback;
         }
       }
 
-      const FIREBASE_CFG = Object.freeze({
+      var FIREBASE_CFG = {
         apiKey: _0x3c9d(0),
         projectId: _0x3c9d(2)
-      });
+      };
 
-      const DEV_KEY = _0x3c9d(7).toUpperCase(); // NG-O8DPL1LH
-      const APP_ID = "nusuk-keys-exchange";
-      const REST_BASE = "https://firestore.googleapis.com/v1/projects/" + FIREBASE_CFG.projectId + "/databases/(default)/documents";
-      const REST_KEYS_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_keys";
-      const REST_LEGACY_POOL_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_pool/latest_keys_live";
-      const BATCH_SIZE = 33;
-      const MAX_POOL_SIZE = 2500;
-      const RATE_LIMIT_MS = 1000;
+      var DEV_KEY = _0x3c9d(7).toUpperCase();
+      var APP_ID = "nusuk-keys-exchange";
+      var REST_BASE = "https://firestore.googleapis.com/v1/projects/" + FIREBASE_CFG.projectId + "/databases/(default)/documents";
+      var REST_KEYS_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_keys";
+      var REST_LEGACY_POOL_PATH = REST_BASE + "/artifacts/" + APP_ID + "/public/data/nusuk_pool/latest_keys_live";
+      var BATCH_SIZE = 33;
+      var MAX_POOL_SIZE = 2500;
+      var RATE_LIMIT_MS = 1000;
 
-      const S_KEYS = Object.freeze({
-        SINGLE_USER_KEY: "zkae_uk_v10",
-        COPIED_LIST: "zkae_cp_v10",
-        SEEN_LIST: "zkae_sn_v10",
-        BOOST_FLAG: "zkae_bs_v10",
-        POOL_DATA: "zkae_pl_v10",
-        DUA_SEEN: "zkae_du_v10"
-      });
+      var S_KEYS = {
+        SINGLE_USER_KEY: "zkae_uk_v11",
+        COPIED_LIST: "zkae_cp_v11",
+        SEEN_LIST: "zkae_sn_v11",
+        BOOST_FLAG: "zkae_bs_v11",
+        POOL_DATA: "zkae_pl_v11",
+        DUA_SEEN: "zkae_du_v11"
+      };
 
-      let keysPool = [];
-      let currentBatch = [];
-      let isAdminUnlocked = false;
-      let adminClickTaps = 0;
-      let adminTapTimer = null;
-      let restPollTimer = null;
+      var keysPool = [];
+      var currentBatch = [];
+      var isAdminUnlocked = false;
+      var adminClickTaps = 0;
+      var adminTapTimer = null;
+      var restPollTimer = null;
 
-      let state = {
+      var state = {
         submittedUserKey: "",
         copiedHistory: [],
         seenForever: [],
@@ -588,31 +596,31 @@
       }
 
       function isRateLimited() {
-        const now = Date.now();
+        var now = Date.now();
         if (now - state.lastActionTs < RATE_LIMIT_MS) return true;
         state.lastActionTs = now;
         return false;
       }
 
       function showToast(message, type) {
-        const container = document.getElementById("toast-container");
+        var container = document.getElementById("toast-container");
         if (!container) return;
-        const bg = type === "error" ? "bg-red-600" : type === "warning" ? "bg-amber-600" : "bg-gray-900";
-        const toast = document.createElement("div");
+        var bg = type === "error" ? "bg-red-600" : type === "warning" ? "bg-amber-600" : "bg-gray-900";
+        var toast = document.createElement("div");
         toast.className = bg + " text-white text-xs sm:text-sm font-semibold px-4 py-3 rounded-2xl shadow-lg pointer-events-auto animate-fade-in text-center";
         toast.textContent = String(message);
         container.appendChild(toast);
-        setTimeout(() => {
+        setTimeout(function() {
           toast.style.opacity = "0";
           toast.style.transition = "opacity 0.25s ease";
-          setTimeout(() => toast.remove(), 260);
+          setTimeout(function() { toast.remove(); }, 260);
         }, 3200);
       }
 
       function copyTextSafe(text) {
-        let copied = false;
+        var copied = false;
         try {
-          const ta = document.createElement("textarea");
+          var ta = document.createElement("textarea");
           ta.value = text;
           ta.setAttribute("readonly", "");
           ta.style.position = "fixed";
@@ -640,33 +648,33 @@
       }
 
       function fairCryptoShuffle(arr) {
-        const copy = arr.slice();
+        var copy = arr.slice();
         if (window.crypto && window.crypto.getRandomValues) {
-          const rand = new Uint32Array(copy.length);
+          var rand = new Uint32Array(copy.length);
           window.crypto.getRandomValues(rand);
-          for (let i = copy.length - 1; i > 0; i--) {
-            const j = rand[i] % (i + 1);
-            const tmp = copy[i];
+          for (var i = copy.length - 1; i > 0; i--) {
+            var j = rand[i] % (i + 1);
+            var tmp = copy[i];
             copy[i] = copy[j];
             copy[j] = tmp;
           }
         } else {
-          for (let i = copy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const tmp = copy[i];
-            copy[i] = copy[j];
-            copy[j] = tmp;
+          for (var i2 = copy.length - 1; i2 > 0; i2--) {
+            var j2 = Math.floor(Math.random() * (i2 + 1));
+            var tmp2 = copy[i2];
+            copy[i2] = copy[j2];
+            copy[j2] = tmp2;
           }
         }
         return copy;
       }
 
       function buildUniquePool(rawList) {
-        const map = new Map();
+        var map = new Map();
         map.set(DEV_KEY, { code: DEV_KEY, addedAt: Date.now(), claimed: true });
 
-        (Array.isArray(rawList) ? rawList : []).forEach(item => {
-          const clean = sanitizeKeyCode(item && item.code ? item.code : item);
+        (Array.isArray(rawList) ? rawList : []).forEach(function(item) {
+          var clean = sanitizeKeyCode(item && item.code ? item.code : item);
           if (isValidKeyFormat(clean) && !map.has(clean)) {
             map.set(clean, {
               code: clean,
@@ -679,9 +687,9 @@
       }
 
       function setCloudStatus(ok, errorDetail) {
-        const dot = document.getElementById("cloud-status-dot");
-        const banner = document.getElementById("cloud-warning-banner");
-        const detailEl = document.getElementById("cloud-error-detail");
+        var dot = document.getElementById("cloud-status-dot");
+        var banner = document.getElementById("cloud-warning-banner");
+        var detailEl = document.getElementById("cloud-error-detail");
         if (dot) {
           dot.className = ok
             ? "w-2.5 h-2.5 rounded-full bg-emerald-500 live-indicator shrink-0"
@@ -696,23 +704,23 @@
       }
 
       async function restFetchAllKeys() {
-        const url = REST_KEYS_PATH + "?pageSize=1000&key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-        const res = await fetch(url, { method: "GET", cache: "no-store" });
+        var url = REST_KEYS_PATH + "?pageSize=1000&key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
+        var res = await fetch(url, { method: "GET", cache: "no-store" });
         if (!res.ok) {
-          const errText = await res.text();
+          var errText = await res.text();
           throw new Error("HTTP " + res.status + ": " + errText.slice(0, 140));
         }
-        const json = await res.json();
-        const docs = Array.isArray(json.documents) ? json.documents : [];
-        const parsed = [];
-        for (let i = 0; i < docs.length; i++) {
-          const d = docs[i];
-          const docId = String(d.name || "").split("/").pop() || "";
-          const fields = d.fields || {};
-          const c = sanitizeKeyCode((fields.code && fields.code.stringValue) || docId);
+        var json = await res.json();
+        var docs = Array.isArray(json.documents) ? json.documents : [];
+        var parsed = [];
+        for (var i = 0; i < docs.length; i++) {
+          var d = docs[i];
+          var docId = String(d.name || "").split("/").pop() || "";
+          var fields = d.fields || {};
+          var c = sanitizeKeyCode((fields.code && fields.code.stringValue) || docId);
           if (isValidKeyFormat(c)) {
-            const addedAtVal = Number((fields.addedAt && (fields.addedAt.integerValue || fields.addedAt.doubleValue)) || Date.now());
-            const claimedVal = !fields.claimed || fields.claimed.booleanValue !== false;
+            var addedAtVal = Number((fields.addedAt && (fields.addedAt.integerValue || fields.addedAt.doubleValue)) || Date.now());
+            var claimedVal = !fields.claimed || fields.claimed.booleanValue !== false;
             parsed.push({ code: c, addedAt: addedAtVal, claimed: claimedVal });
           }
         }
@@ -721,18 +729,18 @@
 
       async function recoverLegacyPoolKeys() {
         try {
-          const url = REST_LEGACY_POOL_PATH + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-          const res = await fetch(url, { method: "GET", cache: "no-store" });
+          var url = REST_LEGACY_POOL_PATH + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
+          var res = await fetch(url, { method: "GET", cache: "no-store" });
           if (!res.ok) return [];
-          const json = await res.json();
-          const values = json.fields && json.fields.keys && json.fields.keys.arrayValue && json.fields.keys.arrayValue.values;
+          var json = await res.json();
+          var values = json.fields && json.fields.keys && json.fields.keys.arrayValue && json.fields.keys.arrayValue.values;
           if (!Array.isArray(values)) return [];
-          const recovered = [];
-          for (let i = 0; i < values.length; i++) {
-            const m = values[i] && values[i].mapValue && values[i].mapValue.fields;
+          var recovered = [];
+          for (var i = 0; i < values.length; i++) {
+            var m = values[i] && values[i].mapValue && values[i].mapValue.fields;
             if (m && m.code && m.code.stringValue) {
-              const c = sanitizeKeyCode(m.code.stringValue);
-              const ts = Number((m.addedAt && (m.addedAt.integerValue || m.addedAt.doubleValue)) || Date.now());
+              var c = sanitizeKeyCode(m.code.stringValue);
+              var ts = Number((m.addedAt && (m.addedAt.integerValue || m.addedAt.doubleValue)) || Date.now());
               if (isValidKeyFormat(c)) {
                 recovered.push({ code: c, addedAt: ts, claimed: true });
               }
@@ -745,15 +753,15 @@
       }
 
       async function restGetKeyDoc(cleanCode) {
-        const url = REST_KEYS_PATH + "/" + encodeURIComponent(cleanCode) + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-        const res = await fetch(url, { method: "GET", cache: "no-store" });
+        var url = REST_KEYS_PATH + "/" + encodeURIComponent(cleanCode) + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
+        var res = await fetch(url, { method: "GET", cache: "no-store" });
         if (res.status === 404) return null;
         if (!res.ok) {
-          const errText = await res.text();
+          var errText = await res.text();
           throw new Error("HTTP " + res.status + ": " + errText.slice(0, 140));
         }
-        const d = await res.json();
-        const fields = d.fields || {};
+        var d = await res.json();
+        var fields = d.fields || {};
         return {
           code: sanitizeKeyCode((fields.code && fields.code.stringValue) || cleanCode),
           addedAt: Number((fields.addedAt && (fields.addedAt.integerValue || fields.addedAt.doubleValue)) || Date.now()),
@@ -762,51 +770,53 @@
       }
 
       async function restUpsertKeyDoc(cleanCode, addedAt, claimed) {
-        const url = REST_KEYS_PATH + "/" + encodeURIComponent(cleanCode) + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
-        const body = {
+        var url = REST_KEYS_PATH + "/" + encodeURIComponent(cleanCode) + "?key=" + encodeURIComponent(FIREBASE_CFG.apiKey);
+        var body = {
           fields: {
             code: { stringValue: cleanCode },
             addedAt: { integerValue: String(Math.floor(addedAt)) },
             claimed: { booleanValue: Boolean(claimed) }
           }
         };
-        const res = await fetch(url, {
+        var res = await fetch(url, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body)
         });
         if (!res.ok) {
-          const errText = await res.text();
+          var errText = await res.text();
           throw new Error("HTTP " + res.status + ": " + errText.slice(0, 140));
         }
         return true;
       }
 
       async function hydrateSecureState() {
-        const savedKey = await secureStoreGet(S_KEYS.SINGLE_USER_KEY, "");
+        var savedKey = await secureStoreGet(S_KEYS.SINGLE_USER_KEY, "");
         state.submittedUserKey = isValidKeyFormat(savedKey) ? savedKey : "";
-        const hist = await secureStoreGet(S_KEYS.COPIED_LIST, []);
+        var hist = await secureStoreGet(S_KEYS.COPIED_LIST, []);
         state.copiedHistory = Array.isArray(hist) ? Array.from(new Set(hist.map(sanitizeKeyCode).filter(Boolean))) : [];
-        const seen = await secureStoreGet(S_KEYS.SEEN_LIST, []);
+        var seen = await secureStoreGet(S_KEYS.SEEN_LIST, []);
         state.seenForever = Array.isArray(seen) ? Array.from(new Set(seen.map(sanitizeKeyCode).filter(Boolean))) : [];
         state.boostActivated = (await secureStoreGet(S_KEYS.BOOST_FLAG, false)) === true;
 
-        const cachedPool = await secureStoreGet(S_KEYS.POOL_DATA, []);
+        var cachedPool = await secureStoreGet(S_KEYS.POOL_DATA, []);
         keysPool = buildUniquePool(cachedPool);
       }
 
       async function syncFromRestNow() {
-        const [newList, legacyList] = await Promise.all([
+        var results = await Promise.all([
           restFetchAllKeys(),
           recoverLegacyPoolKeys()
         ]);
-        keysPool = buildUniquePool([...legacyList, ...newList]);
+        var newList = results[0];
+        var legacyList = results[1];
+        keysPool = buildUniquePool(legacyList.concat(newList));
         await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
         updateTotalCounter();
         setCloudStatus(true, "");
 
-        const newSet = new Set(newList.map(x => x.code));
-        for (let i = 0; i < legacyList.length; i++) {
+        var newSet = new Set(newList.map(function(x) { return x.code; }));
+        for (var i = 0; i < legacyList.length; i++) {
           if (!newSet.has(legacyList[i].code)) {
             try { await restUpsertKeyDoc(legacyList[i].code, legacyList[i].addedAt, true); } catch (e) {}
           }
@@ -820,12 +830,12 @@
       async function initCloudSync() {
         updateTotalCounter();
         try {
-          const devExisting = await restGetKeyDoc(DEV_KEY);
+          var devExisting = await restGetKeyDoc(DEV_KEY);
           if (!devExisting) {
             await restUpsertKeyDoc(DEV_KEY, Date.now(), true);
           }
           if (state.submittedUserKey && state.submittedUserKey !== DEV_KEY) {
-            const myExisting = await restGetKeyDoc(state.submittedUserKey);
+            var myExisting = await restGetKeyDoc(state.submittedUserKey);
             if (!myExisting) {
               await restUpsertKeyDoc(state.submittedUserKey, Date.now(), true);
             }
@@ -837,7 +847,7 @@
         }
 
         if (!restPollTimer) {
-          restPollTimer = setInterval(async () => {
+          restPollTimer = setInterval(async function() {
             try { await syncFromRestNow(); } catch (e) {}
           }, 12000);
         }
@@ -845,7 +855,7 @@
 
       async function registerOrClaimKeyInCloud(cleanCode) {
         try {
-          const existing = await restGetKeyDoc(cleanCode);
+          var existing = await restGetKeyDoc(cleanCode);
           if (existing) {
             if (existing.claimed === false) {
               await restUpsertKeyDoc(cleanCode, existing.addedAt || Date.now(), true);
@@ -865,31 +875,32 @@
       }
 
       function updateTotalCounter() {
-        const el = document.getElementById("total-pool-count");
+        var el = document.getElementById("total-pool-count");
         if (el) el.textContent = String(keysPool.length);
       }
 
       function formatRelativeTime(ts) {
-        const diffSec = Math.max(1, Math.floor((Date.now() - (ts || Date.now())) / 1000));
+        var diffSec = Math.max(1, Math.floor((Date.now() - (ts || Date.now())) / 1000));
         if (diffSec < 60) return "منذ لحظات";
-        const diffMin = Math.floor(diffSec / 60);
+        var diffMin = Math.floor(diffSec / 60);
         if (diffMin < 60) return "منذ " + diffMin + " د";
-        const diffHr = Math.floor(diffMin / 60);
+        var diffHr = Math.floor(diffMin / 60);
         if (diffHr < 24) return "منذ " + diffHr + " س";
         return "منذ " + Math.floor(diffHr / 24) + " ي";
       }
 
       function syncUIState() {
-        const devDisplay = document.getElementById("owner-key-display");
+        var devDisplay = document.getElementById("owner-key-display");
         if (devDisplay) devDisplay.textContent = DEV_KEY;
 
-        const step2Badge = document.getElementById("step2-status-badge");
-        const step2Helper = document.getElementById("step2-helper-text");
-        const inputEl = document.getElementById("visitor-key-input");
-        const submitBtn = document.getElementById("submit-visitor-btn");
-        const boostCard = document.getElementById("share-boost-card");
-        const step3Section = document.getElementById("step3-section");
-        const myKeyBadge = document.getElementById("my-key-badge");
+        var step2Badge = document.getElementById("step2-status-badge");
+        var step2Helper = document.getElementById("step2-helper-text");
+        var inputEl = document.getElementById("visitor-key-input");
+        var pasteBtn = document.getElementById("paste-visitor-btn");
+        var submitBtn = document.getElementById("submit-visitor-btn");
+        var boostCard = document.getElementById("share-boost-card");
+        var step3Section = document.getElementById("step3-section");
+        var myKeyBadge = document.getElementById("my-key-badge");
 
         if (state.submittedUserKey) {
           step2Badge.textContent = "تم الإدراج ✓ (1/1)";
@@ -897,6 +908,7 @@
           inputEl.value = state.submittedUserKey;
           inputEl.disabled = true;
           inputEl.readOnly = true;
+          if (pasteBtn) pasteBtn.classList.add("hidden");
           submitBtn.disabled = true;
           submitBtn.textContent = "مفتاحك مُدرج للزوار الآخرين ✓";
           if (myKeyBadge) myKeyBadge.textContent = state.submittedUserKey;
@@ -912,6 +924,23 @@
         }
       }
 
+      async function handlePasteVisitorKey() {
+        var inputEl = document.getElementById("visitor-key-input");
+        if (!inputEl || inputEl.disabled) return;
+        try {
+          if (navigator.clipboard && navigator.clipboard.readText) {
+            var clipText = await navigator.clipboard.readText();
+            if (clipText) {
+              inputEl.value = sanitizeKeyCode(clipText);
+              showToast("تم لصق الرمز بنجاح!", "success");
+              return;
+            }
+          }
+        } catch (e) {}
+        inputEl.focus();
+        showToast("اضغط مطولاً داخل الخانة (أو Ctrl+V) للصق الرمز.", "warning");
+      }
+
       async function handleSubmitVisitorKey() {
         if (state.submittedUserKey) {
           showToast("لقد أضفت مفتاحك مسبقاً؛ يُسمح بمفتاح واحد فقط لكل زائر.", "warning");
@@ -922,8 +951,8 @@
           return;
         }
 
-        const inputEl = document.getElementById("visitor-key-input");
-        const rawInput = inputEl ? inputEl.value : "";
+        var inputEl = document.getElementById("visitor-key-input");
+        var rawInput = inputEl ? inputEl.value : "";
 
         if (hasInjectionPattern(rawInput)) {
           showToast("تم رفض الإدخال لاحتوائه على رموز غير مسموح بها.", "error");
@@ -931,7 +960,7 @@
           return;
         }
 
-        const cleanCode = sanitizeKeyCode(rawInput);
+        var cleanCode = sanitizeKeyCode(rawInput);
         if (!isValidKeyFormat(cleanCode)) {
           showToast("صيغة المفتاح غير صحيحة! يجب أن يبدأ بـ NG- متبوعاً بالرمز الصحيح.", "error");
           return;
@@ -941,19 +970,19 @@
           return;
         }
 
-        const localMatch = keysPool.find(k => sanitizeKeyCode(k.code) === cleanCode);
+        var localMatch = keysPool.find(function(k) { return sanitizeKeyCode(k.code) === cleanCode; });
         if (localMatch && localMatch.claimed === true) {
           showToast("هذا المفتاح مُدخل مسبقاً في المنصة! لا يمكن إدخال نفس الكود مرتين.", "warning");
           return;
         }
 
-        const submitBtn = document.getElementById("submit-visitor-btn");
+        var submitBtn = document.getElementById("submit-visitor-btn");
         if (submitBtn) {
           submitBtn.disabled = true;
           submitBtn.textContent = "جاري التحقق والحفظ في السحابة...";
         }
 
-        const cloudRes = await registerOrClaimKeyInCloud(cleanCode);
+        var cloudRes = await registerOrClaimKeyInCloud(cleanCode);
         if (cloudRes === "EXISTS") {
           showToast("هذا المفتاح مُسجل مسبقاً في المنصة! يُمنع إدخال أي كود أكثر من مرة.", "warning");
           if (submitBtn) {
@@ -966,7 +995,7 @@
         state.submittedUserKey = cleanCode;
         await secureStoreSet(S_KEYS.SINGLE_USER_KEY, cleanCode, true);
 
-        keysPool = buildUniquePool([...keysPool.filter(k => k.code !== cleanCode), { code: cleanCode, addedAt: Date.now(), claimed: true }]);
+        keysPool = buildUniquePool(keysPool.filter(function(k) { return k.code !== cleanCode; }).concat([{ code: cleanCode, addedAt: Date.now(), claimed: true }]));
         await secureStoreSet(S_KEYS.POOL_DATA, keysPool, false);
         updateTotalCounter();
 
@@ -980,9 +1009,9 @@
 
       function applySavedBoostUI() {
         if (state.boostActivated) {
-          const badge = document.getElementById("boost-status-badge");
-          const label = document.getElementById("boost-percent-label");
-          const bar = document.getElementById("boost-progress-bar");
+          var badge = document.getElementById("boost-status-badge");
+          var label = document.getElementById("boost-percent-label");
+          var bar = document.getElementById("boost-progress-bar");
           if (badge) {
             badge.textContent = "أولوية قصوى 3x مفعّلة 🔥";
             badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
@@ -993,11 +1022,11 @@
       }
 
       async function handleShareBoost(platform) {
-        const pageUrl = window.location.href;
-        const shareText = encodeURIComponent("منصة ذكاء (ZKAE.com) لتبادل مفاتيح تحدي نسك مجاناً 🕋✨ أضف مفتاحك واحصل على 33 مفتاحاً عشوائياً جديداً من هنا: ");
-        const encodedUrl = encodeURIComponent(pageUrl);
+        var pageUrl = window.location.href;
+        var shareText = encodeURIComponent("منصة ذكاء (ZKAE.com) لتبادل مفاتيح تحدي نسك مجاناً 🕋✨ أضف مفتاحك واحصل على 33 مفتاحاً عشوائياً جديداً من هنا: ");
+        var encodedUrl = encodeURIComponent(pageUrl);
 
-        const links = {
+        var links = {
           whatsapp: "https://api.whatsapp.com/send?text=" + shareText + encodedUrl,
           telegram: "https://t.me/share/url?url=" + encodedUrl + "&text=" + shareText,
           facebook: "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl,
@@ -1021,16 +1050,18 @@
           try { await syncFromRestNow(); } catch (e) {}
         }
 
-        const myKey = state.submittedUserKey.toUpperCase();
-        const copiedSet = new Set(state.copiedHistory.map(c => c.toUpperCase()));
-        const seenSet = new Set(state.seenForever.map(c => c.toUpperCase()));
+        var myKey = state.submittedUserKey.toUpperCase();
+        var copiedSet = new Set(state.copiedHistory.map(function(c) { return c.toUpperCase(); }));
+        var seenSet = new Set(state.seenForever.map(function(c) { return c.toUpperCase(); }));
 
-        const uncopiedOthers = keysPool.filter(item => {
-          const code = sanitizeKeyCode(item.code);
+        var uncopiedOthers = keysPool.filter(function(item) {
+          var code = sanitizeKeyCode(item.code);
           return code && code !== myKey && !copiedSet.has(code);
         });
 
-        let unseenCandidates = uncopiedOthers.filter(item => !seenSet.has(sanitizeKeyCode(item.code)));
+        var unseenCandidates = uncopiedOthers.filter(function(item) {
+          return !seenSet.has(sanitizeKeyCode(item.code));
+        });
 
         if (unseenCandidates.length === 0 && uncopiedOthers.length > 0) {
           state.seenForever = state.copiedHistory.slice();
@@ -1038,18 +1069,18 @@
           unseenCandidates = uncopiedOthers.slice();
         }
 
-        const uniqueMap = new Map();
-        fairCryptoShuffle(unseenCandidates).forEach(item => {
-          const c = sanitizeKeyCode(item.code);
+        var uniqueMap = new Map();
+        fairCryptoShuffle(unseenCandidates).forEach(function(item) {
+          var c = sanitizeKeyCode(item.code);
           if (!uniqueMap.has(c) && uniqueMap.size < BATCH_SIZE) {
             uniqueMap.set(c, item);
           }
         });
 
-        const selected = Array.from(uniqueMap.values());
+        var selected = Array.from(uniqueMap.values());
 
-        selected.forEach(item => {
-          const c = sanitizeKeyCode(item.code);
+        selected.forEach(function(item) {
+          var c = sanitizeKeyCode(item.code);
           if (state.seenForever.indexOf(c) === -1) state.seenForever.push(c);
         });
         await secureStoreSet(S_KEYS.SEEN_LIST, state.seenForever.slice(-180), true);
@@ -1058,10 +1089,10 @@
         renderBatchCards(currentBatch, uncopiedOthers.length);
 
         if (isUserRefresh) {
-          const icon = document.getElementById("refresh-icon");
+          var icon = document.getElementById("refresh-icon");
           if (icon) {
             icon.style.transform = "rotate(360deg)";
-            setTimeout(() => { icon.style.transform = "rotate(0deg)"; }, 520);
+            setTimeout(function() { icon.style.transform = "rotate(0deg)"; }, 520);
           }
           if (selected.length > 0) {
             showToast("تم تحديث القائمة وجلب " + selected.length + " مفتاحاً دون تكرار!", "success");
@@ -1072,19 +1103,19 @@
       }
 
       function renderBatchCards(batchList, totalRemainingCount) {
-        const container = document.getElementById("keys-list-container");
-        const emptyBox = document.getElementById("empty-keys-box");
-        const totalBadge = document.getElementById("list-total-badge");
-        const remainingLabel = document.getElementById("remaining-pool-label");
-        const progressLabel = document.getElementById("copied-progress-label");
+        var container = document.getElementById("keys-list-container");
+        var emptyBox = document.getElementById("empty-keys-box");
+        var totalBadge = document.getElementById("list-total-badge");
+        var remainingLabel = document.getElementById("remaining-pool-label");
+        var progressLabel = document.getElementById("copied-progress-label");
         if (!container) return;
 
-        const myKey = state.submittedUserKey.toUpperCase();
-        const copiedSet = new Set(state.copiedHistory.map(c => c.toUpperCase()));
+        var myKey = state.submittedUserKey.toUpperCase();
+        var copiedSet = new Set(state.copiedHistory.map(function(c) { return c.toUpperCase(); }));
 
         if (totalRemainingCount === null || totalRemainingCount === undefined) {
-          totalRemainingCount = keysPool.filter(item => {
-            const code = sanitizeKeyCode(item.code);
+          totalRemainingCount = keysPool.filter(function(item) {
+            var code = sanitizeKeyCode(item.code);
             return code && code !== myKey && !copiedSet.has(code);
           }).length;
         }
@@ -1102,33 +1133,33 @@
 
         emptyBox.classList.add("hidden");
 
-        batchList.forEach((item, idx) => {
-          const safeCode = sanitizeKeyCode(item.code);
-          const alreadyCopied = copiedSet.has(safeCode);
+        batchList.forEach(function(item, idx) {
+          var safeCode = sanitizeKeyCode(item.code);
+          var alreadyCopied = copiedSet.has(safeCode);
 
-          const card = document.createElement("div");
+          var card = document.createElement("div");
           card.className = alreadyCopied
             ? "flex items-center justify-between gap-2.5 bg-emerald-50/85 border border-emerald-300 rounded-2xl p-3 sm:p-3.5 transition"
             : "flex items-center justify-between gap-2.5 bg-gray-50/90 hover:bg-white border border-gray-200/90 rounded-2xl p-3 sm:p-3.5 transition";
 
-          const leftWrap = document.createElement("div");
+          var leftWrap = document.createElement("div");
           leftWrap.className = "flex items-center gap-2.5 min-w-0";
 
-          const indexBadge = document.createElement("span");
+          var indexBadge = document.createElement("span");
           indexBadge.className = alreadyCopied
             ? "w-7 h-7 rounded-full bg-emerald-200 text-emerald-900 font-bold text-xs flex items-center justify-center shrink-0"
             : "w-7 h-7 rounded-full bg-amber-100 text-amber-900 font-bold text-xs flex items-center justify-center shrink-0";
           indexBadge.textContent = String(idx + 1);
 
-          const infoWrap = document.createElement("div");
+          var infoWrap = document.createElement("div");
           infoWrap.className = "min-w-0";
 
-          const codeEl = document.createElement("div");
+          var codeEl = document.createElement("div");
           codeEl.dir = "ltr";
           codeEl.className = "font-mono font-bold text-xs sm:text-base text-gray-900 truncate select-all";
           codeEl.textContent = safeCode;
 
-          const timeEl = document.createElement("div");
+          var timeEl = document.createElement("div");
           timeEl.className = "text-[11px] text-gray-500";
           timeEl.textContent = formatRelativeTime(item.addedAt);
 
@@ -1137,7 +1168,7 @@
           leftWrap.appendChild(indexBadge);
           leftWrap.appendChild(infoWrap);
 
-          const copyBtn = document.createElement("button");
+          var copyBtn = document.createElement("button");
           copyBtn.type = "button";
           if (alreadyCopied) {
             copyBtn.textContent = "تم النسخ ✓";
@@ -1148,7 +1179,7 @@
             copyBtn.className = "bg-nusuk-dark hover:bg-black text-white font-bold text-xs px-4 py-2 rounded-full shrink-0 transition cursor-pointer";
           }
 
-          copyBtn.addEventListener("click", async () => {
+          copyBtn.addEventListener("click", async function() {
             if (copyBtn.disabled) return;
             copyTextSafe(safeCode);
             if (state.copiedHistory.indexOf(safeCode) === -1) {
@@ -1162,7 +1193,7 @@
             copyBtn.disabled = true;
             copyBtn.className = "bg-emerald-600 text-white font-bold text-xs px-3.5 py-2 rounded-full shrink-0 cursor-default";
 
-            const newRemaining = Math.max(0, totalRemainingCount - 1);
+            var newRemaining = Math.max(0, totalRemainingCount - 1);
             if (remainingLabel) remainingLabel.textContent = "المتبقي لك: " + newRemaining;
             if (progressLabel) progressLabel.textContent = "نسخت: " + state.copiedHistory.length;
             showToast("تم نسخ المفتاح " + safeCode + " وحفظ تقدمك بالكوكيز!", "success");
@@ -1176,10 +1207,10 @@
 
       // HIDDEN ENCRYPTED ADMIN VAULT LOGIC
       function openAdminVaultModal() {
-        const modal = document.getElementById("admin-vault-modal");
-        const authView = document.getElementById("admin-auth-view");
-        const bulkView = document.getElementById("admin-bulk-view");
-        const pinInput = document.getElementById("admin-pin-input");
+        var modal = document.getElementById("admin-vault-modal");
+        var authView = document.getElementById("admin-auth-view");
+        var bulkView = document.getElementById("admin-bulk-view");
+        var pinInput = document.getElementById("admin-pin-input");
         if (!modal) return;
 
         modal.classList.remove("hidden");
@@ -1191,22 +1222,22 @@
           if (bulkView) bulkView.classList.add("hidden");
           if (pinInput) {
             pinInput.value = "";
-            setTimeout(() => pinInput.focus(), 100);
+            setTimeout(function() { pinInput.focus(); }, 100);
           }
         }
       }
 
       async function verifyAdminPin() {
-        const pinInput = document.getElementById("admin-pin-input");
-        const rawPin = String((pinInput && pinInput.value) || "").trim();
+        var pinInput = document.getElementById("admin-pin-input");
+        var rawPin = String((pinInput && pinInput.value) || "").trim();
         if (!rawPin) return;
 
-        const computedHash = await _sha256Hex(rawPin + "|" + _ADMIN_SALT);
+        var computedHash = await _sha256Hex(rawPin + "|" + _ADMIN_SALT);
         if ((computedHash && computedHash === _ADMIN_PIN_SHA256) || rawPin === "ZKAE@2026#Admin") {
           isAdminUnlocked = true;
           if (pinInput) pinInput.value = "";
-          const authView = document.getElementById("admin-auth-view");
-          const bulkView = document.getElementById("admin-bulk-view");
+          var authView = document.getElementById("admin-auth-view");
+          var bulkView = document.getElementById("admin-bulk-view");
           if (authView) authView.classList.add("hidden");
           if (bulkView) bulkView.classList.remove("hidden");
           showToast("تم فك تشفير خزنة الإدارة بنجاح.", "success");
@@ -1222,13 +1253,13 @@
           return;
         }
 
-        const textarea = document.getElementById("bulk-keys-textarea");
-        const progressEl = document.getElementById("bulk-import-progress");
-        const submitBtn = document.getElementById("bulk-import-submit-btn");
-        const rawText = String((textarea && textarea.value) || "");
+        var textarea = document.getElementById("bulk-keys-textarea");
+        var progressEl = document.getElementById("bulk-import-progress");
+        var submitBtn = document.getElementById("bulk-import-submit-btn");
+        var rawText = String((textarea && textarea.value) || "");
 
-        const matches = rawText.toUpperCase().match(/NG-[A-Z0-9_-]{4,20}/g) || [];
-        const uniqueCodes = Array.from(new Set(matches.map(sanitizeKeyCode).filter(c => isValidKeyFormat(c) && c !== DEV_KEY)));
+        var matches = rawText.toUpperCase().match(/NG-[A-Z0-9_-]{4,20}/g) || [];
+        var uniqueCodes = Array.from(new Set(matches.map(sanitizeKeyCode).filter(function(c) { return isValidKeyFormat(c) && c !== DEV_KEY; })));
 
         if (uniqueCodes.length === 0) {
           showToast("لم يتم العثور على أي أكواد صالحة بصيغة NG-XXXX!", "warning");
@@ -1241,13 +1272,13 @@
           progressEl.textContent = "جاري استيراد " + uniqueCodes.length + " كود...";
         }
 
-        let addedCount = 0;
-        let skippedCount = 0;
+        var addedCount = 0;
+        var skippedCount = 0;
 
-        for (let i = 0; i < uniqueCodes.length; i++) {
-          const code = uniqueCodes[i];
+        for (var i = 0; i < uniqueCodes.length; i++) {
+          var code = uniqueCodes[i];
           try {
-            const existing = await restGetKeyDoc(code);
+            var existing = await restGetKeyDoc(code);
             if (!existing) {
               await restUpsertKeyDoc(code, Date.now() - (uniqueCodes.length - i) * 1000, false);
               addedCount++;
@@ -1270,31 +1301,31 @@
       }
 
       function initAutoVisitorStats() {
-        const onlineEl = document.getElementById("live-online-visitors");
-        const flagImg = document.getElementById("flag-counter-img");
-        const updateOnline = () => {
+        var onlineEl = document.getElementById("live-online-visitors");
+        var flagImg = document.getElementById("flag-counter-img");
+        var updateOnline = function() {
           if (onlineEl) onlineEl.textContent = String(Math.max(1, Math.min(25, Math.floor(keysPool.length / 4) + 1)) + Math.floor(Math.random() * 3));
         };
         updateOnline();
         setInterval(updateOnline, 25000);
         if (flagImg) {
-          const baseSrc = flagImg.src.split("?")[0];
-          setInterval(() => { flagImg.src = baseSrc + "?t=" + Date.now(); }, 180000);
+          var baseSrc = flagImg.src.split("?")[0];
+          setInterval(function() { flagImg.src = baseSrc + "?t=" + Date.now(); }, 180000);
         }
       }
 
       function toggleModal(id, show) {
-        const el = document.getElementById(id);
+        var el = document.getElementById(id);
         if (el) el.classList.toggle("hidden", !show);
       }
 
       function bindSecureEvents() {
-        const brandTrigger = document.getElementById("secret-brand-trigger");
+        var brandTrigger = document.getElementById("secret-brand-trigger");
         if (brandTrigger) {
-          brandTrigger.addEventListener("click", () => {
+          brandTrigger.addEventListener("click", function() {
             adminClickTaps++;
             clearTimeout(adminTapTimer);
-            adminTapTimer = setTimeout(() => { adminClickTaps = 0; }, 1500);
+            adminTapTimer = setTimeout(function() { adminClickTaps = 0; }, 1500);
             if (adminClickTaps >= 5) {
               adminClickTaps = 0;
               openAdminVaultModal();
@@ -1302,24 +1333,24 @@
           });
         }
 
-        document.addEventListener("keydown", (e) => {
+        document.addEventListener("keydown", function(e) {
           if (e.ctrlKey && e.shiftKey && (e.key === "K" || e.key === "k")) {
             e.preventDefault();
             openAdminVaultModal();
           }
         });
 
-        const txtInput = document.getElementById("bulk-txt-file");
+        var txtInput = document.getElementById("bulk-txt-file");
         if (txtInput) {
-          txtInput.addEventListener("change", (e) => {
-            const file = e.target.files && e.target.files[0];
+          txtInput.addEventListener("change", function(e) {
+            var file = e.target.files && e.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-              const ta = document.getElementById("bulk-keys-textarea");
+            var reader = new FileReader();
+            reader.onload = function(ev) {
+              var ta = document.getElementById("bulk-keys-textarea");
               if (ta) {
-                ta.value = (ta.value ? ta.value + "
-" : "") + String((ev.target && ev.target.result) || "");
+                var nl = String.fromCharCode(10);
+                ta.value = (ta.value ? ta.value + nl : "") + String((ev.target && ev.target.result) || "");
               }
               showToast("تم تحميل الملف (" + file.name + ") بنجاح.", "success");
             };
@@ -1328,44 +1359,56 @@
           });
         }
 
-        document.addEventListener("click", async (e) => {
-          const actionBtn = e.target.closest("[data-action]");
+        document.addEventListener("click", async function(e) {
+          var actionBtn = e.target.closest("[data-action]");
           if (actionBtn) {
-            const act = actionBtn.getAttribute("data-action");
+            var act = actionBtn.getAttribute("data-action");
             if (act === "copy-owner") {
               copyTextSafe(DEV_KEY);
               showToast("تم نسخ مفتاح المطور (" + DEV_KEY + ") — شكراً لدعمك!", "success");
-            } else if (act === "submit-visitor") await handleSubmitVisitorKey();
-            else if (act === "refresh-batch") await generateAndRenderFairBatch(true);
-            else if (act === "open-dua") toggleModal("dua-tiktok-modal", true);
-            else if (act === "close-dua") toggleModal("dua-tiktok-modal", false);
-            else if (act === "open-guide") toggleModal("guide-modal", true);
-            else if (act === "close-guide") toggleModal("guide-modal", false);
-            else if (act === "follow-tiktok") await secureStoreSet(S_KEYS.DUA_SEEN, true, true);
-            else if (act === "close-admin") toggleModal("admin-vault-modal", false);
-            else if (act === "verify-admin-pin") await verifyAdminPin();
-            else if (act === "run-bulk-import") await runAdminBulkImport();
-            else if (act === "lock-admin") {
+            } else if (act === "paste-visitor") {
+              await handlePasteVisitorKey();
+            } else if (act === "submit-visitor") {
+              await handleSubmitVisitorKey();
+            } else if (act === "refresh-batch") {
+              await generateAndRenderFairBatch(true);
+            } else if (act === "open-dua") {
+              toggleModal("dua-tiktok-modal", true);
+            } else if (act === "close-dua") {
+              toggleModal("dua-tiktok-modal", false);
+            } else if (act === "open-guide") {
+              toggleModal("guide-modal", true);
+            } else if (act === "close-guide") {
+              toggleModal("guide-modal", false);
+            } else if (act === "follow-tiktok") {
+              await secureStoreSet(S_KEYS.DUA_SEEN, true, true);
+            } else if (act === "close-admin") {
+              toggleModal("admin-vault-modal", false);
+            } else if (act === "verify-admin-pin") {
+              await verifyAdminPin();
+            } else if (act === "run-bulk-import") {
+              await runAdminBulkImport();
+            } else if (act === "lock-admin") {
               isAdminUnlocked = false;
               toggleModal("admin-vault-modal", false);
               showToast("تم قفل الخزنة وتشفير الجلسة.", "success");
             }
             return;
           }
-          const shareBtn = e.target.closest("[data-share]");
+          var shareBtn = e.target.closest("[data-share]");
           if (shareBtn) await handleShareBoost(shareBtn.getAttribute("data-share"));
         });
 
-        const vInput = document.getElementById("visitor-key-input");
+        var vInput = document.getElementById("visitor-key-input");
         if (vInput) {
-          vInput.addEventListener("keydown", async (e) => {
+          vInput.addEventListener("keydown", async function(e) {
             if (e.key === "Enter") { e.preventDefault(); await handleSubmitVisitorKey(); }
           });
         }
 
-        const aInput = document.getElementById("admin-pin-input");
+        var aInput = document.getElementById("admin-pin-input");
         if (aInput) {
-          aInput.addEventListener("keydown", async (e) => {
+          aInput.addEventListener("keydown", async function(e) {
             if (e.key === "Enter") { e.preventDefault(); await verifyAdminPin(); }
           });
         }
@@ -1379,7 +1422,7 @@
         await initCloudSync();
 
         if ((await secureStoreGet(S_KEYS.DUA_SEEN, false)) !== true) {
-          setTimeout(async () => {
+          setTimeout(async function() {
             await secureStoreSet(S_KEYS.DUA_SEEN, true, true);
             toggleModal("dua-tiktok-modal", true);
           }, 3000);
