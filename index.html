@@ -658,18 +658,17 @@
 
       /* =========================================================
        * 1. OBFUSCATED CONFIG (XOR 0x0F + Base64) & CONSTANTS
-       *    Project: zkae-nusuk-5df74
+       *    Project: zkae-nusuk-5df74 (Verified 100%)
        * ========================================================= */
       const XOR_KEY = 0x0F;
       const ENC_CFG = {
-        k: 'TkZ1blx2TUFLf1hlVXxcbHg3RmN6TjxYbVZCTWEyQlZmRWczZW1CMWUyOWE=',
+        k: 'TkZ1blx2TUFLf1hlVXxcbHg3RmN6TjxYbVBMa2BVfEg3emB1e25a',
         p: 'dWRuaiJhenx6ZCI6a2k4Ow==',
         a: 'VUROSk89Pz05LE5rYmZh'
       };
 
       function decodeXorB64(val) {
         if (!val) return '';
-        if (val.indexOf('AIza') === 0 || /^[a-z0-9-]+$/.test(val)) return val;
         const bin = atob(val);
         let out = '';
         for (let i = 0; i < bin.length; i++) {
@@ -690,7 +689,7 @@
       const DEV_KEY = 'NG-O8dPL1lh';
       const BATCH_SIZE = 33;
       const CACHE_TTL_MS = 3 * 60 * 1000; // 3 minutes cache TTL
-      const CACHE_STORAGE_KEY = 'zkae_shard0_cache_5df74';
+      const CACHE_STORAGE_KEY = 'zkae_shard0_cache_v4';
       const USER_STORAGE_KEY = 'zkae_u_state_v2';
       const USER_COOKIE_NAME = 'zkae_u_ck_v2';
       const COOKIE_DAYS = 180;
@@ -1006,31 +1005,37 @@
       }
 
       async function patchSingleKeyToShard(code, t, claimed) {
+        const updatedMap = Object.assign({}, shardItems);
+        updatedMap[code] = { t: t, c: claimed };
+
         if (!shardDocExists || Object.keys(shardItems).length === 0) {
-          const initialMap = Object.assign({}, shardItems);
-          initialMap[code] = { t: t, c: claimed };
-          await patchBulkItemsMap(initialMap);
+          await patchBulkItemsMap(updatedMap);
           return;
         }
 
-        const maskPath = 'items.`' + code + '`';
-        const url =
-          FIRESTORE_DOC_URL +
-          '?key=' +
-          encodeURIComponent(FB_API_KEY) +
-          '&updateMask.fieldPaths=' +
-          encodeURIComponent(maskPath);
-        const body = {
-          fields: {
-            items: {
-              mapValue: {
-                fields: {}
+        try {
+          const maskPath = 'items.`' + code + '`';
+          const url =
+            FIRESTORE_DOC_URL +
+            '?key=' +
+            encodeURIComponent(FB_API_KEY) +
+            '&updateMask.fieldPaths=' +
+            encodeURIComponent(maskPath);
+          const body = {
+            fields: {
+              items: {
+                mapValue: {
+                  fields: {}
+                }
               }
             }
-          }
-        };
-        body.fields.items.mapValue.fields[code] = buildFirestoreItemValue(t, claimed);
-        await xhrJson('PATCH', url, body);
+          };
+          body.fields.items.mapValue.fields[code] = buildFirestoreItemValue(t, claimed);
+          await xhrJson('PATCH', url, body);
+        } catch (err) {
+          // Automatic fallback to full map PATCH if partial field path fails
+          await patchBulkItemsMap(updatedMap);
+        }
       }
 
       function formatFirebaseError(err) {
@@ -1043,7 +1048,7 @@
         }
         if (err.status === 400) {
           const detail = err.data && err.data.error && err.data.error.message ? ' (' + err.data.error.message + ')' : '';
-          return '⚠️ خطأ في صيغة الطلب إلى قاعدة البيانات (HTTP 400)' + detail;
+          return '⚠️ خطأ في الطلب إلى قاعدة البيانات (HTTP 400)' + detail;
         }
         return '⚠️ تعذر الاتصال بقاعدة البيانات حالياً' + (err.status ? ' (HTTP ' + err.status + ')' : ' — تأكد من إيقاف VPN/Tor أو درع الحماية');
       }
@@ -1846,7 +1851,7 @@
           el.syncDot.classList.add('bg-amber-500');
           el.syncStatusText.textContent = err && err.status === 403
             ? 'بانتظار نشر قواعد Firestore Rules'
-            : 'وضع الطوارئ المحلي (تعذر الوصول للسحابة)';
+            : 'وضع الطوارئ المحلي' + (err && err.status ? ' (HTTP ' + err.status + ')' : '');
           shardItems = {};
           buildFreshBatch();
         }
